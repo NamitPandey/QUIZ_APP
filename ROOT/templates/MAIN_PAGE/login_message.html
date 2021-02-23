@@ -1,0 +1,31 @@
+{% extends 'BASE_FILES/baseFile.html' %}
+{% load static %}
+{% load my_filter %}
+{% block content %}
+	<div class="container-fluid">
+		<div class="col-md-12 content">
+			<div class="form-modal">
+
+				<div class="form-toggle">
+					<h3 id="login-toggle" style="width:100%;" disabled>Log in</h3>
+					<!-- <button id="signup-toggle" onclick="toggleSignup()">Sign Up</button> -->
+				</div>
+
+				<div id="login-form">
+
+            <h5 style="font-weight:900; color: green; text-align:center;"> REGISTRATION COMPLETE, <br><br> YOU MAY NOW LOGIN IN WITH YOUR ENROLLMENT NUMBER AND PASSWORD</h5>
+						<br>
+						<a href="{% url 'MCQ:login'%}">
+							<button type="submit" class="login">
+								login
+							</button>
+						</a>
+
+				 </div>
+
+			</div>
+
+		</div>
+	</div>
+
+{% endblock %}

@@ -5,7 +5,62 @@
     <meta charset="utf-8">
     <title></title>
   </head>
+  <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
   <body>
-    <h1>HELLO</h1>
+    <div class="container mt-5">
+      <div class="row">
+
+        <div class="col-xxl">
+          <h1>GENERAL_KNOWLEDGE</h1>
+          <a href="{% url 'MCQ:quiz' randmNmbr 1 randmNmbr2 0%}">
+            <button class="btn btn-primary" type="button" name="button" style="width:100%;">
+              Go
+            </button>
+          </a>
+        </div>
+
+        <div class="col-xxl-12">
+          <h1>LOGICAL_REASONING</h1>
+          <a href="{% url 'MCQ:quiz' randmNmbr 2 randmNmbr2 0%}">
+            <button class="btn btn-primary" type="button" name="button" style="width:100%;">
+              Go
+            </button>
+          </a>
+        </div>
+
+        <div class="col-xxl-12">
+          <h1>APTITUDE</h1>
+          <a href="{% url 'MCQ:quiz' randmNmbr 3 randmNmbr2 0%}">
+            <button class="btn btn-primary" type="button" name="button" style="width:100%;">
+              Go
+            </button>
+          </a>
+        </div>
+
+        <div class="col-xx-12">
+          <h1>WRITTEN_COMMUNICATION</h1>
+          <a href="{% url 'MCQ:quiz' randmNmbr 4 randmNmbr2 0%}">
+            <button class="btn btn-primary" type="button" name="button" style="width:100%;">
+              Go
+            </button>
+          </a>
+        </div>
+
+        <div class="col-xxl-12">
+          <h1>DOMAIN_KNOWLEDGE</h1>
+          <a href="{% url 'MCQ:quiz' randmNmbr 5 randmNmbr2 0%}">
+            <button class="btn btn-primary" type="button" name="button" style="width:100%;">
+              Go
+            </button>
+          </a>
+        </div>
+
+      </div>
+    </div>
   </body>
+  <!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
 </html>

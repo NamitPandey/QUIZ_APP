@@ -1,0 +1,28 @@
+"""
+ALL THE STATIC VARIABLES GOES HERE FOR THE PAGES/VIEWS
+"""
+
+CATEGORY={
+1:"GENERAL_KNOWLEDGE",
+2:"LOGICAL",
+3:"APTITUDE",
+4:"WRITTEN_COMMUNICATION",
+5:"DOMAIN_KNOWLEDGE"
+}
+
+GENDR_LIST = [
+"MALE",
+"FEMALE",
+"OTHERS",
+]
+
+SCHOL_LIST = [
+"School_of_Technology",
+"School_of_Science",
+"School_of_Management",
+]
+
+PROGRM_LIST = [
+'PRG1',
+'PRG2',
+]

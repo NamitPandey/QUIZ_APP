@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+    <!-- Title Page-->
+    <title>TASC – PINUPS</title>
+
+    <!-- Icons font CSS-->
+    <link href="{% static 'registration/vendor/mdi-font/css/material-design-iconic-font.min.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'registration/vendor/font-awesome-4.7/css/font-awesome.min.css' %}" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link href="{% static 'registration/vendor/select2/select2.min.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'registration/vendor/datepicker/daterangepicker.css' %}" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="{% static 'registration/css/main.css' %}" rel="stylesheet" media="all">
+    <link rel="icon" href="{% static 'img/favicon.png' %}">
+</head>
+
+<body style="background-image: url('../static/img/background3.jpg');   height: 100%; background-position: center; background-repeat: no-repeat; background-size: cover;">
+  <nav id="nbar" class="navbar">
+      <div class="header">
+          <div class="navbar-header">
+              <img id="logo" src="{% static 'img/logo.webp' %}" height="100px" style="margin: 10px 10px; float:right;">
+          </div>
+      </div>
+  </nav>
+    <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
+        <div class="wrapper wrapper--w680">
+
+            <div class="card card-4" style="opacity: 0.9; font-weight:600;">
+              {% if MSG == 'CREATED' %}
+                <div class="card card-4" style="opacity: 0.9; font-weight:600;">
+                    <div class="card-body">
+                        <h2 class="title" style="text-align:center; font-weight:700; color:#00942c;"> REGISTRATION COMPLETE <br><br> YOU MAY NOW LOGIN IN WITH YOUR ENROLLMENT NUMBER AND PASSWOR</h2>
+                        <a href="{% url 'MCQ:login' %}">
+                          <button class="btn btn--radius-2 btn--blue" type="submit" style="width:100%; background-color: #f5b400;">
+                            <strong>Click Here To Login</strong>
+                          </button>
+                        </a>
+                    </div>
+                </div>
+              {% else%}
+                <div class="card-body">
+                    <h2 class="title">Registration Form</h2>
+                    <form action="{% url 'MCQ:register' %}"  name="frm_signup" method="POST">
+                      {% csrf_token %}
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">First name</label>
+                                    <input class="input--style-4" type="text" placeholder="First Name" name="firstname" required>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">last name</label>
+                                    <input class="input--style-4" type="text" placeholder="Last Name" name="lastname" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                          <div class="col-2">
+                              <div class="input-group">
+                                  <label class="label">Enrollment Number</label>
+                                  <input class="input--style-4" type="text" placeholder="Enrollment Number" name="enrollment" required>
+                              </div>
+                          </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">Gender</label>
+                                    <div class="p-t-10">
+                                        <label class="radio-container m-r-45">Male
+                                            <input type="radio" checked="checked" name="gender" required>
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="radio-container">Female
+                                            <input type="radio" name="gender">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">Email</label>
+                                    <input class="input--style-4" type="email" placeholder="Email" name="email" required>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">Mobile Number</label>
+                                    <input class="input--style-4" type="text" placeholder="Mobile Number" name="phone" pattern="[0-9]{10}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">Password</label>
+                                    <input class="input--style-4" type="password" placeholder="Password" name="password_main">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">Confirm Password</label>
+                                    <input class="input--style-4" type="password" placeholder="Confirm Password" name="password_confirm">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">Semester</label>
+                                    <input class="input--style-4" type="number" placeholder="Semester" name="semester" min="1" max="7" required>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                              <label class="label">School</label>
+                              <div class="rs-select2 js-select-simple select--no-search">
+                                  <select name="school">
+                                      <option disabled="disabled" selected="selected">Choose option</option>
+                                      <option>Subject 1</option>
+                                      <option>Subject 2</option>
+                                      <option>Subject 3</option>
+                                  </select>
+                                  <div class="select-dropdown"></div>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="label">Program</label>
+                            <div class="rs-select2 js-select-simple select--no-search">
+                                <select name="program">
+                                    <option disabled="disabled" selected="selected">Choose option</option>
+                                    <option>PRG 1</option>
+                                    <option>PRG 2</option>
+                                    <option>PRG 3</option>
+                                </select>
+                                <div class="select-dropdown"></div>
+                            </div>
+                        </div>
+                        {% if MSG == 'ERROR' %}
+              						<h3 style="font-weight:900; color: red; text-align:center;">*{{INFO}}</h3>
+                          <br>
+              					{% endif %}
+                        <hr style="border-color:black;">
+                        <div class="p-t-15">
+                            <button class="btn btn--radius-2 btn--blue" type="submit" style="width:100%; background-color: #f5b400;">
+                              <strong>SUBMIT</strong>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+              {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Jquery JS-->
+    <script src="{% static 'registration/vendor/jquery/jquery.min.js' %}"></script>
+    <!-- Vendor JS-->
+    <script src="{% static 'registration/vendor/select2/select2.min.js' %}"></script>
+    <script src="{% static 'registration/vendor/datepicker/moment.min.js' %}"></script>
+    <script src="{% static 'registration/vendor/datepicker/daterangepicker.js' %}"></script>
+
+    <!-- Main JS-->
+    <script src="{% static 'registration/js/global.js' %}"></script>
+
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+</html>
+<!-- end document-->
