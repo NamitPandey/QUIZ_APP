@@ -50,14 +50,14 @@ def user_registration(request):
         firstname = request.POST.get("firstname") # getting username
         lastname = request.POST.get("lastname") # getting username
         enrollment = request.POST.get("enrollment").lower() # getting username
-        email = request.POST.get("email") # getting username
+        # email = request.POST.get("email") # getting username
         password_main = request.POST.get("password_main") # getting password
         password_confirm = request.POST.get("password_confirm") # getting password confirm
-        gender = request.POST.get("gender") # getting user's gender
-        semester = request.POST.get("semester") # getting user's semesters
-        school = request.POST.get("school") # getting user's program
-        program = request.POST.get("program") # getting user's program
-        phone = request.POST.get("phone") # getting contact number
+        # gender = request.POST.get("gender") # getting user's gender
+        # semester = request.POST.get("semester") # getting user's semesters
+        # school = request.POST.get("school") # getting user's program
+        # program = request.POST.get("program") # getting user's program
+        # phone = request.POST.get("phone") # getting contact number
         # company = request.POST.get("companyname") # getting company name
 
         allowedEnrollments = [_.lower() for _ in list(AllowedEnrollments.objects.values_list("ENROLLMENT_NUMBER", flat=True).distinct())]# enrollment numbers of students allowed to take the test
@@ -70,29 +70,29 @@ def user_registration(request):
 
             context.update({'MSG':"ERROR", 'INFO': "ENROLLMENT ALREADY EXISTS"})
 
-        elif email.split("@")[-1].lower() not in ["gmail.com"]:
-
-            context.update({'MSG':"ERROR", 'INFO': "ENTER A VALID EMAIL ADDRESS"})
-
-        elif User.objects.filter(email=email).exists():# check to see if email address exists
-
-            context.update({'MSG':"ERROR", 'INFO': "EMAIL ALREADY EXISTS"})
+        # elif email.split("@")[-1].lower() not in ["gmail.com"]:
+        #
+        #     context.update({'MSG':"ERROR", 'INFO': "ENTER A VALID EMAIL ADDRESS"})
+        #
+        # elif User.objects.filter(email=email).exists():# check to see if email address exists
+        #
+        #     context.update({'MSG':"ERROR", 'INFO': "EMAIL ALREADY EXISTS"})
 
         elif password_main != password_confirm: # check if password match with confirm password
 
             context.update({'MSG':"ERROR", 'INFO': "PASSWORD DID NOT MATCH"})
 
-        elif int(semester) > 7:
-
-            context.update({'MSG':"ERROR", 'INFO': "SEMESTER CANNOT BE GREATER THAN 7"})
-
-        elif int(semester) < 1:
-
-            context.update({'MSG':"ERROR", 'INFO': "SEMESTER CANNOT BE LESS THAN 1"})
-
-        elif UserRegistration.objects.filter(CONTACT=phone).exists():# check to see if contact number exists
-
-            context.update({'MSG':"ERROR", 'INFO': "MOBILE NUMBER ALREADY REGISTERED"})
+        # elif int(semester) > 7:
+        #
+        #     context.update({'MSG':"ERROR", 'INFO': "SEMESTER CANNOT BE GREATER THAN 7"})
+        #
+        # elif int(semester) < 1:
+        #
+        #     context.update({'MSG':"ERROR", 'INFO': "SEMESTER CANNOT BE LESS THAN 1"})
+        #
+        # elif UserRegistration.objects.filter(CONTACT=phone).exists():# check to see if contact number exists
+        #
+        #     context.update({'MSG':"ERROR", 'INFO': "MOBILE NUMBER ALREADY REGISTERED"})
 
         else:
             # creating new user in database
@@ -101,19 +101,19 @@ def user_registration(request):
             FIRST_NAME=firstname.title(),
             LAST_NAME=lastname.title(),
             ENROLLMENT_NUMBER=enrollment,
-            EMAIL=email,
-            GENDER =gender,
-            SEMESTER =semester,
-            SCHOOL =school,
-            PROGRAM =program,
-            CONTACT = phone,
+            # EMAIL=email,
+            # GENDER =gender,
+            # SEMESTER =semester,
+            # SCHOOL =school,
+            # PROGRAM =program,
+            # CONTACT = phone,
             )
             userProfile.save()
 
             user = User.objects.create_user(
                                             username=enrollment,
                                             password=password_main,
-                                            email=email,
+                                            # email=email,
                                             first_name=firstname.title(),
                                             last_name=lastname.title(),
                                             )

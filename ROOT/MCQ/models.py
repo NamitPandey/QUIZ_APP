@@ -7,16 +7,16 @@ class UserRegistration(models.Model):
     FIRST_NAME = models.CharField(max_length=100)
     LAST_NAME = models.CharField(max_length=100)
     ENROLLMENT_NUMBER = models.CharField(max_length=100)
-    EMAIL = models.EmailField(max_length = 254)
-    GENDER = models.CharField(max_length=10)
-    SEMESTER = models.IntegerField()
-    SCHOOL= models.CharField(max_length=100)
-    PROGRAM= models.CharField(max_length=100)
-    CONTACT = models.IntegerField()
+    # EMAIL = models.EmailField(max_length = 254)
+    # GENDER = models.CharField(max_length=10)
+    # SEMESTER = models.IntegerField()
+    # SCHOOL= models.CharField(max_length=100)
+    # PROGRAM= models.CharField(max_length=100)
+    # CONTACT = models.IntegerField()
     objects = DataFrameManager()
 
     def __str__(self):
-        return f"{self.FIRST_NAME}-{self.SEMESTER}-{self.PROGRAM}"
+        return f"{self.FIRST_NAME}"
 
 class Question(models.Model):
     SR_NO = models.IntegerField()
@@ -32,7 +32,7 @@ class Question(models.Model):
     def __str__(self):
         return f"{self.CATEGORY}-{self.QUESTION}"
 
-
+"""STUDENTS ENROLLMENT NUMBERS"""
 class AllowedEnrollments(models.Model):
 
     ENROLLMENT_NUMBER = models.CharField(max_length=100,)

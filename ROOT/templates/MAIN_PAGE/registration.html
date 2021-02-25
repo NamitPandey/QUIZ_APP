@@ -42,7 +42,7 @@
               {% if MSG == 'CREATED' %}
                 <div class="card card-4" style="opacity: 0.9; font-weight:600;">
                     <div class="card-body">
-                        <h2 class="title" style="text-align:center; font-weight:700; color:#00942c;"> REGISTRATION COMPLETE <br><br> YOU MAY NOW LOGIN IN WITH YOUR ENROLLMENT NUMBER AND PASSWOR</h2>
+                        <h2 class="title" style="text-align:center; font-weight:700; color:#00942c;"> REGISTRATION COMPLETE <br><br> YOU MAY NOW LOGIN IN WITH YOUR ENROLLMENT NUMBER AND PASSWORD</h2>
                         <a href="{% url 'MCQ:login' %}">
                           <button class="btn btn--radius-2 btn--blue" type="submit" style="width:100%; background-color: #f5b400;">
                             <strong>Click Here To Login</strong>
@@ -70,13 +70,13 @@
                             </div>
                         </div>
                         <div class="row row-space">
-                          <div class="col-2">
+                          <div class="col-4">
                               <div class="input-group">
                                   <label class="label">Enrollment Number</label>
                                   <input class="input--style-4" type="text" placeholder="Enrollment Number" name="enrollment" required>
                               </div>
                           </div>
-                            <div class="col-2">
+                            <!-- <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">Gender</label>
                                     <div class="p-t-10">
@@ -90,9 +90,9 @@
                                         </label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
-                        <div class="row row-space">
+                        <!-- <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">Email</label>
@@ -105,7 +105,7 @@
                                     <input class="input--style-4" type="text" placeholder="Mobile Number" name="phone" pattern="[0-9]{10}" required>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
@@ -120,7 +120,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row row-space">
+                        <!-- <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">Semester</label>
@@ -139,8 +139,8 @@
                                   <div class="select-dropdown"></div>
                               </div>
                             </div>
-                        </div>
-                        <div class="input-group">
+                        </div> -->
+                        <!-- <div class="input-group">
                             <label class="label">Program</label>
                             <div class="rs-select2 js-select-simple select--no-search">
                                 <select name="program">
@@ -151,7 +151,7 @@
                                 </select>
                                 <div class="select-dropdown"></div>
                             </div>
-                        </div>
+                        </div> -->
                         {% if MSG == 'ERROR' %}
               						<h3 style="font-weight:900; color: red; text-align:center;">*{{INFO}}</h3>
                           <br>
