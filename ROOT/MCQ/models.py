@@ -31,3 +31,12 @@ class Question(models.Model):
 
     def __str__(self):
         return f"{self.CATEGORY}-{self.QUESTION}"
+
+
+class AllowedEnrollments(models.Model):
+
+    ENROLLMENT_NUMBER = models.CharField(max_length=100,)
+    objects = DataFrameManager()
+
+    def __str__(self):
+        return f"{self.ENROLLMENT_NUMBER}"

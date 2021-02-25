@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 # django models import below
-from .models import (Question, UserRegistration)
+from .models import (Question, UserRegistration, AllowedEnrollments)
 # python packages import below
 import  numpy as np
 
@@ -49,7 +49,7 @@ def user_registration(request):
 
         firstname = request.POST.get("firstname") # getting username
         lastname = request.POST.get("lastname") # getting username
-        enrollment = request.POST.get("enrollment") # getting username
+        enrollment = request.POST.get("enrollment").lower() # getting username
         email = request.POST.get("email") # getting username
         password_main = request.POST.get("password_main") # getting password
         password_confirm = request.POST.get("password_confirm") # getting password confirm
@@ -60,7 +60,13 @@ def user_registration(request):
         phone = request.POST.get("phone") # getting contact number
         # company = request.POST.get("companyname") # getting company name
 
-        if User.objects.filter(username=enrollment).exists(): # check to see if user name exists
+        allowedEnrollments = [_.lower() for _ in list(AllowedEnrollments.objects.values_list("ENROLLMENT_NUMBER", flat=True).distinct())]# enrollment numbers of students allowed to take the test
+
+        if enrollment not in allowedEnrollments:
+
+            context.update({'MSG':"ERROR", 'INFO': "ENTER A REGISTERED ENROLLMENT NUMBER"})
+
+        elif User.objects.filter(username=enrollment).exists(): # check to see if user name exists
 
             context.update({'MSG':"ERROR", 'INFO': "ENROLLMENT ALREADY EXISTS"})
 
