@@ -6,7 +6,7 @@
 	<div class="col-md-2"></div>
 	<div class="col-md-8 quiz">
 		{% if AUTHORIZED == 'NO' %}
-			<h1 class="title"><b>YOU ARE NOT AUTHORIZED TO TAKE THE TEST!</b></h1>
+			<h1 class="title"><strong>{{COMN_MSG}}</strong></h1>
 			<a href="{% url 'MCQ:students_portal' %}" style="outline: none; text-decoration:none;">
 				<button class="btn btn-warning " type="button" name="button" style="margin-left: 35%;">
 					Go Back
@@ -70,7 +70,7 @@
 <script type="text/javascript">
     function preventBack() {
         window.history.forward();
-    } 
+    }
 
     setTimeout("preventBack()", 0);
 
