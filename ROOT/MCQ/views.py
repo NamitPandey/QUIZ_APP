@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.utils.timezone import now
+
 
 # django models import below
-from .models import (Question, UserRegistration, AllowedEnrollments)
+from .models import (Question, UserRegistration,
+                    AllowedEnrollments, EnrollemntsForQuiz, QuizData)
 # python packages import below
 import  numpy as np
 
@@ -158,16 +161,26 @@ def students_portal(request):
     "genderList": staticVariables.GENDR_LIST,
     "schoolList": staticVariables.SCHOL_LIST,
     "programsList": staticVariables.PROGRM_LIST,
-    # "counter":np.random.randint(1, 5),
+    'disabled':'',
+    "counter":1,
     }
+
+    # list uploaded by admin to grant access to students to take the test
+    approvedEnrollment = list(EnrollemntsForQuiz.objects.values_list("ENROLLMENT_NUMBER", flat=True).distinct())+['admin']
+
+    if request.user.username not in approvedEnrollment:
+
+        context.update({'disabled':'disabled',})
 
     return render(request, PAGE_MAPPER.pageDict[pageDictKey], context)
 
 @login_required
 def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter):
-
+    print(now())
     pageDictKey = 'quiz_page'
-
+        # list uploaded by admin to grant access to students to take the test
+    approvedEnrollment = list(EnrollemntsForQuiz.objects.values_list("ENROLLMENT_NUMBER", flat=True).distinct())+['admin']
+    toalQstn = Question.objects.all().count()+1
     context={
     "PAGE_MSG": staticVariables.CATEGORY[mainID],
     "mainID":mainID,
@@ -175,33 +188,58 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter):
     "randmNmbr2":f"{np.random.randint(834750, 1000000)}",
     "counter":counter,
     "mainID":mainID,
+    'AUTHORIZED':'YES'
     # "qstn":qstn,
     }
+    # check question id
+    qstnID = list(QuizData.objects.values_list("QUESTION_ID", flat=True))+[1,2,3,4,5]
+    loopCounter = 0
+    qstnNumber = np.random.randint(1, toalQstn)
+
+    while loopCounter < 1:
+
+        if qstnNumber not in qstnID:
+
+            loopCounter+=1
+
+        else:
+
+            qstnNumber = np.random.randint(1, toalQstn)
+
+    print(qstnNumber)
+    # checking students enrollment present in allowed list or not to take the test
+    if request.user.username not in approvedEnrollment:
+
+        context.update({'AUTHORIZED':'NO',})
+
+        return render(request, PAGE_MAPPER.pageDict[pageDictKey], context)
 
     if request.method == 'GET':
 
         serialList = get_random_numbers(4)
         qstn = Question.objects.filter(
-                                    CATEGORY__iexact=staticVariables.CATEGORY[mainID],
-                                    SR_NO__iexact=np.random.randint(1, 4),
+                                    # CATEGORY__iexact=staticVariables.CATEGORY[2],
+                                    QUESTION_ID__iexact=np.random.randint(1, toalQstn),
                                     )
         context.update({"qstn":qstn,})
 
     if request.method == 'POST':
-        print(counter)
         answer1 = request.POST.get("exampleRadios")
         # answer2 = request.POST.get("choiceTwo")
         # answer3 = request.POST.get("choiceThree")
         # answer4 = request.POST.get("choiceFour")
+
+        # get the response of user and a store to database fetched from GET request
         print(answer1)
+
         qstn = Question.objects.filter(
-                                    CATEGORY__iexact=staticVariables.CATEGORY[mainID],
-                                    SR_NO__iexact=np.random.randint(1, 4),
+                                    # CATEGORY__iexact=staticVariables.CATEGORY[2],
+                                    QUESTION_ID__iexact=np.random.randint(1, toalQstn),
                                     )
 
         # serialList = serialList.copy().remove(counter)
 
-        context.update({"qstn":qstn,})
+        context.update({"qstn":qstn, "counter":counter+1,})
 
 
 

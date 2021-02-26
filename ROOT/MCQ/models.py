@@ -19,7 +19,8 @@ class UserRegistration(models.Model):
         return f"{self.FIRST_NAME}"
 
 class Question(models.Model):
-    SR_NO = models.IntegerField()
+
+    QUESTION_ID = models.IntegerField()
     CATEGORY = models.CharField(max_length=50)
     QUESTION = models.CharField(max_length=1000)
     CORRECT = models.CharField(max_length=50, blank=True)
@@ -33,6 +34,15 @@ class Question(models.Model):
         return f"{self.CATEGORY}-{self.QUESTION}"
 
 """STUDENTS ENROLLMENT NUMBERS"""
+class EnrollemntsForQuiz(models.Model):
+
+    ENROLLMENT_NUMBER = models.CharField(max_length=100,)
+    objects = DataFrameManager()
+
+    def __str__(self):
+        return f"{self.ENROLLMENT_NUMBER}"
+
+"""STUDENTS ENROLLMENT NUMBERS"""
 class AllowedEnrollments(models.Model):
 
     ENROLLMENT_NUMBER = models.CharField(max_length=100,)
@@ -40,3 +50,21 @@ class AllowedEnrollments(models.Model):
 
     def __str__(self):
         return f"{self.ENROLLMENT_NUMBER}"
+
+
+class QuizData(models.Model):
+
+    QUESTION_ID = models.IntegerField()
+    ACTUAL_QUESTION = models.CharField(max_length=1000)
+    ENROLLMENT_NUMBER = models.CharField(max_length=100)
+    ANSWER = models.EmailField(max_length = 254)
+    START_TIME = models.DateTimeField(blank=True)
+    END_TIME = models.DateTimeField(blank=True)
+    # SEMESTER = models.IntegerField()
+    # SCHOOL= models.CharField(max_length=100)
+    # PROGRAM= models.CharField(max_length=100)
+    # CONTACT = models.IntegerField()
+    objects = DataFrameManager()
+
+    def __str__(self):
+        return f"{self.QUESTION_ID}-{self.ACTUAL_QUESTION}"

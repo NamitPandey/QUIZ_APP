@@ -6,12 +6,14 @@
     <div class="btn-wrapper">
         <button class="btn"><img src="{% static 'img/user.png' %}" class="icon"><br>Profile</button>
     </div>
-    <div class="btn-wrapper">
-        <a href="#"><button class="btn"><img src="{% static 'img/test.png' %}" class="icon"><br>Take Test</button></a>
-    </div>
-    <div class="btn-wrapper">
-        <button class="btn"><img src="{% static 'img/result.png' %}" class="icon"><br>Result</button>
-    </div>
+    {% if disabled != 'disabled' %}
+      <div class="btn-wrapper">
+          <a href="{% url 'MCQ:quiz' randmNmbr mainID randmNmbr2 counter %}"><button class="btn"><img src="{% static 'img/test.png' %}" class="icon"><br>Take Test</button></a>
+      </div>
+      <div class="btn-wrapper">
+          <button class="btn"><img src="{% static 'img/result.png' %}" class="icon"><br>Result</button>
+      </div>
+    {% endif %}
     <div class="btn-wrapper">
         <a href="{% url 'MCQ:logout' %}"><button class="btn"><img src="{% static 'img/logout.png' %}" class="icon"><br>Logout</button></a>
     </div>
