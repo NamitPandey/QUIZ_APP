@@ -1,0 +1,98 @@
+{% extends 'BASE_FILES/baseFile.html' %}
+{% load static %}
+{% block content%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/quiz.css' %}">
+{% if user.is_superuser%}
+  <div class="container-fluid">
+  	<div class="col-md-2">
+    </div>
+  	<div class="col-md-8 quiz">
+  		<h1 class="title"><b>UPLOAD STUDENTS DATA</b></h1>
+  		<br>
+      <p style="margin-left:-5%; text-align:center;">Upload students Enrollment Numbers</p>
+      <br>
+      <form action="{% url 'ADMINPANEL:upload_data' 1 %}" method="POST" enctype="multipart/form-data"
+      style="text-align:center; margin-left:35%;">
+      			{% csrf_token %}
+      <input type="file" name="document" value="" required>
+      <button class="btn btn-primary" type="submit" name="button" style="margin-left:-5%;">
+        Upload File
+      </button>
+  		</form>
+
+  	</div>
+  </div>
+  <br>
+  <br>
+  <div class="container-fluid">
+  	<div class="col-md-2">
+    </div>
+  	<div class="col-md-8 quiz">
+  		<h1 class="title"><b>UPLOAD ENROLLMENTS FOR TEST</b></h1>
+  		<br>
+      <p style="margin-left:24%;">Upload the Enrollment of students you want to allow to appear for test.</p>
+      <br>
+      <form action="{% url 'ADMINPANEL:upload_data' 2 %}" method="POST" enctype="multipart/form-data"
+      style="text-align:center; margin-left:35%;">
+      			{% csrf_token %}
+      <input type="file" name="document" value="" required>
+      <button class="btn btn-primary" type="submit" name="button" style="margin-left:-5%;">
+        Upload File
+      </button>
+  		</form>
+
+  	</div>
+  </div>
+  <br>
+  <br>
+  <div class="container-fluid">
+  	<div class="col-md-2">
+    </div>
+  	<div class="col-md-8 quiz">
+  		<h1 class="title"><b>UPLOAD QUESTIONS</b></h1>
+  		<br>
+      <p style="margin-left:40%;">Upload questions for test.</p>
+      <br>
+      <form action="{% url 'ADMINPANEL:upload_data' 3 %}" method="POST" enctype="multipart/form-data"
+      style="text-align:center; margin-left:35%;">
+      			{% csrf_token %}
+      <input type="file" name="document" value="" required>
+      <button class="btn btn-primary" type="submit" name="button" style="margin-left:-5%;">
+        Upload File
+      </button>
+  		</form>
+
+  	</div>
+  </div>
+{% else %}
+  <div class="container-fluid">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8 quiz">
+      <h2 style="text-align:center; color:#ff2f00;">
+        <strong>
+          YOU ARE NOT AUTHORIZED TO USE THIS PANEL
+        </strong>
+        <br>
+      </h2>
+      <br>
+      <h4 style="text-align:center; color:#ff2f00;">
+        <strong>
+          YOUR USERNAME AND IP IS CAPTURED FOR FURTHER INVESTIGATION!
+        </strong>
+      </h4>
+      <a href="{% url 'MCQ:login' %}" style="text-decoration:none; outline:none;">
+        <button class="btn btn-primary" type="submit" name="button" style="margin-left:35%;">
+          GO HOME
+        </button>
+      </a>
+    </div>
+  </div>
+
+
+{% endif %}
+
+
+	<!-- <script src="JAVA_SCRIPT/quiz.js"></script> -->
+
+{% endblock %}

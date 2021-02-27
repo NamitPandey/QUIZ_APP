@@ -54,9 +54,15 @@
 							</label>
 						</div>
 						<br>
-					<button class="btn btn-warning" type="submit" name="button" style="width:80%;">
-								SUBMIT
-					</button>
+					{% if counter == 10 %}
+						<button class="btn btn-warning" type="submit" name="button" style="width:80%;">
+									FINISH
+						</button>
+					{% else%}
+						<button class="btn btn-warning" type="submit" name="button" style="width:80%;">
+									NEXT
+						</button>
+					{% endif %}
 				</div>
 			{% endfor %}
 		</form>

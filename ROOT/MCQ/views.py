@@ -173,7 +173,7 @@ def students_portal(request):
     toalQstn = Question.objects.all().count()+1
     context={
     "PAGE_MSG": "HOMEPAGE",
-    "mainID":np.random.randint(1, toalQstn),
+    "mainID":np.random.randint(1, 5),
     "randmNmbr":f"{np.random.randint(834, 10000)}",
     "randmNmbr2":f"{np.random.randint(834750, 1000000)}",
     "genderList": staticVariables.GENDR_LIST,

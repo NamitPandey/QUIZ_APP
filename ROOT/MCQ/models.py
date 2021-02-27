@@ -16,7 +16,7 @@ class UserRegistration(models.Model):
     objects = DataFrameManager()
 
     def __str__(self):
-        return f"{self.FIRST_NAME}"
+        return f"{self.ENROLLMENT_NUMBER}-{self.FIRST_NAME}"
 
 class Question(models.Model):
 
@@ -42,7 +42,7 @@ class EnrollemntsForQuiz(models.Model):
     def __str__(self):
         return f"{self.ENROLLMENT_NUMBER}"
 
-"""STUDENTS ENROLLMENT NUMBERS"""
+"""STUDENTS ENROLLMENT NUMBERS TO BE CHECKED WHILE REGISTERING STUDENTS"""
 class AllowedEnrollments(models.Model):
 
     ENROLLMENT_NUMBER = models.CharField(max_length=100,)
