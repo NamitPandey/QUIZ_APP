@@ -1,0 +1,87 @@
+{% extends 'BASE_FILES/adminBasenew.html' %}
+{% load static %}
+{% block adminContent %}
+<div class="content">
+  <div class="row">
+    <div class="col-12">
+      <div class="card card-chart">
+        <div class="card-header ">
+          <div class="row">
+            <div class="col-sm-12 text-center">
+              <h1 class="title" ><b>UPLOAD STUDENTS DATA</b></h1>
+          		<br>
+              <p><b>Upload students Enrollment Numbers</b></p>
+              <br>
+              <form action="{% url 'ADMINPANEL:upload_data' 1 %}" method="POST" enctype="multipart/form-data"
+              style="text-align:center;">
+              			{% csrf_token %}
+              <input type="file" name="document" value="" required>
+              <button class="btn btn-primary" type="submit" name="button">
+                Upload File
+              </button>
+          		</form>
+            </div>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM FOR ALLOWED ENROLLMENTS TO TAKE TEST -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-chart">
+          <div class="card-header ">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <h1 class="title" ><b>UPLOAD ENROLLMENTS FOR TEST</b></h1>
+            		<br>
+                <p><b>Upload the Enrollment of students you want to allow to appear for test</b></p>
+                <br>
+                <form action="{% url 'ADMINPANEL:upload_data' 2 %}" method="POST" enctype="multipart/form-data"
+                style="text-align:center;">
+                			{% csrf_token %}
+                <input type="file" name="document" value="" required>
+                <button class="btn btn-primary" type="submit" name="button">
+                  Upload File
+                </button>
+            		</form>
+              </div>
+            </div>
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-chart">
+          <div class="card-header ">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <h1 class="title"><b>UPLOAD QUESTIONS</b></h1>
+            		<br>
+                <p><b>Upload questions for test</b></p>
+                <br>
+                <form action="{% url 'ADMINPANEL:upload_data' 3 %}" method="POST" enctype="multipart/form-data"
+                style="text-align:center;">
+                			{% csrf_token %}
+                <input type="file" name="document" value="" required>
+                <button class="btn btn-primary" type="submit" name="button">
+                  Upload File
+                </button>
+            		</form>
+              </div>
+            </div>
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

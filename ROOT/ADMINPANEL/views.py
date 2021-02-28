@@ -24,6 +24,13 @@ def admin_home(request):
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey],)
 
 @login_required
+def upload_files(request):
+
+    pageDictKey = 'uploadFiles'
+
+    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey],)
+
+@login_required
 def upload_data(request, dataBaseKey):
 
     pageDictKey = 'uploadPage'

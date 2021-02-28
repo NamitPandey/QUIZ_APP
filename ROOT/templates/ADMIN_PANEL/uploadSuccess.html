@@ -1,21 +1,26 @@
-{% extends 'BASE_FILES/baseFile.html' %}
+{% extends 'BASE_FILES/adminBasenew.html' %}
 {% load static %}
-{% block content%}
-<link rel="stylesheet" type="text/css" href="{% static 'css/quiz.css' %}">
-  <div class="container-fluid">
-  	<div class="col-md-2">
+{% block adminContent %}
+  <div class="content">
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-chart">
+          <div class="card-header ">
+            <div class="row">
+              <div class="col-sm-12 text-center">
+                <h1 class="title"><b>FILE UPLOADED</b></h1>
+            		<br>
+                <a href="{% url 'ADMINPANEL:uploadfiles' %}" style="text-decoration:none; outline:none;">
+                  <button class="btn btn-primary" type="submit" name="button">
+                    GO BACK
+                  </button>
+                </a>
+              </div>
+            </div>
+            <br>
+          </div>
+        </div>
+      </div>
     </div>
-  	<div class="col-md-8 quiz">
-  		<h1 class="title"><b>FILE UPLOADED</b></h1>
-  		<br>
-      <a href="{% url 'ADMINPANEL:admin_home' %}" style="text-decoration:none; outline:none;">
-        <button class="btn btn-primary" type="submit" name="button" style="margin-left:36%;">
-          GO BACK
-        </button>
-      </a>
-  		</form>
-
-  	</div>
   </div>
-
 {% endblock %}

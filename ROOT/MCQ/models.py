@@ -4,8 +4,8 @@ from django_pandas.managers import DataFrameManager
 
 class UserRegistration(models.Model):
 
-    FIRST_NAME = models.CharField(max_length=100)
-    LAST_NAME = models.CharField(max_length=100)
+    # FIRST_NAME = models.CharField(max_length=100)
+    # LAST_NAME = models.CharField(max_length=100)
     ENROLLMENT_NUMBER = models.CharField(max_length=100)
     # EMAIL = models.EmailField(max_length = 254)
     # GENDER = models.CharField(max_length=10)

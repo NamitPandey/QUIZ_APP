@@ -3,9 +3,20 @@
 {% block content %}
 <div class="container-fluid">
   <div class="row container">
-    <div class="btn-wrapper">
-        <button class="btn"><img src="{% static 'img/user.png' %}" class="icon"><br>Profile</button>
-    </div>
+    {% if user.is_superuser %}
+      <div class="btn-wrapper">
+        <a href="{% url 'ADMINPANEL:admin_home' %}">
+          <button class="btn">
+            <img src="{% static 'img/user.png' %}" class="icon">
+            <br>Go To <br> Dashboard
+          </button>
+        </a>
+      </div>
+    {% else %}
+      <div class="btn-wrapper">
+          <button class="btn"><img src="{% static 'img/user.png' %}" class="icon"><br>Profile</button>
+      </div>
+    {% endif  %}
     {% if disabled != 'disabled' %}
       <div class="btn-wrapper">
           <a href="{% url 'MCQ:quiz' randmNmbr mainID randmNmbr2 counter %}"><button class="btn"><img src="{% static 'img/test.png' %}" class="icon"><br>Take Test</button></a>
