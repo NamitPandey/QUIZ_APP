@@ -1,12 +1,17 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
+from django.utils.timezone import now
+from django.http import JsonResponse,HttpResponse
+from MCQ.models import QuizData
 
 # all static packages import below
+import csv
 import os
 import pandas as pd
 from . import ADMIN_PAGE_MAPPER
 from sqlalchemy import create_engine
+
 # Create your views here.
 global dataBaseMapper
 
@@ -89,4 +94,40 @@ def upload_data(request, dataBaseKey):
         # context.update({"MSG":"UPLOADED","uploadedData":uploadedData})
 
 
-    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey],context=context)
+    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context=context)
+
+@login_required
+def download_data(request):
+
+    # pageDictKey = "downloadPage"
+
+    fileName = f"QUIZ_DATA-{now()}"
+
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachement; filename= "{fileName}.xlsx"'
+    writer = csv.writer(response)
+
+    writer.writerow(
+        [
+         "QUESTION_ID",
+         "ACTUAL QUESTION",
+         "ENROLLMENT NUMBER",
+         "CATEGORY",
+         "ANSWER",
+         "CORRECT ANSWER",
+        ])
+
+    users = QuizData.objects.all().order_by('ENROLLMENT_NUMBER').values_list(
+                                        'QUESTION_ID',
+                                        'ACTUAL_QUESTION',
+                                        'ENROLLMENT_NUMBER',
+                                        'CATEGORY',
+                                        'ANSWER',
+                                        'CORRECT_ANSWER',
+                                        )
+
+    for user in users:
+        writer.writerow(user)
+
+    return response
