@@ -7,4 +7,5 @@ pageDict={
 "uploadFiles":f"{MAIN_DIR_NME}/uploadFiles.html",
 "uploadPage":f"{MAIN_DIR_NME}/uploadSuccess.html",
 "downloadPage":f"{MAIN_DIR_NME}/downloadFiles.html",
+"dashboard":f"{MAIN_DIR_NME}/dashboard.html",
 }

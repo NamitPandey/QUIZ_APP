@@ -131,3 +131,10 @@ def download_data(request):
         writer.writerow(user)
 
     return response
+
+@login_required
+def dashboard(request):
+
+    pageDictKey = 'dashboard'
+
+    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey],)
