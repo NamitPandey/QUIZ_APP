@@ -9,7 +9,7 @@ from MCQ.models import QuizData
 import csv
 import os
 import pandas as pd
-from . import ADMIN_PAGE_MAPPER
+from . import ADMIN_PAGE_MAPPER, staticVariables
 from sqlalchemy import create_engine
 
 # Create your views here.
@@ -136,5 +136,34 @@ def download_data(request):
 def dashboard(request):
 
     pageDictKey = 'dashboard'
+    context={
+    "GNDR": staticVariables.GENDR_LIST, # gender list
+    "SCHOL": staticVariables.SCHOL_LIST, # school list
+    "PRGM": staticVariables.PROGRM_LIST, # program list
+    }
 
-    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey],)
+
+    if request.method == 'POST':
+
+        school = request.POST.getlist("school_POST")
+        program = request.POST.getlist("program_POST")
+        gender = request.POST.getlist("gender_POST")
+
+        print(school, program, gender)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
