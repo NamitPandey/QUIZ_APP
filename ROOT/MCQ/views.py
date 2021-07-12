@@ -68,16 +68,22 @@ def user_registration(request):
 
     if request.method == "POST":
 
+        enrollment = request.POST.get("enrollment").lower() # getting enrollment number
         firstname = request.POST.get("firstname") # getting username
         lastname = request.POST.get("lastname") # getting username
-        enrollment = request.POST.get("enrollment").lower() # getting username
+
+
+
+        gender = request.POST.get("gender") # getting user's gender
+        semester = request.POST.get("semester") # getting user's semesters
+
+        school = request.POST.get("school") # getting user's program
+        program = request.POST.get("program") # getting user's program
+
         # email = request.POST.get("email") # getting username
         password_main = request.POST.get("password_main") # getting password
         password_confirm = request.POST.get("password_confirm") # getting password confirm
-        # gender = request.POST.get("gender") # getting user's gender
-        # semester = request.POST.get("semester") # getting user's semesters
-        # school = request.POST.get("school") # getting user's program
-        # program = request.POST.get("program") # getting user's program
+
         # phone = request.POST.get("phone") # getting contact number
         # company = request.POST.get("companyname") # getting company name
 
@@ -123,10 +129,10 @@ def user_registration(request):
             LAST_NAME=lastname.title(),
             ENROLLMENT_NUMBER=enrollment,
             # EMAIL=email,
-            # GENDER =gender,
-            # SEMESTER =semester,
-            # SCHOOL =school,
-            # PROGRAM =program,
+            GENDER =gender,
+            SEMESTER =semester,
+            SCHOOL =school,
+            PROGRAM =program,
             # CONTACT = phone,
             )
             userProfile.save()

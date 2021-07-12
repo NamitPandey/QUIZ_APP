@@ -56,6 +56,15 @@
                     <form action="{% url 'MCQ:register' %}"  name="frm_signup" method="POST">
                       {% csrf_token %}
                         <div class="row row-space">
+                          <div class="row row-space">
+                            <div class="col-4">
+                                <div class="input-group">
+                                    <label class="label">Enrollment Number</label>
+                                    <input class="input--style-4" type="text" placeholder="Enrollment Number" name="enrollment" required>
+                                </div>
+                            </div>
+                          </div>
+
                             <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">First name</label>
@@ -69,43 +78,73 @@
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="row row-space">
-                          <div class="col-4">
-                              <div class="input-group">
-                                  <label class="label">Enrollment Number</label>
-                                  <input class="input--style-4" type="text" placeholder="Enrollment Number" name="enrollment" required>
-                              </div>
-                          </div>
-                            <!-- <div class="col-2">
+                            <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">Gender</label>
-                                    <div class="p-t-10">
-                                        <label class="radio-container m-r-45">Male
-                                            <input type="radio" checked="checked" name="gender" required>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <label class="radio-container">Female
-                                            <input type="radio" name="gender">
-                                            <span class="checkmark"></span>
-                                        </label>
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <select name="gender" required>
+                                            <option disabled="disabled" selected="selected">Choose Gender</option>
+                                            <option value="Male">Male</option>
+                                						<option value="Female">Female</option>
+                                						<option value="Other">Other</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
+
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">Semester</label>
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                        <select name="semester" required>
+                                            <option disabled="disabled" selected="selected">Choose Semester</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                        </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <!-- <div class="row row-space">
+
+                        <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
-                                    <label class="label">Email</label>
-                                    <input class="input--style-4" type="email" placeholder="Email" name="email" required>
+                                    <label class="label">School</label>
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                      <select id="school" class="select" name="school" onchange="javascript: dynamicdropdown(this.options[this.selectedIndex].value);" required>
+                                        <option disabled="disabled" selected="selected">Choose School</option>
+                                        <option value="SOT">School of Technology</option>
+                                        <option value="SOS">School of Science</option>
+                                        <option value="SOM">School of Managment</option>
+                                      </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="col-2">
                                 <div class="input-group">
-                                    <label class="label">Mobile Number</label>
-                                    <input class="input--style-4" type="text" placeholder="Mobile Number" name="phone" pattern="[0-9]{10}" required>
+                                    <label class="label">Program</label>
+                                    <div class="rs-select2 js-select-simple select--no-search">
+                                      <select id="program" class="select" name="program" placeholder="Choose program" required>
+                                        <option disabled="disabled" selected="selected">Choose program</option>
+                                      </select>
+                                        <div class="select-dropdown"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
+
                         <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
@@ -168,7 +207,35 @@
             </div>
         </div>
     </div>
+    <script>
+    function dynamicdropdown(listindex)
+        {
+            switch (listindex)
+            {
+            case "SOT" :
+                document.getElementById("program").options[0]=new Option("Choose program","");
+                document.getElementById("program").options[1]=new Option("B.Tech CSE","SOT");
+                document.getElementById("program").options[2]=new Option("B.Tech Chemical","SOT");
+                document.getElementById("program").options[3]=new Option("Fire & safety","SOT");
 
+                break;
+            case "SOS" :
+                document.getElementById("program").options[0]=new Option("Choose program","");
+                document.getElementById("program").options[1]=new Option("sos2","SOS");
+                document.getElementById("program").options[2]=new Option("sos3","SOS");
+                document.getElementById("program").options[3]=new Option("sos1","SOS");
+                break;
+            case "SOM" :
+                document.getElementById("program").options[0]=new Option("Choose program","");
+                document.getElementById("program").options[1]=new Option("som1","SOM");
+                document.getElementById("program").options[2]=new Option("som2","SOM");
+                document.getElementById("program").options[3]=new Option("som3","SOM");
+                break;
+            }
+            return true;
+        }
+
+    </script>
     <!-- Jquery JS-->
     <script src="{% static 'registration/vendor/jquery/jquery.min.js' %}"></script>
     <!-- Vendor JS-->

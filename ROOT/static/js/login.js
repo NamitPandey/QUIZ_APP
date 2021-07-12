@@ -22,7 +22,7 @@ function toggleLogin(){
 function validateform2(){
     var v1= document.frm_signup.email.value;
     var v2= document.frm_signup.semester.value;
-    
+
     str = v1.includes("gsfcuniversity");
 
     if(str == false){

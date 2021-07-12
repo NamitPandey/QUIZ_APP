@@ -12,6 +12,12 @@
           </button>
         </a>
       </div>
+
+      <!-- temp -->
+      <div class="btn-wrapper">
+          <a href="/MikeCharlieQuebec/site/admin"><button class="btn"><img src="" class="icon"><br>Django Admin</button></a>
+      </div>
+      <!-- ------  -->
     {% else %}
       <div class="btn-wrapper">
           <button class="btn"><img src="{% static 'img/user.png' %}" class="icon"><br>Profile</button>
@@ -28,6 +34,7 @@
     <div class="btn-wrapper">
         <a href="{% url 'MCQ:logout' %}"><button class="btn"><img src="{% static 'img/logout.png' %}" class="icon"><br>Logout</button></a>
     </div>
+
   </div>
 </div>
 {% endblock %}
