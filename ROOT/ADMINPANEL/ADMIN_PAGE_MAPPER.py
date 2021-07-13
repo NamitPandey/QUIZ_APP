@@ -3,7 +3,8 @@
 MAIN_DIR_NME = "ADMIN_PANEL/"
 
 pageDict={
-"adminHome":f"{MAIN_DIR_NME}/homePage.html",
+"adminHome":f"{MAIN_DIR_NME}/home.html",
+# "adminHome":f"{MAIN_DIR_NME}/homePage.html",
 "uploadFiles":f"{MAIN_DIR_NME}/uploadFiles.html",
 "uploadPage":f"{MAIN_DIR_NME}/uploadSuccess.html",
 "downloadPage":f"{MAIN_DIR_NME}/downloadFiles.html",

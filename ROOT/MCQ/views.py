@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.utils.timezone import now
-
+from django.db.models import Count
 
 # django models import below
 from .models import (Question, UserRegistration,
@@ -16,9 +16,60 @@ from . import (PAGE_MAPPER, staticVariables)
 # Create your views here.
 global CATEGORY, RNDM_NMBR
 
-def get_mainID(mainID, qstnID):
+def get_category(enrollmentNo):
 
-    toalQstn = Question.objects.all().count()+1
+        countCheck = 3
+
+        catList = staticVariables.CATEGORY_LIST
+
+        # catID = np.random.randint(0, len(catList))
+
+        catCheck = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enrollmentNo).values("CATEGORY").annotate(CAT_count=Count('CATEGORY')).order_by("CATEGORY").to_dataframe()
+
+        catCount = catCheck.query(f"CAT_count == {countCheck}")['CATEGORY'].values.tolist()
+
+        for cat in catList:
+
+            if cat not in catCount:
+
+                return cat
+
+            else:
+
+                continue
+                # catList.remove(cat)
+
+        # for ind, val in enumerate(catList):
+        #
+        #     try:
+        #         if catCheck.query(f"CATEGORY == '{catList[catID]}'")['CAT_count'][0] == countCheck:
+        #
+        #             catList.remove(catList[catID])
+        #
+        #             return catID+1
+        #
+        #     except:
+        #
+        #         pass
+
+
+
+        # for ind, val in enumerate(catList):
+        #
+        #     count = catCheck.query(f"CATEGORY == {val}")['CAT_count'][0]
+            # if
+
+
+
+def get_mainID(mainID, qstnID, enrollmentNo):
+
+    categoryName = get_category(enrollmentNo)
+
+    toalQstn = list(Question.objects.filter(CATEGORY__iexact=categoryName).values_list("QUESTION_ID", flat=True))[-1] + 1 #Question.objects.all().count()+1
+
+    chooseFrom = list(Question.objects.filter(CATEGORY__iexact=categoryName).values_list("QUESTION_ID", flat=True))
+
+    lowerVal = list(Question.objects.filter(CATEGORY__iexact=categoryName).values_list("QUESTION_ID", flat=True))[0]
 
     loopCounter = 0
 
@@ -30,7 +81,7 @@ def get_mainID(mainID, qstnID):
 
         else:
 
-            mainID = np.random.randint(1, toalQstn)
+            mainID = np.random.choice(chooseFrom,1)[0]#np.random.randint(lowerVal, toalQstn)
 
     return mainID
 
@@ -203,6 +254,7 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter):
 
     pageDictKey = 'quiz_page'
         # list uploaded by admin to grant access to students to take the test
+        # REMOVE ADMIN FROM THE LIST DURING DEPLOYMENT
     approvedEnrollment = list(EnrollemntsForQuiz.objects.values_list("ENROLLMENT_NUMBER", flat=True).distinct())+['admin']
 
     context={
@@ -216,7 +268,7 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter):
     # "QUIZ_STAT": "GO_ON",/
     }
     # check question id
-    quizEnd = 10
+    quizEnd = 12
 
     qstnID = list(QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values_list("QUESTION_ID", flat=True))
         # checking students enrollment present in allowed list or not to take the test
@@ -233,8 +285,8 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter):
         return render(request, PAGE_MAPPER.pageDict[pageDictKey], context)
 
     if request.method == 'GET':
-        print("called")
-        mainID = get_mainID(mainID, qstnID)
+        # print("called")
+        mainID = get_mainID(mainID, qstnID, request.user.username)
 
         # serialList = get_random_numbers(4)
         qstn = Question.objects.filter(
@@ -277,7 +329,7 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter):
         else:
 
             qstnID = list(QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values_list("QUESTION_ID", flat=True))
-            mainID = get_mainID(mainID, qstnID)
+            mainID = get_mainID(mainID, qstnID, request.user.username)
 
             # get the response of user and a store to database fetched from GET request
             qstn = Question.objects.filter(

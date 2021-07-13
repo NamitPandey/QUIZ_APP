@@ -1,167 +1,169 @@
-{% extends 'BASE_FILES/adminBase.html' %}
+{% extends 'BASE_FILES/BaseAdmin.html' %}
 {% load static %}
 {% load my_filter %}
 {% block adminContent %}
 <!-- multiple select dropdown cdn -->
-<link rel="stylesheet" href="{% static 'multiDropdown/all.min.css' %}">
-<link rel="stylesheet" href="{% static 'multiDropdown/bootstrap-select.min.css' %}">
+<!-- <link rel="stylesheet" href="{% static 'multiDropdown/all.min.css' %}">
+<link rel="stylesheet" href="{% static 'multiDropdown/bootstrap-select.min.css' %}"> -->
 
 <div class="content">
-  <div class="row">
-    <div class="col-12">
-        <div class="row">
-          <form class="row responsive" action="{% url 'ADMINPANEL:dashboard' %}" method="POST" style="margin-left: 1%; width: 95%;">
-            {% csrf_token %}
-            <div class="col-md-2" style="max-height:100px; height:100px;">
-
-              <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
-                <label><strong>SCHOOL</strong></label>
-                <div class="form-group" >
-                  <select  id="travel" class="selectpicker" name="school_POST" multiple>
-
-                    {% for schl in SCHOL %}
-                      <option value="{{schl}}" style="font-weight:600; color:black;">{{schl|replace|title}}</option>
-                    {% endfor %}
-
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-2" style="max-height:100px; height:100px;">
-
-              <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
-                <label><strong>PROGRAM</strong></label>
-                <div class="form-group" >
-                  <select  id="travel" class="selectpicker" name="program_POST" multiple>
-
-                    {% for prg in PRGM %}
-                      <option value="{{prg}}" style="font-weight:600; color:black;">{{prg|replace|title}}</option>
-                    {% endfor %}
-
-
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-2" style="max-height:100px; height:100px;">
-
-              <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
-                <label><strong>GENDER</strong></label>
-                <div class="form-group" >
-                  <select  id="travel" class="selectpicker" name="gender_POST" multiple>
-
-                    {% for gndr in GNDR %}
-                      <option value="{{gndr}}" style="font-weight:600; color:black;">{{gndr|title}}</option>
-                    {% endfor %}
-
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-2" style="max-height:100px; height:100px;">
-              <div class="dropdown" style="margin-left:15px; margin-top:14px;">
-                <div class="form-group" >
-                  <button class="btn btn-warning" type="submit" name="button">Go</button>
-                </div>
-              </div>
-            </div>
-          </form>
-          <br>
-        </div>
-    </div>
-  </div>
-<br>
-<br>
-
-  <div class="row">
-    <div class="col-12">
-      <div class="card card-chart">
-        <div class="card-header ">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
           <div class="row">
-            <div class="col-sm-12">
-              <div class="container text-center mt-5" >
-                <h1 style="font-weight:900;">DASHBOARD IS UNDER DEVELOPMENT</h1>
+            <form class="row responsive" action="{% url 'ADMINPANEL:dashboard' %}" method="POST" style="margin-left: 1%; width: 95%;">
+              {% csrf_token %}
+              <div class="col-md-2" style="max-height:100px; height:100px;">
+
+                <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
+                  <label><strong>SCHOOL</strong></label>
+                  <div class="form-group" >
+                    <select  id="travel" class="selectpicker" name="school_POST">
+
+                      {% for schl in SCHOL %}
+                        <option value="{{schl}}" style="font-weight:600; color:black;">{{schl|replace|title}}</option>
+                      {% endfor %}
+
+                    </select>
+                  </div>
+                </div>
               </div>
-            </div>
+
+              <div class="col-md-2" style="max-height:100px; height:100px;">
+
+                <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
+                  <label><strong>PROGRAM</strong></label>
+                  <div class="form-group" >
+                    <select  id="travel" class="selectpicker" name="program_POST" >
+
+                      {% for prg in PRGM %}
+                        <option value="{{prg}}" style="font-weight:600; color:black;">{{prg|replace|title}}</option>
+                      {% endfor %}
+
+
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-2" style="max-height:100px; height:100px;">
+
+                <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
+                  <label><strong>GENDER</strong></label>
+                  <div class="form-group" >
+                    <select  id="travel" class="selectpicker" name="gender_POST" >
+
+                      {% for gndr in GNDR %}
+                        <option value="{{gndr}}" style="font-weight:600; color:black;">{{gndr|title}}</option>
+                      {% endfor %}
+
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-2" style="max-height:100px; height:100px;">
+                <div class="dropdown" style="margin-left:15px; margin-top:14px;">
+                  <div class="form-group" >
+                    <button class="btn btn-warning" type="submit" name="button">Go</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <br>
           </div>
-          <br>
-        </div>
       </div>
     </div>
-  </div>
+  <br>
+  <br>
 
-  <div class="row">
-    <div class="col-12">
-      <div class="card card-chart">
-        <div class="card-header ">
-          <div class="row">
-            <div class="col-sm-12">
-              <script src="https://code.highcharts.com/highcharts.js"></script>
-              <script src="https://code.highcharts.com/modules/series-label.js"></script>
-              <div id='container'>
-
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-chart">
+          <div class="card-header ">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="container text-center mt-5" >
+                  <h1 style="font-weight:900;">DASHBOARD IS UNDER DEVELOPMENT</h1>
+                </div>
               </div>
             </div>
+            <br>
           </div>
-          <br>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12">
-      <div class="card card-chart">
-        <div class="card-header ">
-          <div class="row">
-            <div class="col-sm-12">
-              <script src="https://code.highcharts.com/highcharts.js"></script>
-              <script src="https://code.highcharts.com/modules/series-label.js"></script>
-              <div id='container2'>
-
-              </div>
-            </div>
-          </div>
-          <br>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-6">
-      <div class="card card-chart">
-        <div class="card-header ">
-          <div class="row">
-            <div class="col-sm-12">
-              <script src="https://code.highcharts.com/highcharts.js"></script>
-              <script src="https://code.highcharts.com/modules/series-label.js"></script>
-              <div id='container3'>
-
-              </div>
-            </div>
-          </div>
-          <br>
         </div>
       </div>
     </div>
 
-    <div class="col-6">
-      <div class="card card-chart">
-        <div class="card-header ">
-          <div class="row">
-            <div class="col-sm-12">
-              <script src="https://code.highcharts.com/highcharts.js"></script>
-              <script src="https://code.highcharts.com/modules/series-label.js"></script>
-              <div id='container4'>
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-chart">
+          <div class="card-header ">
+            <div class="row">
+              <div class="col-sm-12">
+                <script src="https://code.highcharts.com/highcharts.js"></script>
+                <script src="https://code.highcharts.com/modules/series-label.js"></script>
+                <div id='container'>
 
+                </div>
               </div>
             </div>
+            <br>
           </div>
-          <br>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-chart">
+          <div class="card-header ">
+            <div class="row">
+              <div class="col-sm-12">
+                <script src="https://code.highcharts.com/highcharts.js"></script>
+                <script src="https://code.highcharts.com/modules/series-label.js"></script>
+                <div id='container2'>
+
+                </div>
+              </div>
+            </div>
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <div class="card card-chart">
+          <div class="card-header ">
+            <div class="row">
+              <div class="col-sm-12">
+                <script src="https://code.highcharts.com/highcharts.js"></script>
+                <script src="https://code.highcharts.com/modules/series-label.js"></script>
+                <div id='container3'>
+
+                </div>
+              </div>
+            </div>
+            <br>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="card card-chart">
+          <div class="card-header ">
+            <div class="row">
+              <div class="col-sm-12">
+                <script src="https://code.highcharts.com/highcharts.js"></script>
+                <script src="https://code.highcharts.com/modules/series-label.js"></script>
+                <div id='container4'>
+
+                </div>
+              </div>
+            </div>
+            <br>
+          </div>
         </div>
       </div>
     </div>
@@ -553,8 +555,8 @@ Highcharts.chart('container4', {
 </script>
 
 <!-- multiple select dropdown cdn -->
-<script src="{% static 'multiDropdown/jquery-3.5.1.min.js' %}"></script>
+<!-- <script src="{% static 'multiDropdown/jquery-3.5.1.min.js' %}"></script>
 
 <script src="{% static 'multiDropdown/bootstrap.min.js' %}"></script>
-<script src="{% static 'multiDropdown/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'multiDropdown/bootstrap-select.min.js' %}"></script> -->
 {% endblock %}
