@@ -17,7 +17,7 @@
                 <form action="{% url 'ADMINPANEL:upload_data' 1 %}" method="POST" enctype="multipart/form-data"
                 style="text-align:center;">
                 			{% csrf_token %}
-                <input type="file" name="document" value="" required style="margin-left:45%;">
+                <input type="file" name="document" value="" required>
                 <br>
                 <br>
                 <button class="btn btn-primary" type="submit" name="button">
@@ -48,7 +48,7 @@
                   <form action="{% url 'ADMINPANEL:upload_data' 2 %}" method="POST" enctype="multipart/form-data"
                   style="text-align:center;">
                   			{% csrf_token %}
-                  <input type="file" name="document" value="" required style="margin-left:45%;">
+                  <input type="file" name="document" value="" required>
                   <br>
                   <br>
                   <button class="btn btn-primary" type="submit" name="button">
@@ -78,7 +78,7 @@
                   <form action="{% url 'ADMINPANEL:upload_data' 3 %}" method="POST" enctype="multipart/form-data"
                   style="text-align:center;">
                   			{% csrf_token %}
-                  <input type="file" name="document" value="" required style="margin-left:45%;">
+                  <input type="file" name="document" value="" required>
                   <br>
                   <br>
                   <button class="btn btn-primary" type="submit" name="button">

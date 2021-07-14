@@ -20,7 +20,16 @@
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="{% static 'adminDash/demo/demo.css' %}" rel="stylesheet" />
 </head>
+<style media="screen">
+  li a p {
+    font-size: 14px;
+    font-weight: 900;
+  }
 
+  li a .now-ui-icons {
+    font-weight: 900;
+  }
+</style>
 <body class="">
   <div class="wrapper ">
     <div class="sidebar" data-color="orange">
@@ -28,40 +37,49 @@
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
     -->
       <div class="logo">
-        <a href="http://www.creative-tim.com" class="simple-text logo-mini">
-          TASC
+
+        <a href="{% url 'ADMINPANEL:admin_home' %}" class="simple-text logo-mini">
+          <i> <img src="{% static 'img/favicon.png' %}" alt=""> </i>
         </a>
-        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
-          <strong>PINUPS</strong>
+        <a href="{% url 'ADMINPANEL:admin_home' %}" class="simple-text logo-normal">
+          <strong>TASC PINUPS</strong>
         </a>
       </div>
       <div class="sidebar-wrapper" id="sidebar-wrapper">
         <ul class="nav">
-          <li class="active ">
-            <a href="./dashboard.html">
-              <i class="now-ui-icons design_app"></i>
-              <p>Dashboard</p>
+          <li>
+            <a href="{% url 'ADMINPANEL:admin_home' %}">
+              <i class="now-ui-icons business_bank"></i>
+              <p>HOME</p>
             </a>
           </li>
           <li>
-            <a href="./icons.html">
-              <i class="now-ui-icons education_atom"></i>
-              <p>Icons</p>
+            <a href="{% url 'ADMINPANEL:dashboard' %}">
+              <i class="now-ui-icons business_chart-pie-36"></i>
+              <p>DASHBOARD</p>
             </a>
           </li>
           <li>
-            <a href="./map.html">
-              <i class="now-ui-icons location_map-big"></i>
-              <p>Maps</p>
+            <a href="{% url 'ADMINPANEL:uploadfiles' %}">
+              <i class="now-ui-icons arrows-1_cloud-upload-94"></i>
+              <p>UPLOAD FILES</p>
             </a>
           </li>
           <li>
-            <a href="./notifications.html">
-              <i class="now-ui-icons ui-1_bell-53"></i>
-              <p>Notifications</p>
+            <a href="{% url 'ADMINPANEL:download_data' %}">
+              <i class="now-ui-icons arrows-1_cloud-download-93"></i>
+              <p>DOWNLOAD DATA</p>
             </a>
           </li>
+
           <li>
+            <a href="/MikeCharlieQuebec/site/admin">
+              <i class="now-ui-icons business_badge"></i>
+              <p>Django Admin</p>
+            </a>
+          </li>
+
+          <!-- <li>
             <a href="./user.html">
               <i class="now-ui-icons users_single-02"></i>
               <p>User Profile</p>
@@ -78,7 +96,7 @@
               <i class="now-ui-icons text_caps-small"></i>
               <p>Typography</p>
             </a>
-          </li>
+          </li> -->
 
         </ul>
       </div>
@@ -95,7 +113,7 @@
                 <span class="navbar-toggler-bar bar3"></span>
               </button>
             </div>
-            <a class="navbar-brand" href="#pablo">Dashboard</a>
+            <a class="navbar-brand" href="#pablo"><strong>Dashboard</strong></a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -106,13 +124,18 @@
 
             <ul class="navbar-nav">
 
-              <li class="nav-item">
-                <a class="nav-link" href="#">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="now-ui-icons users_single-02"></i>
                   <p>
                     <span class="d-lg-none d-md-block">Account</span>
                   </p>
                 </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="{% url 'MCQ:logout' %}">Logout</a>
+                  <!-- <a class="dropdown-item" href="#">Another action</a>
+                  <a class="dropdown-item" href="#">Something else here</a> -->
+                </div>
               </li>
 
             </ul>
@@ -138,23 +161,11 @@
   <script src="{% static 'adminDash/js/core/popper.min.js' %}"></script>
   <script src="{% static 'adminDash/js/core/bootstrap.min.js' %}"></script>
   <script src="{% static 'adminDash/js/plugins/perfect-scrollbar.jquery.min.js' %}"></script>
-  <!--  Google Maps Plugin    -->
-  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> -->
-  <!-- Chart JS -->
-  <!-- <script src="../assets/js/plugins/chartjs.min.js"></script> -->
-  <!--  Notifications Plugin    -->
   <script src="{% static 'adminDash/js/plugins/bootstrap-notify.js' %}"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-  <!-- <script src="{% static 'adminDash/js/now-ui-dashboard.min.js' %}" type="text/javascript"></script> -->
+  <script src="{% static 'adminDash/js/now-ui-dashboard.min.js' %}" type="text/javascript"></script>
 	<!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
-  <!-- <script src="{% static 'adminDash/demo/demo.js' %}"></script> -->
-  <!-- <script>
-    $(document).ready(function() {
-      // Javascript method's body can be found in assets/js/demos.js
-      demo.initDashboardPageCharts();
-
-    });
-  </script> -->
+  <script src="{% static 'adminDash/demo/demo.js' %}"></script>
 </body>
 
 </html>
