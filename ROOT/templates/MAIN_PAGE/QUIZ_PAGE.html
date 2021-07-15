@@ -78,7 +78,7 @@
 	$(document).ready(function () {
     // Handler for .ready() called.
     window.setTimeout(function () {
-        location.href = "{% url 'MCQ:logout' %}";
+        location.href = "{% url 'MCQ:time_out' user.username %}";
     }, 5000);
 });
 </script>

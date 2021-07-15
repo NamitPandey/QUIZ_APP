@@ -24,5 +24,8 @@ urlpatterns = [
     path("students_portal/", views.students_portal, name='students_portal'), # students portal
     path(f"{randm1}<str:randmNmbr>{randm2}{randmNMBR}{randm3}<int:mainID>{randm4}<str:randmNmbr2>{randm5}{randmNMBR2}<int:counter>", views.quiz_page, name='quiz'), # homePage
     path(f"register/", views.user_registration, name='register'), # homePage
+    path(f"testover/<str:username>", views.time_out, name='time_out'), # time out
+
+
 
 ]

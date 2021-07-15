@@ -343,3 +343,17 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter):
 
 
     return render(request, PAGE_MAPPER.pageDict[pageDictKey], context)
+
+def time_out(request, username):
+    print(username)
+    pageDictKey = 'quiz_page'
+
+    user = EnrollemntsForQuiz.objects.filter(ENROLLMENT_NUMBER__iexact=username)
+
+    user.delete()
+
+    context={'AUTHORIZED':'NO',
+     'COMN_MSG': "TIMES UP ! THANK YOU FOR TAKING THE TEST. RESULTS WILL BE ANNOUNCED SOON. ALL THE BEST",
+     }
+
+    return render(request, PAGE_MAPPER.pageDict[pageDictKey], context)

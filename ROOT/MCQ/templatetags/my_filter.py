@@ -26,3 +26,12 @@ def replace_var(value):
     """REMOVE ALL UNDERSCORE WITH SPACE"""
 
     return int(value)-1
+
+
+""" FILTER WILL RETURN A LIST """
+@register.filter(name='makelist')
+@stringfilter
+def list_gen(value):
+    """REMOVE ALL UNDERSCORE WITH SPACE"""
+
+    return value.split(" ")

@@ -116,6 +116,8 @@ def download_data(request):
          "CATEGORY",
          "ANSWER",
          "CORRECT ANSWER",
+         "TIME",
+         # "END_TIME",
         ])
 
     users = QuizData.objects.all().order_by('ENROLLMENT_NUMBER').values_list(
@@ -125,6 +127,7 @@ def download_data(request):
                                         'CATEGORY',
                                         'ANSWER',
                                         'CORRECT_ANSWER',
+                                        "START_TIME",
                                         )
 
     for user in users:
