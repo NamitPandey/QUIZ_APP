@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 from django.utils.timezone import now
 from django.http import JsonResponse,HttpResponse
-from MCQ.models import QuizData
+from MCQ.models import QuizData, UserRegistration
 
 # all static packages import below
 import csv
@@ -166,4 +166,42 @@ def dashboard(request):
 
 
 
+    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
+
+@login_required
+def student_report(request):
+
+    pageDictKey = 'student'
+
+    context = {
+    'WARNING_MSG': 'DISABLE',
+    }
+
+    if request.method == 'POST':
+
+        enrollmentid = request.POST.get("enrollmentid")
+
+        studentData = UserRegistration.objects.filter(ENROLLMENT_NUMBER__iexact=enrollmentid).values()
+        print(studentData)
+        if len(enrollmentid) == 0:
+
+            context.update({
+            'WARNING_MSG': 'ENABLE',
+            "MSG":"Search Result Cannot be Blank",
+            })
+
+            return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
+
+        elif len(studentData) == 0:
+
+            context.update({
+            'WARNING_MSG': 'ENABLE',
+            "MSG":f"<u style='color:red;'>{enrollmentid}</u>" +" Cannot be found in our records",
+            })
+
+            return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
+
+        context.update({
+        'studentData':studentData,
+        })
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)

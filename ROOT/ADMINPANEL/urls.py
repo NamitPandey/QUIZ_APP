@@ -12,4 +12,5 @@ urlpatterns = [
     path("upload_data/<int:dataBaseKey>", views.upload_data, name='upload_data'),
     path("download_data/", views.download_data, name='download_data'),
     path("dashboard/", views.dashboard, name='dashboard'),
+    path("studentreport/", views.student_report, name='studentreport'),
 ]

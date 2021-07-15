@@ -24,7 +24,7 @@
 		<button id="option3" class="btn" onclick="option3()">option 3</button>
 		<button id="option4" class="btn" onclick="option4()">option 4</button> -->
 
-		<form class="" action="{% url 'MCQ:quiz' randmNmbr mainID randmNmbr2 counter%}" method="POST">
+		<form id="myForm" class="" action="{% url 'MCQ:quiz' randmNmbr mainID randmNmbr2 counter%}" method="POST">
 			{% csrf_token %}
 			{% for q in qstn%}
 				<div class="col-xxl-12 pt-5" style="margin-left:15%;">
@@ -54,7 +54,7 @@
 							</label>
 						</div>
 						<br>
-					{% if counter == 10 %}
+					{% if counter == 40 %}
 						<button class="btn btn-warning" type="submit" name="button" style="width:80%;">
 									FINISH
 						</button>
@@ -73,6 +73,22 @@
 	<script src="JAVA_SCRIPT/quiz.js"></script>
 	<div class="col-md-2"></div>
 </div>
+
+<script>
+	$(document).ready(function () {
+    // Handler for .ready() called.
+    window.setTimeout(function () {
+        location.href = "{% url 'MCQ:logout' %}";
+    }, 5000);
+});
+</script>
+<!-- <script>
+	var varTimerInMiliseconds = 5000;
+setTimeout(function(){
+    document.getElementById("myForm").submit();
+}, varTimerInMiliseconds);
+</script> -->
+
 <script type="text/javascript">
     function preventBack() {
         window.history.forward();
@@ -82,4 +98,6 @@
 
     window.onunload = function () { null };
 </script>
+
+
 {% endblock %}

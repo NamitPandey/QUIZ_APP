@@ -1,0 +1,301 @@
+{% extends 'BASE_FILES/BaseAdmin.html' %}
+{% load static %}
+{% load my_filter %}
+{% block adminContent %}
+<div class="content">
+  <div class="container-fluid">
+    <div class="content">
+      {% if WARNING_MSG == 'ENABLE' %}
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-user">
+            <h2 class="text-center mt-5 title">{{MSG|safe}}</h2>
+          </div>
+        </div>
+      </div>
+
+      {% else%}
+
+        <div class="row">
+          <div class="col-md-8">
+            <div class="card">
+              <div class="card-header">
+                {% for val in studentData %}
+                  <h4 class="card-title" style="font-weight:600;">{{val.FIRST_NAME}} {{val.LAST_NAME}}'s Summary</h4>
+
+                {% endfor %}
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class=" text-primary">
+                      <th>
+                        Category
+                      </th>
+                      <th>
+                        Total Questions
+                      </th>
+                      <th>
+                        Questions Attempted
+                      </th>
+                      <th class="text-right">
+                        Marks
+                      </th>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          Logical
+                        </td>
+                        <td>
+                          10
+                        </td>
+                        <td>
+                          10
+                        </td>
+                        <td class="text-right">
+                          20
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          Appitude
+                        </td>
+                        <td>
+                          10
+                        </td>
+                        <td>
+                          10
+                        </td>
+                        <td class="text-right">
+                          20
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          General Knowledge
+                        </td>
+                        <td>
+                          10
+                        </td>
+                        <td>
+                          10
+                        </td>
+                        <td class="text-right">
+                          20
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          Written Communication
+                        </td>
+                        <td>
+                          10
+                        </td>
+                        <td>
+                          10
+                        </td>
+                        <td class="text-right">
+                          20
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          Total
+                        </td>
+                        <td>
+                          40
+                        </td>
+                        <td>
+                          40
+                        </td>
+                        <td class="text-right">
+                          80
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <hr>
+                  <div class="button-container">
+                    <h4 class="text-center">Some text that you want to put</h4>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card card-user">
+              <div class="image">
+                <img src="{% static 'img/userRep_bg.jpg'%}" alt="...">
+              </div>
+              <div class="card-body">
+                {% for val in studentData %}
+                  <div class="author">
+                    <a href="#" style="text-decoration:none;">
+                      <img class="avatar border-gray" src="{% static 'img/default-avatar.png'%}" alt="...">
+                      <h5 class="title" >{{val.FIRST_NAME}} {{val.LAST_NAME}}</h5>
+                    </a>
+                    <p class="description" style="color:black; font-weight:600;">
+                      {{val.ENROLLMENT_NUMBER}}
+                    </p>
+                  </div>
+                  <p class="description text-center" style="color:black;">
+                    <strong>Email:</strong><a href="mailto:EnrollmentNumber@gsfcuniversity.ac.in"> {{val.ENROLLMENT_NUMBER}}@gsfcuniversity.ac.in</a><br>
+                    <strong>Gender:</strong> {{val.GENDER}} <br>
+                    <strong>Program:</strong> {{val.PROGRAM}}<br>
+                    <strong>School:</strong> {{val.SCHOOL}} &nbsp <strong>Semester:</strong> {{val.SEMESTER}}<br>
+                  </p>
+
+                {% endfor %}
+              </div>
+              <hr>
+              <div class="button-container">
+                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
+                  <i class="fab fa-facebook-f"></i>
+                </button>
+                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
+                  <i class="fab fa-twitter"></i>
+                </button>
+                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
+                  <i class="fab fa-google-plus-g"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <!-- pie chart -->
+          <div class="col-md-4">
+            <div class="card card-user">
+              <figure class="highcharts-figure mt-3">
+                <div id="container"></div>
+              </figure>
+            </div>
+          </div>
+          <!-- column chart -->
+          <div class="col-md-8">
+            <div class="card card-user">
+              <figure class="highcharts-figure mt-3">
+                <div id="columnChart"></div>
+              </figure>
+            </div>
+          </div>
+        </div>
+
+    {% endif %}
+
+    </div>
+  </div>
+
+</div>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<!-- pie chart -->
+<script>
+  Highcharts.chart('container', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie',
+    },
+
+    title: {
+        text: 'Enrollment Number Performance per Category'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+            }
+        }
+    },
+    series: [{
+        name: 'Percentage',
+        colorByPoint: true,
+        data: [{
+            name: 'Logical',
+            y: 25,
+            sliced: true,
+            selected: true
+        }, {
+            name: 'Appitude',
+            y: 25
+        }, {
+            name: 'General Knowledge',
+            y: 25
+        }, {
+            name: 'Written Communication',
+            y: 25
+        }]
+    }]
+});
+</script>
+<!-- column chart -->
+<script>
+  Highcharts.chart('columnChart', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Enrollment Number Performance per Category'
+    },
+    xAxis: {
+        categories: [
+            'Logical',
+            'Appitude',
+            'General Knowledge',
+            'Written Communication',
+
+        ],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Count'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b> {point.y}</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Correct',
+        data: [30,30,30,30]
+
+    }, {
+        name: 'Wrong',
+        data: [10,10,10,10]
+    }]
+});
+</script>
+{% endblock %}

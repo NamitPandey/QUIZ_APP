@@ -121,7 +121,17 @@
             <span class="navbar-toggler-bar navbar-kebab"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navigation">
+            <form action="{% url 'ADMINPANEL:studentreport' %}" method="POST">
+              {% csrf_token %}
+              <div class="input-group no-border">
+                <input name='enrollmentid' type="text submit" value="" class="form-control" placeholder="Search Enrollment...">
+                <div class="input-group-append">
+                  <div class="input-group-text">
 
+                  </div>
+                </div>
+              </div>
+            </form>
             <ul class="navbar-nav">
 
               <li class="nav-item dropdown">
