@@ -2,6 +2,11 @@
 {% load static %}
 {% load my_filter %}
 {% block adminContent %}
+<style media="screen">
+  td, th {
+    text-align:center;
+  }
+</style>
 <div class="content">
   <div class="container-fluid">
     <div class="content">
@@ -29,16 +34,19 @@
                 <div class="table-responsive">
                   <table class="table">
                     <thead class=" text-primary">
-                      <th>
+                      <th style="font-weight:900;">
                         Category
                       </th>
-                      <th>
+                      <th style="font-weight:900;">
                         Total Questions
                       </th>
-                      <th>
+                      <th style="font-weight:900;">
                         Questions Attempted
                       </th>
-                      <th class="text-right">
+                      <th style="font-weight:900;">
+                        Correct Answers
+                      </th>
+                      <th class="" style="font-weight:900;">
                         Marks
                       </th>
                     </thead>
@@ -53,7 +61,10 @@
                         <td>
                           10
                         </td>
-                        <td class="text-right">
+                        <td>
+                          10
+                        </td>
+                        <td class="">
                           20
                         </td>
                       </tr>
@@ -67,7 +78,10 @@
                         <td>
                           10
                         </td>
-                        <td class="text-right">
+                        <td>
+                          10
+                        </td>
+                        <td class="">
                           20
                         </td>
                       </tr>
@@ -81,7 +95,10 @@
                         <td>
                           10
                         </td>
-                        <td class="text-right">
+                        <td>
+                          10
+                        </td>
+                        <td class="">
                           20
                         </td>
                       </tr>
@@ -95,7 +112,10 @@
                         <td>
                           10
                         </td>
-                        <td class="text-right">
+                        <td>
+                          10
+                        </td>
+                        <td class="">
                           20
                         </td>
                       </tr>
@@ -110,7 +130,10 @@
                         <td>
                           40
                         </td>
-                        <td class="text-right">
+                        <td>
+                          40
+                        </td>
+                        <td class="">
                           80
                         </td>
                       </tr>
@@ -118,7 +141,7 @@
                   </table>
                   <hr>
                   <div class="button-container">
-                    <h4 class="text-center">Some text that you want to put</h4>
+                    <h4 class="text-center">Some text that you want to add</h4>
                   </div>
                 </div>
 

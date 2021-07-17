@@ -11,7 +11,7 @@ import os
 import pandas as pd
 from . import ADMIN_PAGE_MAPPER, staticVariables
 from sqlalchemy import create_engine
-
+import datetime
 # Create your views here.
 global dataBaseMapper
 
@@ -154,21 +154,6 @@ def dashboard(request):
 
         print(school, program, gender)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
 
 @login_required
@@ -185,7 +170,7 @@ def student_report(request):
         enrollmentid = request.POST.get("enrollmentid")
 
         studentData = UserRegistration.objects.filter(ENROLLMENT_NUMBER__iexact=enrollmentid).values()
-        print(studentData)
+
         if len(enrollmentid) == 0:
 
             context.update({

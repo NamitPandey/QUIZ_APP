@@ -42,7 +42,7 @@
               <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
                 <label style="color:black;"><strong>PROGRAM</strong></label>
                 <div class="form-group" >
-                  <select  id="travel" class="selectpicker" name="program_POST" multiple>
+                  <select  id="travel" class="selectpicker" name="program_POST">
 
                     {% for prg in PRGM %}
                       <option value="{{prg}}" style="font-weight:600; color:black;">{{prg|replace|title}}</option>

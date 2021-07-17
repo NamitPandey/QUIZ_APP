@@ -22,7 +22,7 @@ urlpatterns = [
     path(r'accounts/login/', views.login_message, name='login_message'),# MESSAGE PAGE WHEN USER IN NOT LOGGED IN
     path('logout/', logview.LogoutView.as_view(template_name='MAIN_PAGE/logout.html'),name="logout"),# LOGOUT PAGE
     path("students_portal/", views.students_portal, name='students_portal'), # students portal
-    path(f"{randm1}<str:randmNmbr>{randm2}{randmNMBR}{randm3}<int:mainID>{randm4}<str:randmNmbr2>{randm5}{randmNMBR2}<int:counter>", views.quiz_page, name='quiz'), # homePage
+    path(f"{randm1}<str:randmNmbr>{randm2}{randmNMBR}{randm3}<int:mainID>{randm4}<str:randmNmbr2>{randm5}{randmNMBR2}<int:counter>-<str:resultedTime>", views.quiz_page, name='quiz'), # homePage
     path(f"register/", views.user_registration, name='register'), # homePage
     path(f"testover/<str:username>", views.time_out, name='time_out'), # time out
 

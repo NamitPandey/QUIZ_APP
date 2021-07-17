@@ -8,7 +8,9 @@ from django.db.models import Count
 from .models import (Question, UserRegistration,
                     AllowedEnrollments, EnrollemntsForQuiz, QuizData)
 # python packages import below
+import pandas as pd
 import  numpy as np
+import datetime
 
 # all static packages import below
 from . import (PAGE_MAPPER, staticVariables)
@@ -250,7 +252,7 @@ def students_portal(request):
     return render(request, PAGE_MAPPER.pageDict[pageDictKey], context)
 
 @login_required
-def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter):
+def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter, resultedTime):
 
     pageDictKey = 'quiz_page'
         # list uploaded by admin to grant access to students to take the test
@@ -285,19 +287,32 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter):
         return render(request, PAGE_MAPPER.pageDict[pageDictKey], context)
 
     if request.method == 'GET':
-        # print("called")
+
         mainID = get_mainID(mainID, qstnID, request.user.username)
+
+        # getting time and adding 45 minutes for test time limit
+        nowTime=datetime.datetime.now()
+        maxTime = nowTime+datetime.timedelta(minutes=1)
+        resultedTime = datetime.datetime.strptime(str(maxTime - nowTime), "%H:%M:%S")
 
         # serialList = get_random_numbers(4)
         qstn = Question.objects.filter(
                                     # CATEGORY__iexact=staticVariables.CATEGORY[2],
                                     QUESTION_ID__iexact=mainID,
-                                    )
-        context.update({"qstn":qstn, "mainID":mainID,})
+                                    ).order_by('?')
+        context.update({"qstn":qstn, "mainID":mainID,
+                        "nowTime":nowTime, "resultedTime":resultedTime,
+                        "maxTime":maxTime
+                        })
 
     if request.method == 'POST':
 
-
+        nowTime=datetime.datetime.now()
+        maxTime = datetime.datetime.strptime(resultedTime, "%Y-%m-%d %H:%M:%S.%f")
+        try:
+            resultedTime = datetime.datetime.strptime(str(maxTime - nowTime), "%H:%M:%S.%f")
+        except:
+            resultedTime = datetime.datetime.strptime(str(nowTime - maxTime), "%H:%M:%S.%f")
 
         answer1 = request.POST.get("exampleRadios")
 
@@ -322,12 +337,18 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter):
 
         if counter == quizEnd:
 
+            user = EnrollemntsForQuiz.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username)
+
+            user.delete()
+            # nowTime=datetime.datetime.now()
+            # maxTime = datetime.datetime.strptime(resultedTime, "%Y-%m-%d %H:%M:%S.%f")
+            # resultedTime = datetime.datetime.strptime(str(maxTime - nowTime), "%H:%M:%S.%f")
+
             context.update({'AUTHORIZED':'NO',
              'COMN_MSG': "THANK YOU FOR TAKING THE TEST. RESULTS WILL BE ANNOUNCED SOON. ALL THE BEST",
-             "counter":counter+1,"mainID":mainID})
+             "counter":counter+1,"mainID":mainID, })
 
         else:
-
             qstnID = list(QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values_list("QUESTION_ID", flat=True))
             mainID = get_mainID(mainID, qstnID, request.user.username)
 
@@ -335,17 +356,20 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter):
             qstn = Question.objects.filter(
                                         # CATEGORY__iexact=staticVariables.CATEGORY[2],
                                         QUESTION_ID__iexact=mainID,
-                                        )
+                                        ).order_by('?')
 
         # serialList = serialList.copy().remove(counter)
 
-            context.update({"qstn":qstn, "counter":counter+1,"mainID":mainID})
+            context.update({"qstn":qstn, "counter":counter+1,"mainID":mainID,
+                        "nowTime":nowTime, "resultedTime":resultedTime,
+                        "maxTime":maxTime
+                        })
 
 
     return render(request, PAGE_MAPPER.pageDict[pageDictKey], context)
 
 def time_out(request, username):
-    print(username)
+
     pageDictKey = 'quiz_page'
 
     user = EnrollemntsForQuiz.objects.filter(ENROLLMENT_NUMBER__iexact=username)
