@@ -4,6 +4,7 @@ from django.core.files.storage import FileSystemStorage
 from django.utils.timezone import now
 from django.http import JsonResponse,HttpResponse
 from MCQ.models import QuizData, UserRegistration
+from django.db.models import F, Count
 
 # all static packages import below
 import csv
@@ -140,7 +141,7 @@ def dashboard(request):
 
     pageDictKey = 'dashboard'
     context={
-    "GNDR": staticVariables.GENDR_LIST, # gender list
+    "CATGRY": staticVariables.CATEGORY_LIST, # CATEGORY list
     "SCHOL": staticVariables.SCHOL_LIST, # school list
     "PRGM": staticVariables.PROGRM_LIST, # program list
     }
@@ -148,7 +149,7 @@ def dashboard(request):
 
     if request.method == 'POST':
 
-        school = request.POST.getlist("school_POST")
+        catgry = request.POST.getlist("cat_POST")
         program = request.POST.getlist("program_POST")
         gender = request.POST.getlist("gender_POST")
 
@@ -156,16 +157,29 @@ def dashboard(request):
 
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
 
+def get_report(enrollmentNo):
+
+    studntRep = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enrollmentNo,)
+    studntRep = studntRep.values('CATEGORY', 'ANSWER').filter(ANSWER__iexact = F('CORRECT_ANSWER')).order_by('CATEGORY', 'ANSWER')
+    studntRep = studntRep.values('CATEGORY').annotate(COUNT = Count('CATEGORY')).order_by('CATEGORY')
+
+    return studntRep
+
 @login_required
 def student_report(request):
 
     pageDictKey = 'student'
 
+
+    studentData = UserRegistration.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values()
+
     context = {
     'WARNING_MSG': 'DISABLE',
+    'studentData':studentData,
     }
 
     if request.method == 'POST':
+
 
         enrollmentid = request.POST.get("enrollmentid")
 
@@ -189,7 +203,11 @@ def student_report(request):
 
             return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
 
+        studntRep = get_report(enrollmentid)
+        TOTAL_CRT = sum(studntRep.to_dataframe()['COUNT'])
         context.update({
         'studentData':studentData,
+        'studntRep':studntRep,
+        'TOTAL_CRT':TOTAL_CRT,
         })
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)

@@ -28,7 +28,9 @@
           <a href="{% url 'MCQ:quiz' randmNmbr mainID randmNmbr2 counter 0%}"><button class="btn"><img src="{% static 'img/test.png' %}" class="icon"><br>Take Test</button></a>
       </div>
       <div class="btn-wrapper">
+        <a href="{% url 'ADMINPANEL:studentreport' %}">
           <button class="btn"><img src="{% static 'img/result.png' %}" class="icon"><br>Result</button>
+        </a>
       </div>
     {% endif %}
     <div class="btn-wrapper">

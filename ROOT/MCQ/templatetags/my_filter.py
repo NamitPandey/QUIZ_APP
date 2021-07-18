@@ -35,3 +35,11 @@ def list_gen(value):
     """REMOVE ALL UNDERSCORE WITH SPACE"""
 
     return value.split(" ")
+
+""" multiply vaule by given number """
+@register.filter(name='mul')
+@stringfilter
+def multiplication(value, second):
+    """multiply vaule by given number"""
+
+    return int(value)*int(second)

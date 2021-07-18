@@ -20,7 +20,7 @@ global CATEGORY, RNDM_NMBR
 
 def get_category(enrollmentNo):
 
-        countCheck = 3
+        countCheck = 10
 
         catList = staticVariables.CATEGORY_LIST
 
@@ -270,7 +270,7 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter, resultedTime):
     # "QUIZ_STAT": "GO_ON",/
     }
     # check question id
-    quizEnd = 12
+    quizEnd = 40
 
     qstnID = list(QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values_list("QUESTION_ID", flat=True))
         # checking students enrollment present in allowed list or not to take the test
@@ -292,7 +292,8 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter, resultedTime):
 
         # getting time and adding 45 minutes for test time limit
         nowTime=datetime.datetime.now()
-        maxTime = nowTime+datetime.timedelta(minutes=1)
+        maxTime = nowTime+datetime.timedelta(minutes=45)
+        print(nowTime, maxTime)
         resultedTime = datetime.datetime.strptime(str(maxTime - nowTime), "%H:%M:%S")
 
         # serialList = get_random_numbers(4)

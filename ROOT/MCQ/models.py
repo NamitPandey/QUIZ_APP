@@ -69,3 +69,12 @@ class QuizData(models.Model):
 
     def __str__(self):
         return f"{self.QUESTION_ID}-{self.ACTUAL_QUESTION}"
+
+class Declare_Result(models.Model):
+
+    RESULT_STATUS = models.IntegerField(default=0)
+
+    objects = DataFrameManager()
+
+    def __str__(self):
+        return f"{self.RESULT_STATUS}"

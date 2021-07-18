@@ -132,17 +132,34 @@
             <span class="navbar-toggler-bar navbar-kebab"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navigation">
-            <form action="{% url 'ADMINPANEL:studentreport' %}" method="POST">
-              {% csrf_token %}
-              <div class="input-group no-border">
-                <input name='enrollmentid' type="text submit" value="" class="form-control" placeholder="Search Enrollment...">
-                <div class="input-group-append">
-                  <div class="input-group-text">
 
-                  </div>
+            <!-- <form action="#" method="POST">
+              {% csrf_token %}
+
+              <div class="input-group no-border">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" type="submit" value='1' id="customSwitch1" checked>
+                  <label class="custom-control-label" for="customSwitch1" style="font-weight: 600;">Declare Result</label>
+                  <input type="hidden" name="next" value="https://getbootstrap.com/docs/4.0/components/buttons/">
+
+                  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                 </div>
               </div>
-            </form>
+            </form> -->
+            {% if user.is_superuser %}
+              <form action="{% url 'ADMINPANEL:studentreport' %}" method="POST">
+                {% csrf_token %}
+
+                <div class="input-group no-border">
+                  <input name='enrollmentid' type="text submit" value="" class="form-control" placeholder="Search Enrollment...">
+                  <div class="input-group-append">
+                    <div class="input-group-text">
+
+                    </div>
+                  </div>
+                </div>
+              </form>
+            {% endif %}
             <ul class="navbar-nav">
 
               <li class="nav-item dropdown">

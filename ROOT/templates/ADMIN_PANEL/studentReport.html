@@ -25,6 +25,9 @@
           <div class="col-md-8">
             <div class="card">
               <div class="card-header">
+                {% for n in test %}
+                  <h2>{{n.one}}</h2>
+                {% endfor %}
                 {% for val in studentData %}
                   <h4 class="card-title" style="font-weight:600;">{{val.FIRST_NAME}} {{val.LAST_NAME}}'s Summary</h4>
 
@@ -34,7 +37,7 @@
                 <div class="table-responsive">
                   <table class="table">
                     <thead class=" text-primary">
-                      <th style="font-weight:900;">
+                      <th style="text-align: left; font-weight:900;">
                         Category
                       </th>
                       <th style="font-weight:900;">
@@ -51,78 +54,28 @@
                       </th>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>
-                          Logical
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td class="">
-                          20
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          Appitude
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td class="">
-                          20
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          General Knowledge
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td class="">
-                          20
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          Written Communication
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td class="">
-                          20
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          Total
+                      {% for cat in studntRep %}
+                        <tr>
+                          <td style="text-align: left; font-weight:600;">
+                            {{cat.CATEGORY|replace}}
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            {{cat.COUNT}}
+                          </td>
+                          <td class="">
+                            {{cat.COUNT|mul:2}}
+                          </td>
+                        </tr>
+                      {% endfor %}
+                      <tr style="border-top: 2px solid black;">
+                        <td style="text-align: left; font-weight:600;">
+                          TOTAL
                         </td>
                         <td>
                           40
@@ -131,10 +84,10 @@
                           40
                         </td>
                         <td>
-                          40
+                          {{TOTAL_CRT}}
                         </td>
                         <td class="">
-                          80
+                          {{TOTAL_CRT|mul:2}}
                         </td>
                       </tr>
                     </tbody>
