@@ -153,7 +153,6 @@ def dashboard(request):
         program = request.POST.getlist("program_POST")
         gender = request.POST.getlist("gender_POST")
 
-        print(school, program, gender)
 
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
 
@@ -162,8 +161,45 @@ def get_report(enrollmentNo):
     studntRep = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enrollmentNo,)
     studntRep = studntRep.values('CATEGORY', 'ANSWER').filter(ANSWER__iexact = F('CORRECT_ANSWER')).order_by('CATEGORY', 'ANSWER')
     studntRep = studntRep.values('CATEGORY').annotate(COUNT = Count('CATEGORY')).order_by('CATEGORY')
+    total = 100/sum(studntRep.to_dataframe()['COUNT'])
+    studntRep = studntRep.annotate(PER=F('COUNT')*total).order_by('CATEGORY')
 
     return studntRep
+
+def highchart(feature):
+
+    feature = feature.to_dataframe()
+
+    resultedList = []
+    # pie chart
+    for cat, val in zip(feature['CATEGORY'], feature['PER']):
+
+        resultedList.append({
+                            'name': cat.replace("_", " "),
+                            'y': val
+                        })
+
+    # column chart
+    crtList, incrtList = [], []
+
+    for cat in feature['COUNT']:
+
+        crtList.append(cat)
+        incrtList.append(10-cat)
+
+
+    columnSeries = [{
+                        'name': 'Correct',
+                        'data': crtList
+
+                    }, {
+                        'name': 'Incorrect',
+                        'data': incrtList
+                    }]
+
+    categoryList = [_.replace("_", " ") for _ in feature['CATEGORY'].unique().tolist()]
+
+    return resultedList, columnSeries, categoryList
 
 @login_required
 def student_report(request):
@@ -204,10 +240,16 @@ def student_report(request):
             return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
 
         studntRep = get_report(enrollmentid)
+        piechartSeries, columnSeries, categoryList = highchart(studntRep)
         TOTAL_CRT = sum(studntRep.to_dataframe()['COUNT'])
+
         context.update({
         'studentData':studentData,
         'studntRep':studntRep,
         'TOTAL_CRT':TOTAL_CRT,
+
+        'categoryList':categoryList,
+        'piechartSeries':piechartSeries,
+        'columnSeries': columnSeries,
         })
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)

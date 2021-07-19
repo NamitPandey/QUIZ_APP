@@ -47,10 +47,16 @@
                         Questions Attempted
                       </th>
                       <th style="font-weight:900;">
+                        Maximum Marks
+                      </th>
+                      <th style="font-weight:900;">
                         Correct Answers
                       </th>
                       <th class="" style="font-weight:900;">
                         Marks
+                      </th>
+                      <th class="" style="font-weight:900;">
+                        Percentage
                       </th>
                     </thead>
                     <tbody>
@@ -66,14 +72,20 @@
                             10
                           </td>
                           <td>
+                            20
+                          </td>
+                          <td>
                             {{cat.COUNT}}
                           </td>
                           <td class="">
                             {{cat.COUNT|mul:2}}
                           </td>
+                          <td class="">
+                            {{cat.PER|floatformat:1}}%
+                          </td>
                         </tr>
                       {% endfor %}
-                      <tr style="border-top: 2px solid black;">
+                      <tr style="border-top: 2px solid black; font-weight:600;">
                         <td style="text-align: left; font-weight:600;">
                           TOTAL
                         </td>
@@ -84,10 +96,16 @@
                           40
                         </td>
                         <td>
+                          80
+                        </td>
+                        <td>
                           {{TOTAL_CRT}}
                         </td>
                         <td class="">
                           {{TOTAL_CRT|mul:2}}
+                        </td>
+                        <td class="">
+                          {{TOTAL_CRT|perc:80}}%
                         </td>
                       </tr>
                     </tbody>
@@ -207,21 +225,7 @@
     series: [{
         name: 'Percentage',
         colorByPoint: true,
-        data: [{
-            name: 'Logical',
-            y: 25,
-            sliced: true,
-            selected: true
-        }, {
-            name: 'Appitude',
-            y: 25
-        }, {
-            name: 'General Knowledge',
-            y: 25
-        }, {
-            name: 'Written Communication',
-            y: 25
-        }]
+        data: {{piechartSeries|safe}}
     }]
 });
 </script>
@@ -235,13 +239,7 @@
         text: 'Enrollment Number Performance per Category'
     },
     xAxis: {
-        categories: [
-            'Logical',
-            'Appitude',
-            'General Knowledge',
-            'Written Communication',
-
-        ],
+        categories: {{categoryList|safe}},
         crosshair: true
     },
     yAxis: {
@@ -264,14 +262,7 @@
             borderWidth: 0
         }
     },
-    series: [{
-        name: 'Correct',
-        data: [30,30,30,30]
-
-    }, {
-        name: 'Wrong',
-        data: [10,10,10,10]
-    }]
+    series: {{columnSeries|safe}}
 });
 </script>
 {% endblock %}

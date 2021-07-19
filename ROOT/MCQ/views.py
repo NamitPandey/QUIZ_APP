@@ -293,7 +293,7 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter, resultedTime):
         # getting time and adding 45 minutes for test time limit
         nowTime=datetime.datetime.now()
         maxTime = nowTime+datetime.timedelta(minutes=45)
-        print(nowTime, maxTime)
+
         resultedTime = datetime.datetime.strptime(str(maxTime - nowTime), "%H:%M:%S")
 
         # serialList = get_random_numbers(4)

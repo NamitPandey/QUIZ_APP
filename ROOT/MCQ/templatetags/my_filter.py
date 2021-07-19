@@ -43,3 +43,11 @@ def multiplication(value, second):
     """multiply vaule by given number"""
 
     return int(value)*int(second)
+
+""" calculate percentage """
+@register.filter(name='perc')
+@stringfilter
+def percentage_calc(value, denominator):
+    """calculate percentage"""
+
+    return round((int(value)/int(denominator))*100,1)
