@@ -1,5 +1,6 @@
 from django.db import models
 from django_pandas.managers import DataFrameManager
+from django.utils import timezone
 # Create your models here.
 
 class UserRegistration(models.Model):
@@ -37,6 +38,8 @@ class Question(models.Model):
 class EnrollemntsForQuiz(models.Model):
 
     ENROLLMENT_NUMBER = models.CharField(max_length=100,)
+    START_TIME = models.DateTimeField(default=timezone.now())
+    END_TIME = models.DateTimeField(default=timezone.now())
     objects = DataFrameManager()
 
     def __str__(self):

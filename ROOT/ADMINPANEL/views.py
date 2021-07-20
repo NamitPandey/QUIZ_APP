@@ -17,10 +17,17 @@ import datetime
 global dataBaseMapper
 
 dataBaseMapper={
- 1:'MCQ_allowedenrollments',
- 2:'MCQ_enrollemntsforquiz',
+ 1:'MCQ_allowedenrollments',# total number of students
+ 2:'MCQ_enrollemntsforquiz', # students that will appear for test
  3:'MCQ_question',
  }
+def convert_to_str(x):
+
+    return str(int(x))
+
+def convert_to_dateTime(x):
+
+    return datetime.datetime.strptime(x, "%Y-%m-%d %H:%M:%S")
 
 """ HOMEPAGE FOR ADMIN PANEL"""
 def admin_home(request):
@@ -72,6 +79,17 @@ def upload_data(request, dataBaseKey):
         conn = create_engine(f'sqlite:////{dbPath}')
 
         if dataBaseKey == 2:
+
+            uploadedData['YEAR'] = uploadedData['YEAR'].apply(convert_to_str)
+            uploadedData['MONTH'] = uploadedData['MONTH'].apply(convert_to_str)
+            uploadedData['DATE'] = uploadedData['DATE'].apply(convert_to_str)
+            uploadedData['START_TIME'] = uploadedData['START_TIME'].apply(str)
+            uploadedData['END_TIME'] = uploadedData['END_TIME'].apply(str)
+            uploadedData['START_TIME'] = uploadedData['YEAR']+"-"+uploadedData['MONTH']+"-"+uploadedData['DATE']+" "+uploadedData['START_TIME']
+            uploadedData['END_TIME'] = uploadedData['YEAR']+"-"+uploadedData['MONTH']+"-"+uploadedData['DATE']+" "+uploadedData['END_TIME']
+            uploadedData['START_TIME'] = uploadedData['START_TIME'].apply(convert_to_dateTime)
+            uploadedData['END_TIME'] = uploadedData['END_TIME'].apply(convert_to_dateTime)
+            uploadedData.drop(['YEAR', 'MONTH', 'DATE'],axis=1, inplace=True)
 
             try:
                 # deleting previous allowed students

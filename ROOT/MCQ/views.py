@@ -245,9 +245,23 @@ def students_portal(request):
     # list uploaded by admin to grant access to students to take the test
     approvedEnrollment = list(EnrollemntsForQuiz.objects.values_list("ENROLLMENT_NUMBER", flat=True).distinct())+['admin']
 
+    if request.user.is_superuser:
+
+        access = 'granted'
+
+    else:
+        access = 'denied'
+        startTime = list(EnrollemntsForQuiz.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values_list("START_TIME", flat=True))[0]
+        endtTime = list(EnrollemntsForQuiz.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values_list("END_TIME", flat=True))[0]
+
+
     if request.user.username not in approvedEnrollment:
 
         context.update({'disabled':'disabled',})
+
+    if access == 'denied':
+        if datetime.datetime.now() <= startTime or datetime.datetime.now() > endtTime:
+            context.update({'disabled':'disabled',})
 
     return render(request, PAGE_MAPPER.pageDict[pageDictKey], context)
 
