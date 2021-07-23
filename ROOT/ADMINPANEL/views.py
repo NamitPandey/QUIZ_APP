@@ -4,7 +4,7 @@ from django.core.files.storage import FileSystemStorage
 from django.utils.timezone import now
 from django.http import JsonResponse,HttpResponse
 from MCQ.models import QuizData, UserRegistration
-from django.db.models import F, Count
+from django.db.models import F, Count, Sum
 
 # all static packages import below
 import csv
@@ -35,6 +35,22 @@ def admin_home(request):
     pageDictKey = 'adminHome'
     # print(ADMIN_PAGE_MAPPER.pageDict.keys())
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey],)
+
+def rearrange_list(arrayList, deleteItm):
+
+    resultedList = []
+
+    if type(deleteItm) != list():
+
+        deleteItm = [deleteItm]
+
+    for item in arrayList:
+
+        if item not in deleteItm:
+
+            resultedList.append(item)
+
+    return resultedList
 
 @login_required
 def upload_files(request):
@@ -177,6 +193,14 @@ def dashboard(request):
 def get_report(enrollmentNo):
 
     studntRep = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enrollmentNo,)
+    # .values('CATEGORY').annotate(TOTAL_TIME=Sum("")).order_by('CATEGORY',)
+    test = studntRep.to_dataframe()#.sort_values(['CATEGORY', 'START_TIME'])
+    test['END_TIME'] = test['START_TIME'].shift(-1)
+    test['TIME_TAKEN'] =  test['END_TIME'] - test['START_TIME']
+    print(test['TIME_TAKEN'])
+    print(test[['CATEGORY','TIME_TAKEN']].groupby(['CATEGORY']).sum()['TIME_TAKEN'].dt.total_seconds()/6)
+    # [["CATEGORY", "START_TIME"]].groupby("CATEGORY").sum())
+
     studntRep = studntRep.values('CATEGORY', 'ANSWER').filter(ANSWER__iexact = F('CORRECT_ANSWER')).order_by('CATEGORY', 'ANSWER')
     studntRep = studntRep.values('CATEGORY').annotate(COUNT = Count('CATEGORY')).order_by('CATEGORY')
     total = 100/sum(studntRep.to_dataframe()['COUNT'])
@@ -270,4 +294,51 @@ def student_report(request):
         'piechartSeries':piechartSeries,
         'columnSeries': columnSeries,
         })
+    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
+
+
+@login_required
+def records(request):
+
+    pageDictKey = 'records'
+
+    registeredUsers = UserRegistration.objects.all().order_by("SCHOOL","PROGRAM", "SEMESTER", "ENROLLMENT_NUMBER")
+    schoolHeader = list(set(registeredUsers.values_list("SCHOOL", flat=True)))
+    semesterHeader = list(set(registeredUsers.values_list("SEMESTER", flat=True)))
+
+    context={
+    "SCHOL": staticVariables.SCHOL_LIST, # school list
+    "registeredUsers":registeredUsers,
+    "GNDR": staticVariables.GENDR_LIST, # program list
+    "schoolHeader":', '.join(schoolHeader),
+    "semesterHeader":', '.join([str(_) for _ in semesterHeader]),
+    "totalStrength":registeredUsers.count()
+    }
+
+    if request.method == 'POST':
+
+        # catgry = request.POST.getlist("cat_POST")
+        schol = request.POST.getlist("school_POST")
+        semstr = request.POST.getlist("semester_POST")
+        gender = request.POST.getlist("gender_POST")
+
+        registeredUsers = UserRegistration.objects.filter(SCHOOL__in=schol,
+                                                        SEMESTER__in=semstr,
+                                                        GENDER__in=gender,
+                                                        ).order_by("SCHOOL","PROGRAM", "SEMESTER", "ENROLLMENT_NUMBER")
+        schoolHeader = list(set(registeredUsers.values_list("SCHOOL", flat=True)))
+        semesterHeader = list(set(registeredUsers.values_list("SEMESTER", flat=True)))
+        context.update({
+        "scholList": schol, # school list
+        'semstrList':semstr,
+        "genderLIst": gender,
+        "registeredUsers":registeredUsers,
+        "schoolHeader":schoolHeader,
+        "semesterHeader":semesterHeader,
+        "schoolHeader":', '.join(schoolHeader),
+        "semesterHeader":', '.join([str(_) for _ in semesterHeader]),
+        "totalStrength":registeredUsers.count()
+        })
+
+
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)

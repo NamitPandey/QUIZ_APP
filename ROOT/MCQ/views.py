@@ -39,28 +39,6 @@ def get_category(enrollmentNo):
             else:
 
                 continue
-                # catList.remove(cat)
-
-        # for ind, val in enumerate(catList):
-        #
-        #     try:
-        #         if catCheck.query(f"CATEGORY == '{catList[catID]}'")['CAT_count'][0] == countCheck:
-        #
-        #             catList.remove(catList[catID])
-        #
-        #             return catID+1
-        #
-        #     except:
-        #
-        #         pass
-
-
-
-        # for ind, val in enumerate(catList):
-        #
-        #     count = catCheck.query(f"CATEGORY == {val}")['CAT_count'][0]
-            # if
-
 
 
 def get_mainID(mainID, qstnID, enrollmentNo):
@@ -251,8 +229,14 @@ def students_portal(request):
 
     else:
         access = 'denied'
-        startTime = list(EnrollemntsForQuiz.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values_list("START_TIME", flat=True))[0]
-        endtTime = list(EnrollemntsForQuiz.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values_list("END_TIME", flat=True))[0]
+        try:
+            startTime = list(EnrollemntsForQuiz.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values_list("START_TIME", flat=True))[0]
+            endtTime = list(EnrollemntsForQuiz.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values_list("END_TIME", flat=True))[0]
+
+        except:
+
+            context.update({'disabled':'disabled',})
+            return render(request, PAGE_MAPPER.pageDict[pageDictKey], context)
 
 
     if request.user.username not in approvedEnrollment:
@@ -306,7 +290,7 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter, resultedTime):
 
         # getting time and adding 45 minutes for test time limit
         nowTime=datetime.datetime.now()
-        maxTime = nowTime+datetime.timedelta(minutes=45)
+        maxTime = nowTime+datetime.timedelta(minutes=44)
 
         resultedTime = datetime.datetime.strptime(str(maxTime - nowTime), "%H:%M:%S")
 

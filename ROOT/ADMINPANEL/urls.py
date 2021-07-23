@@ -13,4 +13,5 @@ urlpatterns = [
     path("download_data/", views.download_data, name='download_data'),
     path("dashboard/", views.dashboard, name='dashboard'),
     path("studentreport/", views.student_report, name='studentreport'),
+    path("records/", views.records, name='records'),
 ]

@@ -10,4 +10,5 @@ pageDict={
 "downloadPage":f"{MAIN_DIR_NME}/downloadFiles.html",
 "dashboard":f"{MAIN_DIR_NME}/dashboard.html",
 "student":f"{MAIN_DIR_NME}/studentReport.html",
+"records":f"{MAIN_DIR_NME}/records.html",
 }
