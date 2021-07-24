@@ -175,10 +175,13 @@ def dashboard(request):
 
     pageDictKey = 'dashboard'
     context={
+    "DASH": "DISABLED",
     "CATGRY": staticVariables.CATEGORY_LIST, # CATEGORY list
     "SCHOL": staticVariables.SCHOL_LIST, # school list
     "PRGM": staticVariables.PROGRM_LIST, # program list
+    "GNDR": staticVariables.GENDR_LIST,
     }
+
 
 
     if request.method == 'POST':
@@ -187,6 +190,17 @@ def dashboard(request):
         program = request.POST.getlist("program_POST")
         gender = request.POST.getlist("gender_POST")
 
+        quizData = QuizData.objects.values("ENROLLMENT_NUMBER").annotate(COUNT = Count("QUESTION_ID")).order_by("ENROLLMENT_NUMBER")
+        TOTAL_ATTEMPT = quizData.count()
+
+        students_with_all_fourthy = round((quizData.filter(COUNT__gte=40).count()/TOTAL_ATTEMPT)*100) # percentage of students with all 40 questions
+
+
+        context.update({
+            "DASH": "ENABLED",
+            "students_with_all_fourth":students_with_all_fourthy,
+            "TOTAL_ATTEMPT":TOTAL_ATTEMPT,
+            })
 
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
 

@@ -7,7 +7,7 @@ class UserRegistration(models.Model):
 
     FIRST_NAME = models.CharField(max_length=100)
     LAST_NAME = models.CharField(max_length=100)
-    ENROLLMENT_NUMBER = models.CharField(max_length=100)
+    ENROLLMENT_NUMBER = models.CharField(max_length=1000)
     # EMAIL = models.EmailField(max_length = 254)
     GENDER = models.CharField(max_length=10)
     SEMESTER = models.IntegerField()
@@ -23,12 +23,12 @@ class Question(models.Model):
 
     QUESTION_ID = models.IntegerField()
     CATEGORY = models.CharField(max_length=50)
-    QUESTION = models.CharField(max_length=1000)
-    CORRECT = models.CharField(max_length=50)
-    CHOICE_1 = models.CharField(max_length=50)
-    CHOICE_2 = models.CharField(max_length=50)
-    CHOICE_3 = models.CharField(max_length=50, blank=True)
-    CHOICE_4 = models.CharField(max_length=50, blank=True)
+    QUESTION = models.CharField(max_length=50000)
+    CORRECT = models.CharField(max_length=100)
+    CHOICE_1 = models.CharField(max_length=100)
+    CHOICE_2 = models.CharField(max_length=100)
+    CHOICE_3 = models.CharField(max_length=100, blank=True)
+    CHOICE_4 = models.CharField(max_length=100, blank=True)
     objects = DataFrameManager()
 
     def __str__(self):
@@ -57,11 +57,11 @@ class AllowedEnrollments(models.Model):
 class QuizData(models.Model):
 
     QUESTION_ID = models.IntegerField()
-    ACTUAL_QUESTION = models.CharField(max_length=1000)
-    ENROLLMENT_NUMBER = models.CharField(max_length=100)
+    ACTUAL_QUESTION = models.CharField(max_length=50000)
+    ENROLLMENT_NUMBER = models.CharField(max_length=1000)
     CATEGORY = models.CharField(max_length=50)
-    ANSWER = models.EmailField(max_length = 254)
-    CORRECT_ANSWER = models.CharField(max_length=50)
+    ANSWER = models.CharField(max_length = 1000)
+    CORRECT_ANSWER = models.CharField(max_length=1000)
     START_TIME = models.DateTimeField(auto_now=True)
     END_TIME = models.DateTimeField(auto_now_add=True)
     # SEMESTER = models.IntegerField()

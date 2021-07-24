@@ -101,597 +101,614 @@
   </div>
 
   <br>
-
-    <div class="row">
-      <div class="col-12">
-        <div class="card card-chart">
-          <div class="card-header ">
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="container text-center mt-5" >
-                  <h1 style="font-weight:900;">DASHBOARD IS UNDER DEVELOPMENT</h1>
+   {% if DASH == 'DISABLED' %}
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-chart">
+            <div class="card-header ">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="container text-center mt-5" >
+                    <h1 style="font-weight:900;">Student's Result Dashboard</h1>
+                    <h4 style="font-weight:900;"> Select the above options to start analysis</h4>
+                  </div>
                 </div>
               </div>
+              <br>
             </div>
-            <br>
           </div>
         </div>
       </div>
+   {% else %}
+       <div class="row">
+         <div class="col-12">
+           <div class="card card-chart">
+             <div class="card-header ">
+               <div class="row">
+                 <div class="col-sm-12">
+                   <div class="container text-center mt-5" >
+                     <h2 style="font-weight:900;"><strong>{{students_with_all_fourth}}</strong>% of students attempted all 40 Questions</h2>
+                   </div>
+                 </div>
+               </div>
+               <br>
+             </div>
+           </div>
+         </div>
+       </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-chart">
+            <div class="card-header ">
+              <div class="row">
+                <div class="col-sm-12">
+                  <script src="https://code.highcharts.com/highcharts.js"></script>
+                  <script src="https://code.highcharts.com/modules/series-label.js"></script>
+                  <div id='container'>
+
+                  </div>
+                </div>
+              </div>
+              <br>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-chart">
+            <div class="card-header ">
+              <div class="row">
+                <div class="col-sm-12">
+                  <script src="https://code.highcharts.com/highcharts.js"></script>
+                  <script src="https://code.highcharts.com/modules/series-label.js"></script>
+                  <div id='container2'>
+
+                  </div>
+                </div>
+              </div>
+              <br>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <div class="card card-chart">
+            <div class="card-header ">
+              <div class="row">
+                <div class="col-sm-12">
+                  <script src="https://code.highcharts.com/highcharts.js"></script>
+                  <script src="https://code.highcharts.com/modules/series-label.js"></script>
+                  <div id='container3'>
+
+                  </div>
+                </div>
+              </div>
+              <br>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="card card-chart">
+            <div class="card-header ">
+              <div class="row">
+                <div class="col-sm-12">
+                  <script src="https://code.highcharts.com/highcharts.js"></script>
+                  <script src="https://code.highcharts.com/modules/series-label.js"></script>
+                  <div id='container4'>
+
+                  </div>
+                </div>
+              </div>
+              <br>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="card card-chart">
+            <div class="card-header ">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h3 class="title text-center text-warning">TOP 10 SCRORER</h3>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class="text-primary">
+                        <th style="font-weight:700;">
+                          ENROLLMENT NUMBER
+                        </th>
+                        <th style="font-weight:700;">
+                          SCHOOL
+                        </th>
+                        <th style="font-weight:700;">
+                          PROGRAM
+                        </th>
+                        <th style="font-weight:700;">
+                          SEMESTER
+                        </th>
+                        <th style="font-weight:700;">
+                          MARKS
+                        </th>
+                        <th style="font-weight:700;">
+                          PERCENTAGE
+                        </th>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            1
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            2
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            3
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            4
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            5
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            6
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            8
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            9
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <br>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="card card-chart">
+            <div class="card-header ">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h3 class="title text-center text-warning">LOWER 10 SCRORER</h3>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class="text-primary">
+                        <th style="font-weight:700;">
+                          ENROLLMENT NUMBER
+                        </th>
+                        <th style="font-weight:700;">
+                          SCHOOL
+                        </th>
+                        <th style="font-weight:700;">
+                          PROGRAM
+                        </th>
+                        <th style="font-weight:700;">
+                          SEMESTER
+                        </th>
+                        <th style="font-weight:700;">
+                          MARKS
+                        </th>
+                        <th style="font-weight:700;">
+                          PERCENTAGE
+                        </th>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            1
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            2
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            3
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            4
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            5
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            6
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            8
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            9
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                        <tr>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            10
+                          </td>
+                          <td>
+                            7
+                          </td>
+                          <td>
+                            20
+                          </td>
+                          <td>
+                            100%
+                          </td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <br>
+            </div>
+          </div>
+        </div>
+
     </div>
-
-    <div class="row">
-      <div class="col-12">
-        <div class="card card-chart">
-          <div class="card-header ">
-            <div class="row">
-              <div class="col-sm-12">
-                <script src="https://code.highcharts.com/highcharts.js"></script>
-                <script src="https://code.highcharts.com/modules/series-label.js"></script>
-                <div id='container'>
-
-                </div>
-              </div>
-            </div>
-            <br>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-12">
-        <div class="card card-chart">
-          <div class="card-header ">
-            <div class="row">
-              <div class="col-sm-12">
-                <script src="https://code.highcharts.com/highcharts.js"></script>
-                <script src="https://code.highcharts.com/modules/series-label.js"></script>
-                <div id='container2'>
-
-                </div>
-              </div>
-            </div>
-            <br>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-6">
-        <div class="card card-chart">
-          <div class="card-header ">
-            <div class="row">
-              <div class="col-sm-12">
-                <script src="https://code.highcharts.com/highcharts.js"></script>
-                <script src="https://code.highcharts.com/modules/series-label.js"></script>
-                <div id='container3'>
-
-                </div>
-              </div>
-            </div>
-            <br>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-6">
-        <div class="card card-chart">
-          <div class="card-header ">
-            <div class="row">
-              <div class="col-sm-12">
-                <script src="https://code.highcharts.com/highcharts.js"></script>
-                <script src="https://code.highcharts.com/modules/series-label.js"></script>
-                <div id='container4'>
-
-                </div>
-              </div>
-            </div>
-            <br>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12">
-        <div class="card card-chart">
-          <div class="card-header ">
-            <div class="row">
-              <div class="col-sm-12">
-                <h3 class="title text-center text-warning">TOP 10 SCRORER</h3>
-                <div class="table-responsive">
-                  <table class="table">
-                    <thead class="text-primary">
-                      <th style="font-weight:700;">
-                        ENROLLMENT NUMBER
-                      </th>
-                      <th style="font-weight:700;">
-                        SCHOOL
-                      </th>
-                      <th style="font-weight:700;">
-                        PROGRAM
-                      </th>
-                      <th style="font-weight:700;">
-                        SEMESTER
-                      </th>
-                      <th style="font-weight:700;">
-                        MARKS
-                      </th>
-                      <th style="font-weight:700;">
-                        PERCENTAGE
-                      </th>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          1
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          2
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          3
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          4
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          5
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          6
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          8
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          9
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <br>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12">
-        <div class="card card-chart">
-          <div class="card-header ">
-            <div class="row">
-              <div class="col-sm-12">
-                <h3 class="title text-center text-warning">LOWER 10 SCRORER</h3>
-                <div class="table-responsive">
-                  <table class="table">
-                    <thead class="text-primary">
-                      <th style="font-weight:700;">
-                        ENROLLMENT NUMBER
-                      </th>
-                      <th style="font-weight:700;">
-                        SCHOOL
-                      </th>
-                      <th style="font-weight:700;">
-                        PROGRAM
-                      </th>
-                      <th style="font-weight:700;">
-                        SEMESTER
-                      </th>
-                      <th style="font-weight:700;">
-                        MARKS
-                      </th>
-                      <th style="font-weight:700;">
-                        PERCENTAGE
-                      </th>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          1
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          2
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          3
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          4
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          5
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          6
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          8
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          9
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                      <tr>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          10
-                        </td>
-                        <td>
-                          7
-                        </td>
-                        <td>
-                          20
-                        </td>
-                        <td>
-                          100%
-                        </td>
-                      </tr>
-
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <br>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
+  {% endif %}
 </div>
 
 <script>
