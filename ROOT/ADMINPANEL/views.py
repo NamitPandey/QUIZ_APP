@@ -92,7 +92,7 @@ def upload_data(request, dataBaseKey):
 
 
 
-    context={"MSG":"NOT_UPLOADED", "resultStat":get_result_status()}
+    context={"MSG":"NOT_UPLOADED", "resultStat":get_result_status(), "pageDictKey":pageDictKey,}
 
     if request.method == "POST":
 
