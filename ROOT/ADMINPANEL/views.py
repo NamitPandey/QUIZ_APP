@@ -239,16 +239,16 @@ def get_report(enrollmentNo):
 
     studntRep = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enrollmentNo,)
     # .values('CATEGORY').annotate(TOTAL_TIME=Sum("")).order_by('CATEGORY',)
-    test = studntRep.to_dataframe()#.sort_values(['CATEGORY', 'START_TIME'])
-    test['END_TIME'] = test['START_TIME'].shift(-1)
-    test['TIME_TAKEN'] =  test['END_TIME'] - test['START_TIME']
-    print(test['TIME_TAKEN'])
-    print(test[['CATEGORY','TIME_TAKEN']].groupby(['CATEGORY']).sum()['TIME_TAKEN'].dt.total_seconds()/6)
+    # test = studntRep.to_dataframe()#.sort_values(['CATEGORY', 'START_TIME'])
+    # test['END_TIME'] = test['START_TIME'].shift(-1)
+    # test['TIME_TAKEN'] =  test['END_TIME'] - test['START_TIME']
+    # print(test['TIME_TAKEN'])
+    # print(test[['CATEGORY','TIME_TAKEN']].groupby(['CATEGORY']).sum()['TIME_TAKEN'].dt.total_seconds()/6)
     # [["CATEGORY", "START_TIME"]].groupby("CATEGORY").sum())
 
     studntRep = studntRep.values('CATEGORY', 'ANSWER').filter(ANSWER__iexact = F('CORRECT_ANSWER')).order_by('CATEGORY', 'ANSWER')
     studntRep = studntRep.values('CATEGORY').annotate(COUNT = Count('CATEGORY')).order_by('CATEGORY')
-    total = 100/sum(studntRep.to_dataframe()['COUNT'])
+    total = 10#100/sum(studntRep.to_dataframe()['COUNT'])
     studntRep = studntRep.annotate(PER=F('COUNT')*total).order_by('CATEGORY')
 
     return studntRep
@@ -302,6 +302,23 @@ def student_report(request):
     "resultStat":get_result_status(),
     "pageDictKey":pageDictKey,
     }
+
+    if request.user.is_superuser:
+        pass
+    else:
+        studntRep = get_report(request.user.username)
+        piechartSeries, columnSeries, categoryList = highchart(studntRep)
+        TOTAL_CRT = sum(studntRep.to_dataframe()['COUNT'])
+
+        context.update({
+        'studentData':studentData,
+        'studntRep':studntRep,
+        'TOTAL_CRT':TOTAL_CRT,
+
+        'categoryList':categoryList,
+        'piechartSeries':piechartSeries,
+        'columnSeries': columnSeries,
+        })
 
     if request.method == 'POST':
 
@@ -407,7 +424,5 @@ def toggle_result(request, status, pageDictKey):
         update_result_status(request, status)
 
         context.update({"resultStat":get_result_status(),})
-
-
 
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)

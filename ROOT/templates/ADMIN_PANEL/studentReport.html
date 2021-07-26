@@ -81,7 +81,7 @@
                             {{cat.COUNT|mul:2}}
                           </td>
                           <td class="">
-                            {{cat.PER|floatformat:1}}%
+                            {{cat.COUNT|mul:2|perc:20}}%
                           </td>
                         </tr>
                       {% endfor %}
@@ -110,10 +110,10 @@
                       </tr>
                     </tbody>
                   </table>
-                  <hr>
-                  <div class="button-container">
+                  <!-- <hr> -->
+                  <!-- <div class="button-container">
                     <h4 class="text-center">Some text that you want to add</h4>
-                  </div>
+                  </div> -->
                 </div>
 
               </div>
@@ -138,8 +138,8 @@
                   <p class="description text-center" style="color:black;">
                     <strong>Email:</strong><a href="mailto:EnrollmentNumber@gsfcuniversity.ac.in"> {{val.ENROLLMENT_NUMBER}}@gsfcuniversity.ac.in</a><br>
                     <strong>Gender:</strong> {{val.GENDER}} <br>
-                    <strong>Program:</strong> {{val.PROGRAM}}<br>
-                    <strong>School:</strong> {{val.SCHOOL}} &nbsp <strong>Semester:</strong> {{val.SEMESTER}}<br>
+                    <strong>School:</strong> {{val.SCHOOL|replace}}<br>
+                    <strong>Program:</strong> {{val.PROGRAM|replace}} &nbsp <strong>Semester:</strong> {{val.SEMESTER}}<br>
                   </p>
 
                 {% endfor %}
@@ -205,7 +205,8 @@
         text: 'Enrollment Number Performance per Category'
     },
     tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
+
     },
     accessibility: {
         point: {
@@ -218,7 +219,7 @@
             cursor: 'pointer',
             dataLabels: {
                 enabled: true,
-                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                format: '<b>{point.name}</b>: {point.y:.1f} %'
             }
         }
     },
