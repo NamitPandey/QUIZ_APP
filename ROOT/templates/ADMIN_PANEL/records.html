@@ -76,9 +76,9 @@
                     {% for gndr in GNDR %}
 
                     {% if gndr in genderLIst%}
-                      <option value="{{gndr}}" style="font-weight:600; color:black;" selected>{{gndr|title}}</option>
+                      <option value="{{gndr|title}}" style="font-weight:600; color:black;" selected>{{gndr|title}}</option>
                     {% else%}
-                      <option value="{{gndr}}" style="font-weight:600; color:black;">{{gndr|title}}</option>
+                      <option value="{{gndr|title}}" style="font-weight:600; color:black;">{{gndr|title}}</option>
                     {% endif %}
 
                     {% endfor %}
@@ -109,9 +109,15 @@
           <div class="card-header ">
             <div class="row">
               <div class="col-sm-12">
-                <h4 class="text-center text-info col-sm-12">TOTAL STRENGTH OF STUDENTS UNDER <strong>{{schoolHeader|replace}}</strong> AND SEMESTER <strong>{{semesterHeader}}</strong>
-                  is <strong> <u>{{totalStrength}}</u></strong>
-                </h4>
+                {% if totalStrength <= 1%}
+                  <h4 class="text-center text-info col-sm-12">TOTAL STRENGTH OF STUDENTS UNDER <strong>{{schoolHeader|replace}}</strong> AND SEMESTER <strong>{{semesterHeader}}</strong>
+                    is <strong> <u>{{totalStrength}}</u></strong>
+                  </h4>
+                {% else%}
+                  <h4 class="text-center text-info col-sm-12">TOTAL STRENGTH OF STUDENTS UNDER <strong>{{schoolHeader|replace}}</strong> AND SEMESTER <strong>{{semesterHeader}}</strong>
+                    are <strong> <u>{{totalStrength}}</u></strong>
+                  </h4>
+                {% endif %}
                 <div class="table-responsive">
                   <table class="table">
                     <thead class="text-primary">
@@ -163,7 +169,7 @@
                             {{data.SCHOOL|replace}}
                           </td>
                           <td>
-                            {{data.PROGRAM}}
+                            {{data.PROGRAM|replace}}
                           </td>
                           <td>
                             {{data.SEMESTER}}

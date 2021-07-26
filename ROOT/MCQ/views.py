@@ -14,7 +14,7 @@ import datetime
 
 # all static packages import below
 from . import (PAGE_MAPPER, staticVariables)
-
+from ADMINPANEL.views import get_result_status
 # Create your views here.
 global CATEGORY, RNDM_NMBR
 
@@ -159,7 +159,7 @@ def user_registration(request):
             FIRST_NAME=firstname.title(),
             LAST_NAME=lastname.title(),
             ENROLLMENT_NUMBER=enrollment,
-            # EMAIL=email,
+            EMAIL=str(enrollment)+"@gsfcuniversity.ac.in",
             GENDER =gender,
             SEMESTER =semester,
             SCHOOL =school,
@@ -218,6 +218,7 @@ def students_portal(request):
     "programsList": staticVariables.PROGRM_LIST,
     'disabled':'',
     "counter":1,
+    "resultStat":get_result_status(),
     }
 
     # list uploaded by admin to grant access to students to take the test

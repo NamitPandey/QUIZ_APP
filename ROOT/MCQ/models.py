@@ -8,7 +8,7 @@ class UserRegistration(models.Model):
     FIRST_NAME = models.CharField(max_length=100)
     LAST_NAME = models.CharField(max_length=100)
     ENROLLMENT_NUMBER = models.CharField(max_length=1000)
-    # EMAIL = models.EmailField(max_length = 254)
+    EMAIL = models.EmailField(max_length = 500)
     GENDER = models.CharField(max_length=10)
     SEMESTER = models.IntegerField()
     SCHOOL= models.CharField(max_length=100)
@@ -71,13 +71,4 @@ class QuizData(models.Model):
     objects = DataFrameManager()
 
     def __str__(self):
-        return f"{self.QUESTION_ID}-{self.ACTUAL_QUESTION}"
-
-class Declare_Result(models.Model):
-
-    RESULT_STATUS = models.IntegerField(default=0)
-
-    objects = DataFrameManager()
-
-    def __str__(self):
-        return f"{self.RESULT_STATUS}"
+        return f"{self.QUESTION_ID}-{self.CATEGORY}-{self.ACTUAL_QUESTION}"

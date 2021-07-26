@@ -26,7 +26,7 @@
               <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
                 <label style="color:black;"><strong>MODULE</strong></label>
                 <div class="form-group" >
-                  <select  id="travel" class="selectpicker" name="cat_POST">
+                  <select  id="travel" class="selectpicker" name="cat_POST" required>
 
                     {% for cat in CATGRY %}
                       <option value="{{cat}}" style="font-weight:600; color:black;">{{cat|replace|title}}</option>
@@ -42,7 +42,7 @@
               <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
                 <label style="color:black;"><strong>PROGRAM</strong></label>
                 <div class="form-group" >
-                  <select  id="travel" class="selectpicker" name="program_POST">
+                  <select  id="travel" class="selectpicker" name="program_POST" required>
 
                     {% for prg in PRGM %}
                       <option value="{{prg}}" style="font-weight:600; color:black;">{{prg|replace|title}}</option>
@@ -59,7 +59,7 @@
               <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
                 <label style="color:black;"><strong>SEMESTER</strong></label>
                 <div class="form-group" >
-                  <select  id="travel" class="selectpicker" name="semester_POST" multiple>
+                  <select  id="travel" class="selectpicker" name="semester_POST" multiple required>
 
                     {% for prg in '1 2 3 4 5 6 7'|makelist %}
                       <option value="{{prg}}" style="font-weight:600; color:black;">{{prg}}</option>
@@ -75,7 +75,7 @@
               <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
                 <label style="color:black;"><strong>GENDER</strong></label>
                 <div class="form-group" >
-                  <select  id="travel" class="selectpicker" name="gender_POST" multiple>
+                  <select  id="travel" class="selectpicker" name="gender_POST" multiple required>
 
                     {% for gndr in GNDR %}
                       <option value="{{gndr}}" style="font-weight:600; color:black;">{{gndr|title}}</option>

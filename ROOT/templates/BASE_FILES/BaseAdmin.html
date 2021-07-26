@@ -61,15 +61,15 @@
               </a>
             </li>
             <li>
-              <a href="{% url 'ADMINPANEL:uploadfiles' %}">
-                <i class="now-ui-icons arrows-1_cloud-upload-94"></i>
-                <p>UPLOAD FILES</p>
-              </a>
-            </li>
-            <li>
               <a href="{% url 'ADMINPANEL:records' %}">
                 <i class="now-ui-icons education_agenda-bookmark"></i>
                 <p>RECORDS</p>
+              </a>
+            </li>
+            <li>
+              <a href="{% url 'ADMINPANEL:uploadfiles' %}">
+                <i class="now-ui-icons arrows-1_cloud-upload-94"></i>
+                <p>UPLOAD FILES</p>
               </a>
             </li>
             <li>
@@ -139,19 +139,24 @@
           </button>
           <div class="collapse navbar-collapse justify-content-end" id="navigation">
 
-            <!-- <form action="#" method="POST">
+            <form action="#" method="POST">
               {% csrf_token %}
 
               <div class="input-group no-border">
                 <div class="custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" type="submit" value='1' id="customSwitch1" checked>
-                  <label class="custom-control-label" for="customSwitch1" style="font-weight: 600;">Declare Result</label>
-                  <input type="hidden" name="next" value="https://getbootstrap.com/docs/4.0/components/buttons/">
-
+                  {% if resultStat == 1 %}
+                    <input type="checkbox" class="custom-control-input" type="submit" value='1' id="customSwitch1" onclick='switchOFF()' checked>
+                    <label class="custom-control-label" for="customSwitch1" style="font-weight: 600;">Result Declared</label>
+                    <input type="hidden" name="next" value="https://getbootstrap.com/docs/4.0/components/buttons/">
+                  {% else %}
+                    <input type="checkbox" class="custom-control-input" type="submit" value='1' onclick='switchON()' id="customSwitch1">
+                    <label class="custom-control-label" for="customSwitch1" style="font-weight: 600;">Result Pending</label>
+                    <input type="hidden" name="next" value="https://getbootstrap.com/docs/4.0/components/buttons/">
+                  {% endif %}
                   &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
                 </div>
               </div>
-            </form> -->
+            </form>
             {% if user.is_superuser %}
               <form action="{% url 'ADMINPANEL:studentreport' %}" method="POST">
                 {% csrf_token %}
@@ -189,6 +194,15 @@
       </footer>
     </div>
   </div>
+
+  <script type="text/javascript">
+    function switchOFF() {
+      window.location = "{% url 'ADMINPANEL:announcement' 0 pageDictKey %}";
+      }
+    function switchON() {
+      window.location = "{% url 'ADMINPANEL:announcement' 1 pageDictKey %}";
+      }
+  </script>
   <!--   Core JS Files   -->
   <script src="{% static 'adminDash/js/core/jquery.min.js' %}"></script>
   <script src="{% static 'adminDash/js/core/popper.min.js' %}"></script>

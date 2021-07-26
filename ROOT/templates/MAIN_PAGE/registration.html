@@ -123,9 +123,9 @@
                                     <div class="rs-select2 js-select-simple select--no-search">
                                       <select id="school" class="select" name="school" onchange="javascript: dynamicdropdown(this.options[this.selectedIndex].value);" required>
                                         <option disabled="disabled" selected="selected">Choose School</option>
-                                        <option value="SOT">School of Technology</option>
-                                        <option value="SOS">School of Science</option>
-                                        <option value="SOM">School of Managment</option>
+                                        <option value="School_of_Technology">School of Technology</option>
+                                        <option value="School_of_Science">School of Science</option>
+                                        <option value="School_of_Management">School of Managment</option>
                                       </select>
                                         <div class="select-dropdown"></div>
                                     </div>
@@ -149,13 +149,13 @@
                             <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">Password</label>
-                                    <input class="input--style-4" type="password" placeholder="Password" name="password_main">
+                                    <input class="input--style-4" type="password" placeholder="Password" name="password_main" required>
                                 </div>
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">Confirm Password</label>
-                                    <input class="input--style-4" type="password" placeholder="Confirm Password" name="password_confirm">
+                                    <input class="input--style-4" type="password" placeholder="Confirm Password" name="password_confirm" required>
                                 </div>
                             </div>
                         </div>
@@ -212,26 +212,35 @@
         {
             switch (listindex)
             {
-            case "SOT" :
+            case "School_of_Technology" :
                 document.getElementById("program").options[0]=new Option("Choose program","");
-                document.getElementById("program").options[1]=new Option("B.Tech CSE","SOT");
-                document.getElementById("program").options[2]=new Option("B.Tech Chemical","SOT");
-                document.getElementById("program").options[3]=new Option("Fire & safety","SOT");
+                document.getElementById("program").options[1]=new Option("Chemical Engineering","Chemical_Engineering");
+                document.getElementById("program").options[2]=new Option("Mechanical Engineering","Mechanical_Engineering");
+                document.getElementById("program").options[3]=new Option("Computer Science & Engineering","Computer_Science_and_Engineering");
+                document.getElementById("program").options[4]=new Option("Fire & Environment, Health, Safety Engineering","Fire_and_Safety_Engineering");
 
                 break;
-            case "SOS" :
+            case "School_of_Science" :
                 document.getElementById("program").options[0]=new Option("Choose program","");
-                document.getElementById("program").options[1]=new Option("sos2","SOS");
-                document.getElementById("program").options[2]=new Option("sos3","SOS");
-                document.getElementById("program").options[3]=new Option("sos1","SOS");
+                document.getElementById("program").options[1]=new Option("Chemistry (Hons.)","Chemistry_HONS");
+                document.getElementById("program").options[2]=new Option("Biotechnology (Hons.)","Biotechnology_HONS");
+                document.getElementById("program").options[3]=new Option("Industrial Chemistry (Hons.)","Industrial_Chemistry_HONS");
+                document.getElementById("program").options[4]=new Option("Micro Biology (Hons.)","Micro_Biology_HONS");
+                document.getElementById("program").options[5]=new Option("Chemistry (M.Sc.)","Chemistry_MSC");
+                document.getElementById("program").options[6]=new Option("Biotechnology (M.Sc.)","Biotechnology_MSC");
+                document.getElementById("program").options[7]=new Option("Industrial Chemistry (M.Sc.)","Industrial_Chemistry_MSC");
+                document.getElementById("program").options[8]=new Option("Chemistry (Ph. D)","Chemistry_PHD");
+                document.getElementById("program").options[9]=new Option("Biotechnology (Ph. D)","Biotechnology_PHD");
+
                 break;
-            case "SOM" :
+            case "School_of_Management" :
                 document.getElementById("program").options[0]=new Option("Choose program","");
-                document.getElementById("program").options[1]=new Option("som1","SOM");
-                document.getElementById("program").options[2]=new Option("som2","SOM");
-                document.getElementById("program").options[3]=new Option("som3","SOM");
+                document.getElementById("program").options[1]=new Option("General","General");
+                document.getElementById("program").options[2]=new Option("Business Analytics","Business_Analytics");
+
                 break;
             }
+
             return true;
         }
 

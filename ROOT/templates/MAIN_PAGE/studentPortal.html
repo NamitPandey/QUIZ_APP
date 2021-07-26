@@ -13,11 +13,6 @@
         </a>
       </div>
 
-      <!-- temp -->
-      <div class="btn-wrapper">
-          <a href="/MikeCharlieQuebec/site/admin"><button class="btn"><img src="" class="icon"><br>Django Admin</button></a>
-      </div>
-      <!-- ------  -->
     {% else %}
       <div class="btn-wrapper">
           <button class="btn"><img src="{% static 'img/user.png' %}" class="icon"><br>Profile</button>
@@ -27,6 +22,8 @@
       <div class="btn-wrapper">
           <a href="{% url 'MCQ:quiz' randmNmbr 1 randmNmbr2 counter 0%}"><button class="btn"><img src="{% static 'img/test.png' %}" class="icon"><br>Take Test</button></a>
       </div>
+    {% endif %}
+    {% if resultStat == 1 %}
       <div class="btn-wrapper">
         <a href="{% url 'ADMINPANEL:studentreport' %}">
           <button class="btn"><img src="{% static 'img/result.png' %}" class="icon"><br>Result</button>

@@ -4,6 +4,7 @@ from django.core.files.storage import FileSystemStorage
 from django.utils.timezone import now
 from django.http import JsonResponse,HttpResponse
 from MCQ.models import QuizData, UserRegistration
+from .models import Declare_Result
 from django.db.models import F, Count, Sum
 
 # all static packages import below
@@ -21,6 +22,30 @@ dataBaseMapper={
  2:'MCQ_enrollemntsforquiz', # students that will appear for test
  3:'MCQ_question',
  }
+
+def get_result_status():
+
+    try:
+        resultStat = int(list(Declare_Result.objects.values_list("RESULT_STATUS", flat=True))[0])
+    except:
+
+        return 0
+
+    return resultStat
+
+def update_result_status(request, status):
+
+    try:
+        resultStat = Declare_Result.objects.get(id=1)
+        resultStat.RESULT_STATUS= int(status)
+        resultStat.save()
+    except:
+
+        resultStat = Declare_Result.objects.all()
+        resultStat.RESULT_STATUS= 0
+        resultStat.save()
+
+
 def convert_to_str(x):
 
     return str(int(x))
@@ -33,8 +58,9 @@ def convert_to_dateTime(x):
 def admin_home(request):
 
     pageDictKey = 'adminHome'
-    # print(ADMIN_PAGE_MAPPER.pageDict.keys())
-    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey],)
+
+    context = {"resultStat":get_result_status(), "pageDictKey":pageDictKey,}
+    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey],context)
 
 def rearrange_list(arrayList, deleteItm):
 
@@ -56,8 +82,8 @@ def rearrange_list(arrayList, deleteItm):
 def upload_files(request):
 
     pageDictKey = 'uploadFiles'
-
-    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey],)
+    context = {"resultStat":get_result_status(), "pageDictKey":pageDictKey,}
+    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey],context)
 
 @login_required
 def upload_data(request, dataBaseKey):
@@ -66,7 +92,7 @@ def upload_data(request, dataBaseKey):
 
 
 
-    context={"MSG":"NOT_UPLOADED"}
+    context={"MSG":"NOT_UPLOADED", "resultStat":get_result_status()}
 
     if request.method == "POST":
 
@@ -174,14 +200,16 @@ def download_data(request):
 def dashboard(request):
 
     pageDictKey = 'dashboard'
+
     context={
     "DASH": "DISABLED",
     "CATGRY": staticVariables.CATEGORY_LIST, # CATEGORY list
     "SCHOL": staticVariables.SCHOL_LIST, # school list
     "PRGM": staticVariables.PROGRM_LIST, # program list
     "GNDR": staticVariables.GENDR_LIST,
+    "resultStat":get_result_status(),
+    "pageDictKey":pageDictKey,
     }
-
 
 
     if request.method == 'POST':
@@ -194,6 +222,9 @@ def dashboard(request):
         TOTAL_ATTEMPT = quizData.count()
 
         students_with_all_fourthy = round((quizData.filter(COUNT__gte=40).count()/TOTAL_ATTEMPT)*100) # percentage of students with all 40 questions
+
+        all_fourty_list = list(quizData.filter(COUNT__gte=40).values_list("ENROLLMENT_NUMBER", flat=True))
+        # UserRegistration.objects.filter()
 
 
         context.update({
@@ -268,6 +299,8 @@ def student_report(request):
     context = {
     'WARNING_MSG': 'DISABLE',
     'studentData':studentData,
+    "resultStat":get_result_status(),
+    "pageDictKey":pageDictKey,
     }
 
     if request.method == 'POST':
@@ -326,7 +359,9 @@ def records(request):
     "GNDR": staticVariables.GENDR_LIST, # program list
     "schoolHeader":', '.join(schoolHeader),
     "semesterHeader":', '.join([str(_) for _ in semesterHeader]),
-    "totalStrength":registeredUsers.count()
+    "totalStrength":registeredUsers.count(),
+    "resultStat":get_result_status(),
+    "pageDictKey":pageDictKey,
     }
 
     if request.method == 'POST':
@@ -339,7 +374,8 @@ def records(request):
         registeredUsers = UserRegistration.objects.filter(SCHOOL__in=schol,
                                                         SEMESTER__in=semstr,
                                                         GENDER__in=gender,
-                                                        ).order_by("SCHOOL","PROGRAM", "SEMESTER", "ENROLLMENT_NUMBER")
+                                                        )
+                                                        # .order_by("SCHOOL","PROGRAM", "SEMESTER", "ENROLLMENT_NUMBER")
         schoolHeader = list(set(registeredUsers.values_list("SCHOOL", flat=True)))
         semesterHeader = list(set(registeredUsers.values_list("SEMESTER", flat=True)))
         context.update({
@@ -353,6 +389,25 @@ def records(request):
         "semesterHeader":', '.join([str(_) for _ in semesterHeader]),
         "totalStrength":registeredUsers.count()
         })
+
+
+    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
+
+
+def toggle_result(request, status, pageDictKey):
+
+    context={
+    "pageDictKey":pageDictKey,
+    "status":status,
+    "resultStat":get_result_status(),
+    }
+
+    if int(status) != get_result_status():
+
+        update_result_status(request, status)
+
+        context.update({"resultStat":get_result_status(),})
+
 
 
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
