@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 from django.utils.timezone import now
 from django.http import JsonResponse,HttpResponse
-from MCQ.models import QuizData, UserRegistration
+from MCQ.models import QuizData, UserRegistration, Question
 from .models import Declare_Result
 from django.db.models import F, Count, Sum
 
@@ -193,6 +193,76 @@ def download_data(request):
 
     for user in users:
         writer.writerow(user)
+
+    return response
+
+@login_required
+def template_download(request, setNO):
+
+    fileName_dict = {
+    1:"UPLOAD_STUDENTS_DATA_SET_A",
+    2:"UPLOAD_ENROLLMENTS_FOR_TEST_SET_B",
+    3:"UPLOAD_QUESTIONS_SET_C",
+    }
+
+
+
+    fileName = fileName_dict[int(setNO)]
+
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachement; filename= "{fileName}.xlsx"'
+    writer = csv.writer(response)
+
+    if int(setNO) == 1:
+        writer.writerow(
+            [
+             "ENROLLMENT_NUMBER",
+            ])
+
+    elif int(setNO) == 2:
+        writer.writerow(
+            [
+             "ENROLLMENT_NUMBER",
+             "YEAR",
+             "MONTH",
+             "DATE",
+             "START_TIME",
+             "END_TIME",
+            ])
+
+    elif int(setNO) == 3:
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachement; filename= "{fileName}.csv"'
+        writer = csv.writer(response)
+
+        writer.writerow(
+            [
+             "QUESTION_ID",
+             "CATEGORY",
+             "QUESTION",
+             "CORRECT",
+             "CHOICE_1",
+             "CHOICE_2",
+             "CHOICE_3",
+             "CHOICE_4",
+            ])
+
+        users = Question.objects.all().values_list(
+                                            "QUESTION_ID",
+                                            "CATEGORY",
+                                            "QUESTION",
+                                            "CORRECT",
+                                            "CHOICE_1",
+                                            "CHOICE_2",
+                                            "CHOICE_3",
+                                            "CHOICE_4",
+                                            )
+
+        for user in users:
+            writer.writerow(user)
+
 
     return response
 

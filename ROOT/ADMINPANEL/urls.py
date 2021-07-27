@@ -15,4 +15,5 @@ urlpatterns = [
     path("studentreport/", views.student_report, name='studentreport'),
     path("records/", views.records, name='records'),
     path("announcement/<int:status>/<str:pageDictKey>", views.toggle_result, name='announcement'),
+    path("template/<int:setNO>", views.template_download, name='template'),
 ]

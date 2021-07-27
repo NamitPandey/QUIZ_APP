@@ -10,9 +10,9 @@
           <div class="card-header ">
             <div class="row">
               <div class="col-sm-12 text-center">
-                <h1 class="title" style="margin-top:2%;"><b>UPLOAD STUDENTS DATA</b></h1>
+                <h1 class="title" style="margin-top:2%;"><b>UPLOAD STUDENTS DATA <strong>(SET A)</strong></b></h1>
             		<br>
-                <p><b>Upload students Enrollment Numbers</b></p>
+                <p><b>Upload students Enrollment Numbers </b></p>
                 <br>
                 <form action="{% url 'ADMINPANEL:upload_data' 1 %}" method="POST" enctype="multipart/form-data"
                 style="text-align:center;">
@@ -23,9 +23,13 @@
                 <button class="btn btn-primary" type="submit" name="button">
                   Upload File
                 </button>
-                <br>
-                <br>
+
             		</form>
+                <a href="{% url 'ADMINPANEL:template' 1 %}">
+                  <button class="btn btn-info" name="button">
+                    <strong>DOWNLOAD TEMPLATE SET A</strong>
+                  </button>
+                </a>
               </div>
             </div>
             <br>
@@ -41,7 +45,7 @@
             <div class="card-header ">
               <div class="row">
                 <div class="col-sm-12 text-center">
-                  <h1 class="title" style="margin-top:2%;"><b>UPLOAD ENROLLMENTS FOR TEST</b></h1>
+                  <h1 class="title" style="margin-top:2%;"><b>UPLOAD ENROLLMENTS FOR TEST <strong>(SET B)</strong> </b></h1>
               		<br>
                   <p><b>Upload the Enrollment of students you want to allow to appear for test</b></p>
                   <br>
@@ -57,6 +61,11 @@
                   <br>
                   <br>
               		</form>
+                  <a href="{% url 'ADMINPANEL:template' 2 %}">
+                    <button class="btn btn-info" name="button">
+                      <strong>DOWNLOAD TEMPLATE SET B</strong>
+                    </button>
+                  </a>
                 </div>
               </div>
               <br>
@@ -71,7 +80,7 @@
             <div class="card-header ">
               <div class="row">
                 <div class="col-sm-12 text-center">
-                  <h1 class="title" style="margin-top:2%;"><b>UPLOAD QUESTIONS</b></h1>
+                  <h1 class="title" style="margin-top:2%;"><b>UPLOAD QUESTIONS <strong>(SET C)</strong></b></h1>
               		<br>
                   <p><b>Upload questions for test</b></p>
                   <br>
@@ -87,6 +96,11 @@
                   <br>
                   <br>
               		</form>
+                  <a href="{% url 'ADMINPANEL:template' 3 %}">
+                    <button class="btn btn-info" name="button">
+                      <strong>DOWNLOAD TEMPLATE SET C</strong>
+                    </button>
+                  </a>
                 </div>
               </div>
               <br>
