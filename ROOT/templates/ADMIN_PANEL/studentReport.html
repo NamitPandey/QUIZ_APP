@@ -29,7 +29,13 @@
                   <h2>{{n.one}}</h2>
                 {% endfor %}
                 {% for val in studentData %}
-                  <h4 class="card-title" style="font-weight:600;">{{val.FIRST_NAME}} {{val.LAST_NAME}}'s Summary</h4>
+                <div class="row">
+                  <h4 class="card-title col-md-6" style="font-weight:600;">{{val.FIRST_NAME}} {{val.LAST_NAME}}'s Summary</h4>
+                  <h5 class="card-title col-md-6 text-primary"  style="text-align:right;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                     Total Time Taken:  <strong style="color:black;">{{totalTimetaken|floatformat:1}} minutes</strong>
+                   </h5>
+                </div>
+
 
                 {% endfor %}
               </div>
@@ -174,10 +180,22 @@
           <div class="col-md-8">
             <div class="card card-user">
               <figure class="highcharts-figure mt-3">
+                <div id="timeChart"></div>
+              </figure>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- time series column chart -->
+          <div class="col-md-12">
+            <div class="card card-user">
+              <figure class="highcharts-figure mt-3">
                 <div id="columnChart"></div>
               </figure>
             </div>
           </div>
+
         </div>
 
     {% endif %}
@@ -202,7 +220,7 @@
     },
 
     title: {
-        text: 'Enrollment Number Performance per Category'
+        text: '<b>{{enrollmntNO|upper}}</b> Performance per Category'
     },
     tooltip: {
         pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
@@ -237,7 +255,7 @@
         type: 'column'
     },
     title: {
-        text: 'Enrollment Number Performance per Category'
+        text: '<b>{{enrollmntNO|upper}}</b> Performance per Category'
     },
     xAxis: {
         categories: {{categoryList|safe}},
@@ -264,6 +282,43 @@
         }
     },
     series: {{columnSeries|safe}}
+});
+</script>
+
+<!-- time chart -->
+<script>
+  Highcharts.chart('timeChart', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'TIME TAKE TO COMPLETE EACH CATEGORY'
+    },
+    xAxis: {
+        categories: {{categoryList|safe}},
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: '<b>Time (in minute)</b>'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">Time: </td>' +
+            '<td style="padding:0"><b> &nbsp {point.y} minutes</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: {{timeTakenSeries|safe}}
 });
 </script>
 {% endblock %}
