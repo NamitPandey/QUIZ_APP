@@ -31,8 +31,8 @@
                 {% for val in studentData %}
                 <div class="row">
                   <h4 class="card-title col-md-6" style="font-weight:600;">{{val.FIRST_NAME}} {{val.LAST_NAME}}'s Summary</h4>
-                  <h5 class="card-title col-md-6 text-primary"  style="text-align:right;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                     Total Time Taken:  <strong style="color:black;">{{totalTimetaken|floatformat:1}} minutes</strong>
+                  <h5 class="card-title col-md-6 text-primary"  style="text-align:right;">
+                     Total Time Taken:  <strong style="color:black;">{{totalTimetaken|time:'i'}} Minutes {{totalTimetaken|time:'s'}} Seconds</strong>
                    </h5>
                 </div>
 
@@ -125,6 +125,7 @@
               </div>
             </div>
           </div>
+
           <div class="col-md-4">
             <div class="card card-user">
               <div class="image">
@@ -198,6 +199,81 @@
 
         </div>
 
+        <div class="row">
+          <!-- time series each question chart -->
+          <div class="col-md-12">
+            <div class="card card-user">
+              <figure class="highcharts-figure mt-3">
+                <div id="timeEach"></div>
+              </figure>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead class=" text-primary">
+                    <th style="text-align: center; font-weight:900;">
+                      Sr
+                    </th>
+                    <th style="text-align: center; font-weight:900;">
+                      QUESTION ID
+                    </th>
+                    <th style="font-weight:900;">
+                      QUESTION
+                    </th>
+                    <th style="font-weight:900;">
+                      CATEGORY
+                    </th>
+                    <th style="font-weight:900;">
+                      ANSWERED CORRECTLY
+                    </th>
+                  </thead>
+                  <tbody>
+                    {% for cat in questionTable %}
+                      <tr>
+                        <td style="text-align: center; font-weight:600;">
+                          {{ forloop.counter }}
+                        </td>
+                        <td style="text-align: center; font-weight:600;">
+                          {{cat.QUESTION_ID}}
+                        </td>
+                        <td style="text-align: left; font-weight:600;">
+                          {{cat.ACTUAL_QUESTION}}
+                        </td>
+                        <td style="text-align: center; font-weight:600;">
+                          {{cat.CATEGORY|replace}}
+                        </td>
+                        {% if cat.ANSWER == cat.CORRECT_ANSWER %}
+                          <td>
+                            <i class="now-ui-icons ui-1_check" style="font-weight:900; color:#009407;"></i>
+                          </td>
+                        {% else %}
+                          <td>
+                            <i class="now-ui-icons ui-1_simple-remove" style="font-weight:900; color:#f20000;"></i>
+                          </td>
+                        {% endif %}
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                <!-- <hr> -->
+                <!-- <div class="button-container">
+                  <h4 class="text-center">Some text that you want to add</h4>
+                </div> -->
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
     {% endif %}
 
     </div>
@@ -220,7 +296,7 @@
     },
 
     title: {
-        text: '<b>{{enrollmntNO|upper}}</b> Performance per Category'
+        text: 'Performance per Category'
     },
     tooltip: {
         pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
@@ -255,7 +331,7 @@
         type: 'column'
     },
     title: {
-        text: '<b>{{enrollmntNO|upper}}</b> Performance per Category'
+        text: '<b>Performance per Category</b>'
     },
     xAxis: {
         categories: {{categoryList|safe}},
@@ -319,6 +395,57 @@
         }
     },
     series: {{timeTakenSeries|safe}}
+});
+</script>
+
+<script>
+  Highcharts.chart('timeEach', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: '<b>TIME TAKEN PER QUESTION</b>'
+    },
+    xAxis: {
+
+        categories: {{catQstnID|safe}},
+        title: {
+            enabled: true,
+            text: '<b>QUESTION IDs</b>',
+            style: {
+                fontWeight: 'normal'
+            }
+        }
+
+    },
+    yAxis: {
+
+      type: 'logarithmic',
+      minorTickInterval: 0.1,
+        title: {
+            text: '<b>TIME (seconds)</b>',
+        },
+
+    },
+    tooltip: {
+        valueSuffix: ' seconds'
+    },
+    plotOptions: {
+        column: {
+            dataLabels: {
+                enabled: true,
+                format: '{y} Sec'
+            }
+        }
+    },
+    legend: {
+
+        enabled: false
+    },
+    credits: {
+        enabled: false
+    },
+    series: {{qstnDtaSeries|safe}}
 });
 </script>
 {% endblock %}

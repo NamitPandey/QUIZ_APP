@@ -315,11 +315,34 @@ def get_report(enrollmentNo):
 
     return studntRep
 
+def time_chart(eachIDTime):
+
+    catID = eachIDTime['QUESTION_ID'].tolist()
+    series=[{
+    "name":'TIME',
+    'data': eachIDTime['SECONDS'].tolist()
+    }]
+
+    return catID, series
+
+
 def capture_time(enrollmentNo):
 
     studntRep = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enrollmentNo,).to_dataframe()
     studntRep['START_TIME'] = studntRep['START_TIME'].apply(pd.to_datetime)
+    # total time(sesonds) taken each question
+    totalTime = studntRep['START_TIME'].max()- studntRep['START_TIME'].min()
+    eachIDTime = studntRep.copy()
 
+    minute = int(str(eachIDTime['START_TIME'].max() - eachIDTime['START_TIME'].min()).split(" ")[-1].split(".")[0].split(":")[1])
+    second = int(str(eachIDTime['START_TIME'].max() - eachIDTime['START_TIME'].min()).split(" ")[-1].split(".")[0].split(":")[-1])
+    totalSeconds = (minute*60)+second
+    eachIDTime['SECONDS'] = eachIDTime[['ENROLLMENT_NUMBER',
+                                    'START_TIME']].groupby(['ENROLLMENT_NUMBER']).START_TIME.diff().shift(-1).dt.seconds
+
+    eachIDTime.fillna(totalSeconds-eachIDTime['SECONDS'].sum(), inplace=True)
+
+    # total time taken wach category
     studntRep['SECONDS'] = studntRep[['ENROLLMENT_NUMBER', 'CATEGORY',
                     'START_TIME']].groupby(['ENROLLMENT_NUMBER',
                                 'CATEGORY']).START_TIME.diff().shift(-1).dt.seconds.fillna(0)
@@ -330,7 +353,7 @@ def capture_time(enrollmentNo):
 
     studntRep['MINUTES'] = round(studntRep['SECONDS']/60,1)
 
-    return studntRep
+    return studntRep, totalTime, eachIDTime
 
 def highchart(feature):
 
@@ -390,15 +413,20 @@ def student_report(request):
         piechartSeries, columnSeries, categoryList = highchart(studntRep)
         TOTAL_CRT = sum(studntRep.to_dataframe()['COUNT'])
 
-        timeTakenSeries = capture_time(request.user.username)
+        timeTakenSeries, totalTime, eachIDTime = capture_time(request.user.username)
+
+        catQstnID, qstnDtaSeries = time_chart(eachIDTime)
 
         timeTakenSeries = timeTakenSeries['MINUTES'].tolist()
-        totalTimetaken = sum(timeTakenSeries)
+        totalTimetaken = datetime.datetime.strptime(str(totalTime).split(" ")[-1], '%H:%M:%S.%f')
         timeTakenSeries = [{
         'name': "CATEGORY",
         'data': timeTakenSeries,
         'colorByPoint':'true',
         }]
+
+        # question
+        questionTable = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).order_by("CATEGORY")
 
         context.update({
         'studentData':studentData,
@@ -412,6 +440,11 @@ def student_report(request):
 
         "timeTakenSeries":timeTakenSeries,
         "totalTimetaken": totalTimetaken,
+
+        "questionTable":questionTable,
+        "catQstnID":catQstnID,
+        "qstnDtaSeries":qstnDtaSeries,
+
         })
 
     if request.method == 'POST':
@@ -444,15 +477,20 @@ def student_report(request):
             piechartSeries, columnSeries, categoryList = highchart(studntRep)
             TOTAL_CRT = sum(studntRep.to_dataframe()['COUNT'])
 
-            timeTakenSeries = capture_time(enrollmentid)
+            timeTakenSeries, totalTime, eachIDTime = capture_time(enrollmentid)
+
+            catQstnID, qstnDtaSeries = time_chart(eachIDTime)
 
             timeTakenSeries = timeTakenSeries['MINUTES'].tolist()
-            totalTimetaken = sum(timeTakenSeries)
+            totalTimetaken = datetime.datetime.strptime(str(totalTime).split(" ")[-1], '%H:%M:%S.%f')
             timeTakenSeries = [{
             'name': "CATEGORY",
             'data': timeTakenSeries,
             'colorByPoint':'true',
             }]
+
+            # question
+            questionTable = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enrollmentid).order_by("CATEGORY")
 
             context.update({
             'studentData':studentData,
@@ -466,6 +504,10 @@ def student_report(request):
 
             "timeTakenSeries":timeTakenSeries,
             "totalTimetaken": totalTimetaken,
+
+            "questionTable":questionTable,
+            "catQstnID":catQstnID,
+            "qstnDtaSeries":qstnDtaSeries,
             })
         except:
             context.update({
