@@ -189,6 +189,7 @@ def homepage(request):
 
     pageDictKey = 'homepage'
 
+
     context={
     "PAGE_MSG": "HOMEPAGE",
     "mainID":1,
@@ -208,9 +209,13 @@ def students_portal(request):
 
     pageDictKey = 'students_portal'
     toalQstn = Question.objects.all().count()+1
+    chooseFrom = list(Question.objects.filter(CATEGORY__iexact='LOGICAL').values_list("QUESTION_ID", flat=True))
+
+    mainID = np.random.choice(chooseFrom,1)[0]
+
     context={
     "PAGE_MSG": "HOMEPAGE",
-    "mainID":np.random.randint(1, 5),
+    "mainID":mainID,
     "randmNmbr":f"{np.random.randint(834, 10000)}",
     "randmNmbr2":f"{np.random.randint(834750, 1000000)}",
     "genderList": staticVariables.GENDR_LIST,
