@@ -353,6 +353,7 @@
     },
     plotOptions: {
         column: {
+            borderRadius: 3,
             pointPadding: 0.2,
             borderWidth: 0
         }
@@ -390,6 +391,7 @@
     },
     plotOptions: {
         column: {
+            borderRadius: 3,
             pointPadding: 0.2,
             borderWidth: 0
         }
@@ -405,6 +407,9 @@
     },
     title: {
         text: '<b>TIME TAKEN PER QUESTION</b>'
+    },
+    subtitle: {
+        text: "<b style='color:#15d629;'>GREEN COLUMNS</b> Signifies Correct Answers  <b style='color:#ff3030;'>  RED COLUMNS</b> Signifies Incorrect Answers"
     },
     xAxis: {
 
@@ -423,8 +428,11 @@
       type: 'logarithmic',
       minorTickInterval: 0.1,
         title: {
-            text: '<b>TIME (seconds)</b>',
+            text: '<b>TIME</b>',
         },
+        labels: {
+            format: '{value} sec',
+          }
 
     },
     tooltip: {
@@ -432,12 +440,19 @@
     },
     plotOptions: {
         column: {
+            borderRadius: 2.75,
+            colorByPoint: true,
             dataLabels: {
                 enabled: true,
                 format: '{y} Sec'
-            }
-        }
+            },
+            colors:{{colorType|safe}},
+
+        },
+
+
     },
+
     legend: {
 
         enabled: false

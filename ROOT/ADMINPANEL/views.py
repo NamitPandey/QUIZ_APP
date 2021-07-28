@@ -320,10 +320,20 @@ def time_chart(eachIDTime):
     catID = eachIDTime['QUESTION_ID'].tolist()
     series=[{
     "name":'TIME',
-    'data': eachIDTime['SECONDS'].tolist()
+    'data': eachIDTime['SECONDS'].tolist(),
     }]
 
-    return catID, series
+    colorType = []
+
+    for chk, crt in zip(eachIDTime['ANSWER'], eachIDTime['CORRECT_ANSWER']):
+
+        colorVal = "#15d629"
+        if chk != crt:
+            colorVal = "#ff3030"
+
+        colorType.append(colorVal)
+
+    return catID, series, colorType
 
 
 def capture_time(enrollmentNo):
@@ -415,7 +425,7 @@ def student_report(request):
 
         timeTakenSeries, totalTime, eachIDTime = capture_time(request.user.username)
 
-        catQstnID, qstnDtaSeries = time_chart(eachIDTime)
+        catQstnID, qstnDtaSeries, colorType = time_chart(eachIDTime)
 
         timeTakenSeries = timeTakenSeries['MINUTES'].tolist()
         totalTimetaken = datetime.datetime.strptime(str(totalTime).split(" ")[-1], '%H:%M:%S.%f')
@@ -426,7 +436,7 @@ def student_report(request):
         }]
 
         # question
-        questionTable = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).order_by("CATEGORY")
+        questionTable = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username)#.order_by("CATEGORY")
 
         context.update({
         'studentData':studentData,
@@ -444,6 +454,7 @@ def student_report(request):
         "questionTable":questionTable,
         "catQstnID":catQstnID,
         "qstnDtaSeries":qstnDtaSeries,
+        "colorType":colorType,
 
         })
 
@@ -479,7 +490,7 @@ def student_report(request):
 
             timeTakenSeries, totalTime, eachIDTime = capture_time(enrollmentid)
 
-            catQstnID, qstnDtaSeries = time_chart(eachIDTime)
+            catQstnID, qstnDtaSeries, colorType = time_chart(eachIDTime)
 
             timeTakenSeries = timeTakenSeries['MINUTES'].tolist()
             totalTimetaken = datetime.datetime.strptime(str(totalTime).split(" ")[-1], '%H:%M:%S.%f')
@@ -490,7 +501,7 @@ def student_report(request):
             }]
 
             # question
-            questionTable = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enrollmentid).order_by("CATEGORY")
+            questionTable = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enrollmentid)#.order_by("CATEGORY")
 
             context.update({
             'studentData':studentData,
@@ -508,6 +519,7 @@ def student_report(request):
             "questionTable":questionTable,
             "catQstnID":catQstnID,
             "qstnDtaSeries":qstnDtaSeries,
+            "colorType":colorType,
             })
         except:
             context.update({
