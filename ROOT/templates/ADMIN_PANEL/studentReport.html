@@ -25,9 +25,6 @@
           <div class="col-md-8">
             <div class="card">
               <div class="card-header">
-                {% for n in test %}
-                  <h2>{{n.one}}</h2>
-                {% endfor %}
                 {% for val in studentData %}
                 <div class="row">
                   <h4 class="card-title col-md-6" style="font-weight:600;">{{val.FIRST_NAME}} {{val.LAST_NAME}}'s Summary</h4>
@@ -35,10 +32,9 @@
                      Total Time Taken:  <strong style="color:black;">{{totalTimetaken|time:'i'}} Minutes {{totalTimetaken|time:'s'}} Seconds</strong>
                    </h5>
                 </div>
-
-
                 {% endfor %}
               </div>
+
               <div class="card-body">
                 <div class="table-responsive">
                   <table class="table">
@@ -135,7 +131,12 @@
                 {% for val in studentData %}
                   <div class="author">
                     <a href="#" style="text-decoration:none;">
-                      <img class="avatar border-gray" src="{% static 'img/default-avatar.png'%}" alt="...">
+                      {% if val.GENDER|lower == 'male' %}
+                        <img class="avatar border-gray" src="{% static 'img/male.png'%}" alt="{% static 'img/default-avatar.png'%}">
+                      {% else %}
+                        <img class="avatar border-gray" src="{% static 'img/female.png'%}" alt="{% static 'img/default-avatar.png'%}">
+                      {% endif %}
+
                       <h5 class="title" >{{val.FIRST_NAME}} {{val.LAST_NAME}}</h5>
                     </a>
                     <p class="description" style="color:black; font-weight:600;">
@@ -143,7 +144,7 @@
                     </p>
                   </div>
                   <p class="description text-center" style="color:black;">
-                    <strong>Email:</strong><a href="mailto:EnrollmentNumber@gsfcuniversity.ac.in"> {{val.ENROLLMENT_NUMBER}}@gsfcuniversity.ac.in</a><br>
+                    <strong>Email:</strong><a href="mailto:{{val.ENROLLMENT_NUMBER}}@gsfcuniversity.ac.in"> {{val.ENROLLMENT_NUMBER}}@gsfcuniversity.ac.in</a><br>
                     <strong>Gender:</strong> {{val.GENDER}} <br>
                     <strong>School:</strong> {{val.SCHOOL|replace}}<br>
                     <strong>Program:</strong> {{val.PROGRAM|replace}} &nbsp <strong>Semester:</strong> {{val.SEMESTER}}<br>
@@ -321,7 +322,10 @@
         name: 'Percentage',
         colorByPoint: true,
         data: {{piechartSeries|safe}}
-    }]
+    }],
+    credits: {
+        enabled: false
+    },
 });
 </script>
 <!-- column chart -->
@@ -358,7 +362,10 @@
             borderWidth: 0
         }
     },
-    series: {{columnSeries|safe}}
+    series: {{columnSeries|safe}},
+    credits: {
+        enabled: false
+    },
 });
 </script>
 
@@ -396,7 +403,10 @@
             borderWidth: 0
         }
     },
-    series: {{timeTakenSeries|safe}}
+    series: {{timeTakenSeries|safe}},
+    credits: {
+        enabled: false
+    },
 });
 </script>
 
