@@ -286,21 +286,57 @@ def dashboard(request):
 
         catgry = request.POST.getlist("cat_POST")
         program = request.POST.getlist("program_POST")
+        semester = request.POST.getlist("semester_POST")
         gender = request.POST.getlist("gender_POST")
 
         quizData = QuizData.objects.values("ENROLLMENT_NUMBER").annotate(COUNT = Count("QUESTION_ID")).order_by("ENROLLMENT_NUMBER")
-        TOTAL_ATTEMPT = quizData.count()
+        TOTAL_ATTEMPT = UserRegistration.objects.all().count()
 
         students_with_all_fourthy = round((quizData.filter(COUNT__gte=40).count()/TOTAL_ATTEMPT)*100) # percentage of students with all 40 questions
 
         all_fourty_list = list(quizData.filter(COUNT__gte=40).values_list("ENROLLMENT_NUMBER", flat=True))
         # UserRegistration.objects.filter()
 
+        # query 1: % of students completing the test with attempting all 40 question and 2. Remaining students
+        # School wise
+        actualdata = QuizData.objects.filter(
+                                            # CATEGORY__in=catgry,
+                                            PROGRAM__in=program,
+                                            # SEMESTER__in=program,
+                                            # GENDER__in=gender,
+                                            ).values("PROGRAM", "ENROLLMENT_NUMBER",).annotate(COUNT=Count("ENROLLMENT_NUMBER")).order_by("PROGRAM", "ENROLLMENT_NUMBER",)
+
+        schoolWiseFourty = actualdata.filter(COUNT__gte=40).count()
+
+        totalStrength_PRG = UserRegistration.objects.filter(
+                                            PROGRAM__in=program,
+                                            # SEMESTER__in=program,
+                                            # GENDER__in=gender,
+                                            ).count()
+
+        completionPrcnt = round((schoolWiseFourty/totalStrength_PRG)*100,1)
+
+        #  list of students with all questions attempted
+        allQuestionAtmptd_school = list(actualdata.filter(COUNT__gte=40).values_list("ENROLLMENT_NUMBER", flat=True))
+        query1_answer_one = UserRegistration.objects.filter(
+                                            ENROLLMENT_NUMBER__in=allQuestionAtmptd_school,
+                                            )
+        query1_answer_two = UserRegistration.objects.filter(PROGRAM__in=program).exclude(
+                                            ENROLLMENT_NUMBER__in=allQuestionAtmptd_school,
+                                            )
+        schoolLists_fetched = list(query1_answer_one.values_list("SCHOOL", flat=True).distinct())
+
 
         context.update({
             "DASH": "ENABLED",
             "students_with_all_fourth":students_with_all_fourthy,
             "TOTAL_ATTEMPT":TOTAL_ATTEMPT,
+            # query1
+            "schoolNames": ", ".join(schoolLists_fetched),
+            "completionPrcnt":completionPrcnt,
+            "query1_answer_one":query1_answer_one,
+            "query1_answer_two":query1_answer_two,
+
             })
 
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
@@ -339,6 +375,7 @@ def time_chart(eachIDTime):
 def capture_time(enrollmentNo):
 
     studntRep = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enrollmentNo,).to_dataframe()
+
     studntRep['START_TIME'] = studntRep['START_TIME'].apply(pd.to_datetime)
     # total time(sesonds) taken each question
     totalTime = studntRep['START_TIME'].max()- studntRep['START_TIME'].min()
@@ -401,12 +438,28 @@ def highchart(feature):
     return resultedList, columnSeries, categoryList
 
 @login_required
-def student_report(request):
-
+def student_report(request, enroll):
     pageDictKey = 'student'
 
+    chkEnrolls = [request.user.username]
+    # list(UserRegistration.objects.all().values_list("ENROLLMENT_NUMBER", flat=True))+['admin']
+    # try:
+    #     chkEnrolls.remove(enroll)
+    # except:
+    #     pass
 
-    studentData = UserRegistration.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values()
+    if enroll == "0" or len(enroll) < 1 :
+        enroll = request.user.username
+
+    else:
+
+        if enroll not in chkEnrolls and request.user.is_superuser == False:
+
+            enroll = request.user.username
+        else:
+            enroll = enroll
+
+    studentData = UserRegistration.objects.filter(ENROLLMENT_NUMBER__iexact=enroll).values()
 
     context = {
     'WARNING_MSG': 'DISABLE',
@@ -416,47 +469,53 @@ def student_report(request):
 
     }
 
-    if request.user.is_superuser:
+    if request.user.is_superuser and enroll == request.user.username:
         pass
     else:
-        studntRep = get_report(request.user.username)
-        piechartSeries, columnSeries, categoryList = highchart(studntRep)
-        TOTAL_CRT = sum(studntRep.to_dataframe()['COUNT'])
+        try:
+            studntRep = get_report(enroll)
+            piechartSeries, columnSeries, categoryList = highchart(studntRep)
+            TOTAL_CRT = sum(studntRep.to_dataframe()['COUNT'])
 
-        timeTakenSeries, totalTime, eachIDTime = capture_time(request.user.username)
+            timeTakenSeries, totalTime, eachIDTime = capture_time(enroll)
 
-        catQstnID, qstnDtaSeries, colorType = time_chart(eachIDTime)
+            catQstnID, qstnDtaSeries, colorType = time_chart(eachIDTime)
 
-        timeTakenSeries = timeTakenSeries['MINUTES'].tolist()
-        totalTimetaken = datetime.datetime.strptime(str(totalTime).split(" ")[-1], '%H:%M:%S.%f')
-        timeTakenSeries = [{
-        'name': "CATEGORY",
-        'data': timeTakenSeries,
-        'colorByPoint':'true',
-        }]
+            timeTakenSeries = timeTakenSeries['MINUTES'].tolist()
+            totalTimetaken = datetime.datetime.strptime(str(totalTime).split(" ")[-1], '%H:%M:%S.%f')
+            timeTakenSeries = [{
+            'name': "CATEGORY",
+            'data': timeTakenSeries,
+            'colorByPoint':'true',
+            }]
 
-        # question
-        questionTable = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username)#.order_by("CATEGORY")
+            # question
+            questionTable = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enroll)#.order_by("CATEGORY")
+            print("studntRep \n", studntRep)
+            context.update({
+            'studentData':studentData,
+            'studntRep':studntRep,
+            'TOTAL_CRT':TOTAL_CRT,
 
-        context.update({
-        'studentData':studentData,
-        'studntRep':studntRep,
-        'TOTAL_CRT':TOTAL_CRT,
+            'categoryList':categoryList,
+            'piechartSeries':piechartSeries,
+            'columnSeries': columnSeries,
+            "enrollmntNO": enroll,
 
-        'categoryList':categoryList,
-        'piechartSeries':piechartSeries,
-        'columnSeries': columnSeries,
-        "enrollmntNO": request.user.username,
+            "timeTakenSeries":timeTakenSeries,
+            "totalTimetaken": totalTimetaken,
 
-        "timeTakenSeries":timeTakenSeries,
-        "totalTimetaken": totalTimetaken,
+            "questionTable":questionTable,
+            "catQstnID":catQstnID,
+            "qstnDtaSeries":qstnDtaSeries,
+            "colorType":colorType,
 
-        "questionTable":questionTable,
-        "catQstnID":catQstnID,
-        "qstnDtaSeries":qstnDtaSeries,
-        "colorType":colorType,
-
-        })
+            })
+        except:
+            context.update({
+            'WARNING_MSG': 'ENABLE',
+            "MSG":f"Looks like <u style='color:red;'>{enroll}</u>" +" has not given the test till now <br><br> PLEASE CHECK BACK AGAIN!",
+            })
 
     if request.method == 'POST':
 
@@ -499,7 +558,7 @@ def student_report(request):
             'data': timeTakenSeries,
             'colorByPoint':'true',
             }]
-
+            print(timeTakenSeries)
             # question
             questionTable = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enrollmentid)#.order_by("CATEGORY")
 

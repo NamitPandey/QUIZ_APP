@@ -51,3 +51,28 @@ def percentage_calc(value, denominator):
     """calculate percentage"""
 
     return round((int(value)/int(denominator))*100,1)
+
+""" Will map program """
+@register.filter(name='prgMap')
+@stringfilter
+def prg_map(prg):
+
+    prgDict = {
+    "Chemical_Engineering": "Chemical Engineering" ,
+    "Mechanical_Engineering": "Mechanical Engineering" ,
+    "Computer_Science_and_Engineering": "Computer Science & Engineering" ,
+    "Fire_and_Safety_Engineering": "Fire & Environment, Health, Safety Engineering" ,
+    "Chemistry_HONS": "Chemistry (Hons.)",
+    "Biotechnology_HONS": "Biotechnology (Hons.)" ,
+    "Industrial_Chemistry_HONS": "Industrial Chemistry (Hons.)" ,
+    "Micro_Biology_HONS": "Micro Biology (Hons.)" ,
+    "Chemistry_MSC": "Chemistry (M.Sc.)" ,
+    "Biotechnology_MSC": "Biotechnology (M.Sc.)" ,
+    "Industrial_Chemistry_MSC": "Industrial Chemistry (M.Sc.)" ,
+    "Chemistry_PHD": "Chemistry (Ph. D)" ,
+    "Biotechnology_PHD": "Biotechnology (Ph. D)" ,
+    "General": "General" ,
+    "Business_Analytics": "Business Analytics" ,
+    }
+
+    return prgDict[prg]

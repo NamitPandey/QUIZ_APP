@@ -25,7 +25,7 @@
     {% endif %}
     {% if resultStat == 1 %}
       <div class="btn-wrapper">
-        <a href="{% url 'MCQ:studentreport' %}">
+        <a href="{% url 'MCQ:studentreport' 0 %}">
           <button class="btn"><img src="{% static 'img/result.png' %}" class="icon"><br>Result</button>
         </a>
       </div>

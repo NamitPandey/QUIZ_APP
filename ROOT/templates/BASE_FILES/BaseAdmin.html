@@ -137,7 +137,7 @@
                   </div>
                 </div>
               </form>
-              <form action="{% url 'ADMINPANEL:studentreport' %}" method="POST">
+              <form action="{% url 'ADMINPANEL:studentreport' 0 %}" method="POST">
                 {% csrf_token %}
 
                 <div class="input-group no-border">

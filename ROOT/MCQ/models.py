@@ -22,13 +22,13 @@ class UserRegistration(models.Model):
 class Question(models.Model):
 
     QUESTION_ID = models.IntegerField()
-    CATEGORY = models.CharField(max_length=50)
+    CATEGORY = models.CharField(max_length=150)
     QUESTION = models.CharField(max_length=50000)
-    CORRECT = models.CharField(max_length=100)
-    CHOICE_1 = models.CharField(max_length=100)
-    CHOICE_2 = models.CharField(max_length=100)
-    CHOICE_3 = models.CharField(max_length=100, blank=True)
-    CHOICE_4 = models.CharField(max_length=100, blank=True)
+    CORRECT = models.CharField(max_length=50000)
+    CHOICE_1 = models.CharField(max_length=50000)
+    CHOICE_2 = models.CharField(max_length=50000)
+    CHOICE_3 = models.CharField(max_length=50000, blank=True)
+    CHOICE_4 = models.CharField(max_length=50000, blank=True)
     objects = DataFrameManager()
 
     def __str__(self):
@@ -37,7 +37,7 @@ class Question(models.Model):
 """STUDENTS ENROLLMENT NUMBERS"""
 class EnrollemntsForQuiz(models.Model):
 
-    ENROLLMENT_NUMBER = models.CharField(max_length=100,)
+    ENROLLMENT_NUMBER = models.CharField(max_length=1000,)
     START_TIME = models.DateTimeField(default=timezone.now())
     END_TIME = models.DateTimeField(default=timezone.now())
     objects = DataFrameManager()
@@ -59,9 +59,11 @@ class QuizData(models.Model):
     QUESTION_ID = models.IntegerField()
     ACTUAL_QUESTION = models.CharField(max_length=50000)
     ENROLLMENT_NUMBER = models.CharField(max_length=1000)
-    CATEGORY = models.CharField(max_length=50)
-    ANSWER = models.CharField(max_length = 1000)
-    CORRECT_ANSWER = models.CharField(max_length=1000)
+    CATEGORY = models.CharField(max_length=150)
+    ANSWER = models.CharField(max_length = 50000)
+    SCHOOL= models.CharField(max_length=100)
+    PROGRAM= models.CharField(max_length=100)
+    CORRECT_ANSWER = models.CharField(max_length=50000)
     START_TIME = models.DateTimeField(auto_now=True)
     END_TIME = models.DateTimeField(auto_now_add=True)
     # SEMESTER = models.IntegerField()

@@ -26,7 +26,7 @@ urlpatterns = [
     path(f"{randm1}<str:randmNmbr>{randm2}{randmNMBR}{randm3}<int:mainID>{randm4}<str:randmNmbr2>{randm5}{randmNMBR2}<int:counter>-<str:resultedTime>", views.quiz_page, name='quiz'), # homePage
     path(f"register/", views.user_registration, name='register'), # homePage
     path(f"testover/<str:username>", views.time_out, name='time_out'), # time out
-    path(f"result/", adminviews.student_report, name='studentreport'), # result
+    path(f"result/<str:enroll>", adminviews.student_report, name='studentreport'), # result
 
 
 

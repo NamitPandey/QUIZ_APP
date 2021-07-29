@@ -331,11 +331,16 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter, resultedTime):
                                     QUESTION_ID__iexact=mainID,
                                     ).values_list("CORRECT", flat=True))[0]
 
+        schoolName = list(UserRegistration.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values_list("SCHOOL", flat=True))[0]
+        prgName = list(UserRegistration.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values_list("PROGRAM", flat=True))[0]
+
         QuizData.objects.create(
         QUESTION_ID=mainID,
         ACTUAL_QUESTION=actQST,
         ENROLLMENT_NUMBER=request.user.username,
         ANSWER=answer1,
+        SCHOOL = schoolName,
+        PROGRAM = prgName,
         CORRECT_ANSWER=CrrctAnswr,
         CATEGORY=qstnCAT,
         ).save()

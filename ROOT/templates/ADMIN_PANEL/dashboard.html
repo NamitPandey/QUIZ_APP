@@ -42,10 +42,10 @@
               <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
                 <label style="color:black;"><strong>PROGRAM</strong></label>
                 <div class="form-group" >
-                  <select  id="travel" class="selectpicker" name="program_POST" required>
+                  <select  id="travel" class="selectpicker" name="program_POST" multiple required>
 
                     {% for prg in PRGM %}
-                      <option value="{{prg}}" style="font-weight:600; color:black;">{{prg|replace|title}}</option>
+                      <option value="{{prg}}" style="font-weight:600; color:black;">{{prg|prgMap}}</option>
                     {% endfor %}
 
 
@@ -136,6 +136,163 @@
            </div>
          </div>
        </div>
+
+       <div class="row">
+         <div class="col-12">
+           <div class="card card-chart">
+             <div class="card-header ">
+               <div class="row">
+                 <div class="col-sm-12">
+                   <div class="card-body">
+                     <h3  class="text-info text-center"> <strong>List of students who attempted all 40 questions under {{schoolNames|replace}}</strong></h3>
+                     <hr>
+                     <div class="table-responsive">
+                       <table class="table">
+                         <thead class=" text-primary">
+                           <th style="font-weight:900;">
+                             ENROLLMENT NUMBER
+                           </th>
+                           <th style="font-weight:900;">
+                             FIRST NAME
+                           </th>
+                           <th style="font-weight:900;">
+                             LAST NAME
+                           </th>
+                           <th style="font-weight:900;">
+                             EMAIL
+                           </th>
+                           <th style="font-weight:900;">
+                             SCHOOL
+                           </th>
+                           <th style="font-weight:900;">
+                             PROGRAM
+                           </th>
+                           <th style="font-weight:900;">
+                             SEMESTER
+                           </th>
+                         </thead>
+                         <tbody>
+                           {% for studnt in query1_answer_one %}
+                             <tr>
+                               <td style="text-align: center; font-weight:600;">
+                                 <a href="{% url 'ADMINPANEL:studentreport' studnt.ENROLLMENT_NUMBER %}">{{studnt.ENROLLMENT_NUMBER}}</a>
+                               </td>
+                               <td style="text-align: center; font-weight:600;">
+                                 {{studnt.FIRST_NAME|replace}}
+                               </td>
+                               <td style="text-align: center; font-weight:600;">
+                                 {{studnt.LAST_NAME|replace}}
+                               </td>
+                               <td style="text-align: center; font-weight:600;">
+                                 {{studnt.EMAIL|replace}}
+                               </td>
+                               <td style="text-align: center; font-weight:600;">
+                                 {{studnt.SCHOOL|replace}}
+                               </td>
+                               <td style="text-align: center; font-weight:600;">
+                                 {{studnt.PROGRAM|replace}}
+                               </td>
+                               <td style="text-align: center; font-weight:600;">
+                                 {{studnt.SEMESTER|replace}}
+                               </td>
+                             </tr>
+                           {% endfor %}
+
+                         </tbody>
+                       </table>
+                       <!-- <hr> -->
+                       <!-- <div class="button-container">
+                         <h4 class="text-center">Some text that you want to add</h4>
+                       </div> -->
+                     </div>
+
+                   </div>
+                 </div>
+               </div>
+               <br>
+             </div>
+           </div>
+         </div>
+       </div>
+
+       <div class="row">
+         <div class="col-12">
+           <div class="card card-chart">
+             <div class="card-header ">
+               <div class="row">
+                 <div class="col-sm-12">
+                   <div class="card-body">
+                     <h3  class="text-warning text-center"> <strong>List of students who did not attempt all 40 questions under {{schoolNames|replace}}</strong></h3>
+                     <hr>
+                     <div class="table-responsive">
+                       <table class="table">
+                         <thead class=" text-primary">
+                           <th style="font-weight:900;">
+                             ENROLLMENT NUMBER
+                           </th>
+                           <th style="font-weight:900;">
+                             FIRST NAME
+                           </th>
+                           <th style="font-weight:900;">
+                             LAST NAME
+                           </th>
+                           <th style="font-weight:900;">
+                             EMAIL
+                           </th>
+                           <th style="font-weight:900;">
+                             SCHOOL
+                           </th>
+                           <th style="font-weight:900;">
+                             PROGRAM
+                           </th>
+                           <th style="font-weight:900;">
+                             SEMESTER
+                           </th>
+                         </thead>
+                         <tbody>
+                           {% for studnt in query1_answer_two %}
+                             <tr>
+                               <td style="text-align: center; font-weight:600;">
+                                 <a href="{% url 'ADMINPANEL:studentreport' studnt.ENROLLMENT_NUMBER %}">{{studnt.ENROLLMENT_NUMBER}}</a>
+                               </td>
+                               <td style="text-align: center; font-weight:600;">
+                                 {{studnt.FIRST_NAME|replace}}
+                               </td>
+                               <td style="text-align: center; font-weight:600;">
+                                 {{studnt.LAST_NAME|replace}}
+                               </td>
+                               <td style="text-align: center; font-weight:600;">
+                                 {{studnt.EMAIL|replace}}
+                               </td>
+                               <td style="text-align: center; font-weight:600;">
+                                 {{studnt.SCHOOL|replace}}
+                               </td>
+                               <td style="text-align: center; font-weight:600;">
+                                 {{studnt.PROGRAM|replace}}
+                               </td>
+                               <td style="text-align: center; font-weight:600;">
+                                 {{studnt.SEMESTER|replace}}
+                               </td>
+                             </tr>
+                           {% endfor %}
+
+                         </tbody>
+                       </table>
+                       <!-- <hr> -->
+                       <!-- <div class="button-container">
+                         <h4 class="text-center">Some text that you want to add</h4>
+                       </div> -->
+                     </div>
+
+                   </div>
+                 </div>
+               </div>
+               <br>
+             </div>
+           </div>
+         </div>
+       </div>
+
       <div class="row">
         <div class="col-12">
           <div class="card card-chart">
