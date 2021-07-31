@@ -22,6 +22,52 @@
       {% else%}
 
         <div class="row">
+
+          <div class="col-md-4">
+            <div class="card card-user">
+              <div class="image">
+                <img src="{% static 'img/userRep_bg.jpg'%}" alt="...">
+              </div>
+              <div class="card-body">
+                {% for val in studentData %}
+                  <div class="author">
+                    <a href="#" style="text-decoration:none;">
+                      {% if val.GENDER|lower == 'male' %}
+                        <img class="avatar border-gray" src="{% static 'img/male.png'%}" alt="{% static 'img/default-avatar.png'%}">
+                      {% else %}
+                        <img class="avatar border-gray" src="{% static 'img/female.png'%}" alt="{% static 'img/default-avatar.png'%}">
+                      {% endif %}
+
+                      <h5 class="title" >{{val.FIRST_NAME}} {{val.LAST_NAME}}</h5>
+                    </a>
+                    <p class="description" style="color:black; font-weight:600;">
+                      {{val.ENROLLMENT_NUMBER}}
+                    </p>
+                  </div>
+                  <p class="description text-center" style="color:black;">
+                    <strong>Email:</strong><a href="mailto:{{val.ENROLLMENT_NUMBER}}@gsfcuniversity.ac.in"> {{val.ENROLLMENT_NUMBER}}@gsfcuniversity.ac.in</a><br>
+                    <strong>Gender:</strong> {{val.GENDER}} <br>
+                    <strong>School:</strong> {{val.SCHOOL|replace}}<br>
+                    <strong>Program:</strong> {{val.PROGRAM|replace}} &nbsp <strong>Semester:</strong> {{val.SEMESTER}}<br>
+                  </p>
+
+                {% endfor %}
+              </div>
+              <hr>
+              <div class="button-container">
+                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
+                  <i class="fab fa-facebook-f"></i>
+                </button>
+                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
+                  <i class="fab fa-twitter"></i>
+                </button>
+                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
+                  <i class="fab fa-google-plus-g"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          
           <div class="col-md-8">
             <div class="card">
               <div class="card-header">
@@ -122,50 +168,7 @@
             </div>
           </div>
 
-          <div class="col-md-4">
-            <div class="card card-user">
-              <div class="image">
-                <img src="{% static 'img/userRep_bg.jpg'%}" alt="...">
-              </div>
-              <div class="card-body">
-                {% for val in studentData %}
-                  <div class="author">
-                    <a href="#" style="text-decoration:none;">
-                      {% if val.GENDER|lower == 'male' %}
-                        <img class="avatar border-gray" src="{% static 'img/male.png'%}" alt="{% static 'img/default-avatar.png'%}">
-                      {% else %}
-                        <img class="avatar border-gray" src="{% static 'img/female.png'%}" alt="{% static 'img/default-avatar.png'%}">
-                      {% endif %}
 
-                      <h5 class="title" >{{val.FIRST_NAME}} {{val.LAST_NAME}}</h5>
-                    </a>
-                    <p class="description" style="color:black; font-weight:600;">
-                      {{val.ENROLLMENT_NUMBER}}
-                    </p>
-                  </div>
-                  <p class="description text-center" style="color:black;">
-                    <strong>Email:</strong><a href="mailto:{{val.ENROLLMENT_NUMBER}}@gsfcuniversity.ac.in"> {{val.ENROLLMENT_NUMBER}}@gsfcuniversity.ac.in</a><br>
-                    <strong>Gender:</strong> {{val.GENDER}} <br>
-                    <strong>School:</strong> {{val.SCHOOL|replace}}<br>
-                    <strong>Program:</strong> {{val.PROGRAM|replace}} &nbsp <strong>Semester:</strong> {{val.SEMESTER}}<br>
-                  </p>
-
-                {% endfor %}
-              </div>
-              <hr>
-              <div class="button-container">
-                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
-                  <i class="fab fa-facebook-f"></i>
-                </button>
-                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
-                  <i class="fab fa-twitter"></i>
-                </button>
-                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
-                  <i class="fab fa-google-plus-g"></i>
-                </button>
-              </div>
-            </div>
-          </div>
 
         </div>
 

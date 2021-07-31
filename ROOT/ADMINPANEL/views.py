@@ -171,13 +171,16 @@ def download_data(request):
 
     writer.writerow(
         [
-         "QUESTION_ID",
+         "QUESTION ID",
          "ACTUAL QUESTION",
          "ENROLLMENT NUMBER",
+         "SCHOOL",
+         "PROGRAM",
          "CATEGORY",
          "ANSWER",
          "CORRECT ANSWER",
          "TIME",
+
          # "END_TIME",
         ])
 
@@ -185,6 +188,8 @@ def download_data(request):
                                         'QUESTION_ID',
                                         'ACTUAL_QUESTION',
                                         'ENROLLMENT_NUMBER',
+                                        "SCHOOL",
+                                        "PROGRAM",
                                         'CATEGORY',
                                         'ANSWER',
                                         'CORRECT_ANSWER',
@@ -266,6 +271,30 @@ def template_download(request, setNO):
 
     return response
 
+def percentage_range(prg, sem, gender):
+
+    catList = ['APPTITUDE',"GENERAL KNOWLEDGE", "LOGICAL", "WRITTEN COMMUNICATION"]
+    actualData = QuizData.objects.filter(PROGRAM__in=prg,
+                                         # SEMESTER__in=sem,
+                                         # GENDER__in=gender,
+                                         )
+    school_wise_per_series = []
+    for pr in prg:
+        maxMarks_overall = round(100/(20*len(actualData.filter(PROGRAM__in=[pr],).values_list("ENROLLMENT_NUMBER").distinct())),1)
+        # subject_max = 100/(maxMarks_overall//4)
+        # print(subject_max)
+
+        correctAnswers_data = actualData.filter(PROGRAM__in=[pr] , ANSWER__iexact = F('CORRECT_ANSWER')).order_by('CATEGORY', 'ANSWER')
+        marks_obtained = correctAnswers_data.values('PROGRAM',"CATEGORY").annotate(PERCENTAGE=(Count('ENROLLMENT_NUMBER')*2)*maxMarks_overall).order_by('PROGRAM',"CATEGORY").to_dataframe()
+
+        school_wise_per_series.append(
+        {'name':pr.replace("_", " ").upper(),
+        'data': marks_obtained['PERCENTAGE'].tolist()}
+        )
+
+    return catList, school_wise_per_series
+
+
 @login_required
 def dashboard(request):
 
@@ -289,6 +318,8 @@ def dashboard(request):
         semester = request.POST.getlist("semester_POST")
         gender = request.POST.getlist("gender_POST")
 
+
+
         quizData = QuizData.objects.values("ENROLLMENT_NUMBER").annotate(COUNT = Count("QUESTION_ID")).order_by("ENROLLMENT_NUMBER")
         TOTAL_ATTEMPT = UserRegistration.objects.all().count()
 
@@ -310,11 +341,11 @@ def dashboard(request):
 
         totalStrength_PRG = UserRegistration.objects.filter(
                                             PROGRAM__in=program,
-                                            # SEMESTER__in=program,
-                                            # GENDER__in=gender,
                                             ).count()
 
-        completionPrcnt = round((schoolWiseFourty/totalStrength_PRG)*100,1)
+
+
+        completionPrcnt = round((schoolWiseFourty/totalStrength_PRG)*100)
 
         #  list of students with all questions attempted
         allQuestionAtmptd_school = list(actualdata.filter(COUNT__gte=40).values_list("ENROLLMENT_NUMBER", flat=True))
@@ -326,6 +357,14 @@ def dashboard(request):
                                             )
         schoolLists_fetched = list(query1_answer_one.values_list("SCHOOL", flat=True).distinct())
 
+        # calculating total number of students who gave exams
+        # 1. for students who attempted all 40 questions
+        students_who_gave_test_LIST = list(QuizData.objects.filter(PROGRAM__in=program).values_list("ENROLLMENT_NUMBER", flat=True))
+
+        student_not_completed_test = list(UserRegistration.objects.filter(PROGRAM__in=program).exclude(ENROLLMENT_NUMBER__in=students_who_gave_test_LIST,).values_list("ENROLLMENT_NUMBER", flat=True))
+
+        # overall percentage as per program selection
+        moduleList,  school_wise_per_series = percentage_range(program, semester, gender)
 
         context.update({
             "DASH": "ENABLED",
@@ -336,7 +375,13 @@ def dashboard(request):
             "completionPrcnt":completionPrcnt,
             "query1_answer_one":query1_answer_one,
             "query1_answer_two":query1_answer_two,
+            "student_not_completed_test":student_not_completed_test,
 
+            "completionPrcnt":completionPrcnt,
+
+            "moduleList":moduleList,
+            "school_wise_per_series":school_wise_per_series,
+            
             })
 
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)

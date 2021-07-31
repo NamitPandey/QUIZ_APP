@@ -127,7 +127,7 @@
                <div class="row">
                  <div class="col-sm-12">
                    <div class="container text-center mt-5" >
-                     <h2 style="font-weight:900;"><strong>{{students_with_all_fourth}}</strong>% of students attempted all 40 Questions</h2>
+                     <h2 style="font-weight:900;">Out of {{TOTAL_ATTEMPT}} registered students, <strong>{{students_with_all_fourth}}</strong>% of students attempted all 40 Questions</h2>
                    </div>
                  </div>
                </div>
@@ -144,7 +144,8 @@
                <div class="row">
                  <div class="col-sm-12">
                    <div class="card-body">
-                     <h3  class="text-info text-center"> <strong>List of students who attempted all 40 questions under {{schoolNames|replace}}</strong></h3>
+                     <h3  class="text-info text-center"> <strong>{{completionPrcnt}}% students attempted all 40 questions under {{schoolNames|replace|underline:'black'|safe}}</strong></h3>
+                     <h4  class="text-info text-center"> <strong>List of students who attempted all 40 questions under {{schoolNames|replace|underline:'black'|safe}}</strong></h4>
                      <hr>
                      <div class="table-responsive">
                        <table class="table">
@@ -222,7 +223,8 @@
                <div class="row">
                  <div class="col-sm-12">
                    <div class="card-body">
-                     <h3  class="text-warning text-center"> <strong>List of students who did not attempt all 40 questions under {{schoolNames|replace}}</strong></h3>
+                     <h3  class="text-info text-center"> <strong>{{completionPrcnt|perRemain}}% students who did not attempt all 40 questions under {{schoolNames|replace|underline:'black'|safe}}</strong></h3>
+                     <h4  class="text-warning text-center"> <strong>List of students who did not attempt all 40 questions under {{schoolNames|replace|underline:'black'|safe}}</strong></h4>
                      <hr>
                      <div class="table-responsive">
                        <table class="table">
@@ -247,6 +249,9 @@
                            </th>
                            <th style="font-weight:900;">
                              SEMESTER
+                           </th>
+                           <th style="font-weight:900;">
+                             TEST STATUS
                            </th>
                          </thead>
                          <tbody>
@@ -273,6 +278,15 @@
                                <td style="text-align: center; font-weight:600;">
                                  {{studnt.SEMESTER|replace}}
                                </td>
+                               {% if studnt.ENROLLMENT_NUMBER in student_not_completed_test%}
+                                 <td class="text-danger" style="text-align: center; font-weight:600;">
+                                   Pending
+                                 </td>
+                               {% else %}
+                                 <td class="text-success" style="text-align: center; font-weight:600;">
+                                   Completed
+                                 </td>
+                               {% endif %}
                              </tr>
                            {% endfor %}
 
@@ -954,32 +968,24 @@ Highcharts.chart('container2', {
         text: 'Source: WorldClimate.com'
     },
     xAxis: {
-        categories: [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec'
-        ],
+        categories: {{moduleList|safe}},
         crosshair: true
     },
     yAxis: {
-        min: 0,
+        // min: 0,
+        type: 'logarithmic',
+        max:99,
         title: {
-            text: 'Rainfall (mm)'
-        }
+            text: 'PERCENTAGE'
+        },
+        labels: {
+            format: '{value}%',
+          },
     },
     tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+        headerFormat: '<span style="font-size:12px;font-weight:700;">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color}; text-align:right; font-weight:700;">{series.name}: </td>' +
+            '<td><b>{point.y}%</b></td></tr>',
         footerFormat: '</table>',
         shared: true,
         useHTML: true
@@ -987,26 +993,14 @@ Highcharts.chart('container2', {
     plotOptions: {
         column: {
             pointPadding: 0.2,
-            borderWidth: 0
+            borderWidth: 0,
+            borderRadius: 3
         }
     },
-    series: [{
-        name: 'Tokyo',
-        data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-
-    }, {
-        name: 'New York',
-        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
-
-    }, {
-        name: 'London',
-        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
-
-    }, {
-        name: 'Berlin',
-        data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
-
-    }]
+    series: {{school_wise_per_series|safe}},
+    credits: {
+      enabled:false,
+    }
 });
 
 </script>

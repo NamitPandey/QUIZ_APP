@@ -150,7 +150,7 @@
                       {% for data in registeredUsers %}
                         <tr>
                           <td style="font-weight:700;">
-                            {{data.ENROLLMENT_NUMBER}}
+                            <a href="{% url 'ADMINPANEL:studentreport' data.ENROLLMENT_NUMBER %}">{{data.ENROLLMENT_NUMBER}}</a>
                           </td>
                           <td>
                             <a href="mailto:{{data.ENROLLMENT_NUMBER}}@gsfcuniversity.ac.in">{{data.ENROLLMENT_NUMBER}}@gsfcuniversity.ac.in</a>

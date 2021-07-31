@@ -76,3 +76,20 @@ def prg_map(prg):
     }
 
     return prgDict[prg]
+
+
+""" will underline value iterated from list """
+@register.filter(name='underline')
+@stringfilter
+def underline(val, clr):
+
+
+    return f"<u style='color:{clr};'>"+val+"</u>"
+
+""" remaining percentage """
+@register.filter(name='perRemain')
+@stringfilter
+def remain_perc(val):
+
+
+    return 100-int(val)
