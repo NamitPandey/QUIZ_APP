@@ -333,6 +333,10 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter, resultedTime):
 
         schoolName = list(UserRegistration.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values_list("SCHOOL", flat=True))[0]
         prgName = list(UserRegistration.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values_list("PROGRAM", flat=True))[0]
+        semstr = list(UserRegistration.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values_list("SEMESTER", flat=True))[0]
+        gndr = list(UserRegistration.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username).values_list("GENDER", flat=True))[0]
+
+
 
         QuizData.objects.create(
         QUESTION_ID=mainID,
@@ -343,6 +347,8 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter, resultedTime):
         PROGRAM = prgName,
         CORRECT_ANSWER=CrrctAnswr,
         CATEGORY=qstnCAT,
+        SEMESTER=semstr,
+        GENDER=gndr,
         ).save()
 
         if counter == quizEnd:

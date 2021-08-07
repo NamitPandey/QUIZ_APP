@@ -274,11 +274,14 @@ def template_download(request, setNO):
 def percentage_range(prg, sem, gender):
 
     catList = ['APPTITUDE',"GENERAL KNOWLEDGE", "LOGICAL", "WRITTEN COMMUNICATION"]
+
     actualData = QuizData.objects.filter(PROGRAM__in=prg,
-                                         # SEMESTER__in=sem,
-                                         # GENDER__in=gender,
+                                         SEMESTER__in=sem,
+                                         GENDER__in=gender,
                                          )
+
     school_wise_per_series = []
+
     for pr in prg:
         maxMarks_overall = round(100/(20*len(actualData.filter(PROGRAM__in=[pr],).values_list("ENROLLMENT_NUMBER").distinct())),1)
         # subject_max = 100/(maxMarks_overall//4)
@@ -294,6 +297,35 @@ def percentage_range(prg, sem, gender):
 
     return catList, school_wise_per_series
 
+def count_correct(filteredData):
+
+    filteredData = filteredData.values("ENROLLMENT_NUMBER","SCHOOL",
+                                        "PROGRAM",'CATEGORY', 'ANSWER').filter(ANSWER__iexact = F('CORRECT_ANSWER')).order_by("ENROLLMENT_NUMBER","SCHOOL",
+                                                                                                                    "PROGRAM",'CATEGORY', 'ANSWER','CATEGORY', 'ANSWER')
+
+    filteredData = filteredData.values("ENROLLMENT_NUMBER","SCHOOL","PROGRAM").annotate(MARKS = Count("ENROLLMENT_NUMBER")*2).order_by("ENROLLMENT_NUMBER","SCHOOL",
+                                                                                "PROGRAM")
+
+    return filteredData
+
+def overall_percentage(catgry, program, semester, gender, lowerLim, upperLim):
+    maxMarks = 80
+    timesNumerator = (100/maxMarks)*2
+    filteredData = QuizData.objects.filter(
+                                        # CATEGORY__in=catgry,
+                                        PROGRAM__in=program,
+                                        SEMESTER__in=semester,
+                                        GENDER__in=gender,
+                                        ).values("ENROLLMENT_NUMBER","SCHOOL",
+                                        "PROGRAM",'CATEGORY', 'ANSWER').filter(ANSWER__iexact = F('CORRECT_ANSWER')).order_by("ENROLLMENT_NUMBER","SCHOOL",
+                                                                                                                    "PROGRAM",'CATEGORY', 'ANSWER','CATEGORY', 'ANSWER')
+
+    calcultedPER = filteredData.values("ENROLLMENT_NUMBER").annotate(PERCENTAGE = Count("ENROLLMENT_NUMBER")*timesNumerator).order_by("ENROLLMENT_NUMBER")
+
+    resultedData = calcultedPER.filter(PERCENTAGE__gt=int(lowerLim), PERCENTAGE__lte=int(upperLim))
+
+    return list(resultedData.values_list("ENROLLMENT_NUMBER", flat=True))
+
 
 @login_required
 def dashboard(request):
@@ -301,6 +333,9 @@ def dashboard(request):
     pageDictKey = 'dashboard'
 
     context={
+    "program":[],
+    "semester":[],
+    "gender":[],
     "DASH": "DISABLED",
     "CATGRY": staticVariables.CATEGORY_LIST, # CATEGORY list
     "SCHOL": staticVariables.SCHOL_LIST, # school list
@@ -317,8 +352,7 @@ def dashboard(request):
         program = request.POST.getlist("program_POST")
         semester = request.POST.getlist("semester_POST")
         gender = request.POST.getlist("gender_POST")
-
-
+        percentageRange = request.POST.get("perRange").strip()
 
         quizData = QuizData.objects.values("ENROLLMENT_NUMBER").annotate(COUNT = Count("QUESTION_ID")).order_by("ENROLLMENT_NUMBER")
         TOTAL_ATTEMPT = UserRegistration.objects.all().count()
@@ -333,14 +367,17 @@ def dashboard(request):
         actualdata = QuizData.objects.filter(
                                             # CATEGORY__in=catgry,
                                             PROGRAM__in=program,
-                                            # SEMESTER__in=program,
-                                            # GENDER__in=gender,
-                                            ).values("PROGRAM", "ENROLLMENT_NUMBER",).annotate(COUNT=Count("ENROLLMENT_NUMBER")).order_by("PROGRAM", "ENROLLMENT_NUMBER",)
+                                            SEMESTER__in=semester,
+                                            GENDER__in=gender,
+                                            ).values("PROGRAM", "GENDER","ENROLLMENT_NUMBER",).annotate(COUNT=Count("ENROLLMENT_NUMBER")).order_by("PROGRAM", "GENDER","ENROLLMENT_NUMBER",)
 
+        # print(actualdata.to_dataframe())
         schoolWiseFourty = actualdata.filter(COUNT__gte=40).count()
 
         totalStrength_PRG = UserRegistration.objects.filter(
                                             PROGRAM__in=program,
+                                            SEMESTER__in=semester,
+                                            GENDER__in=gender,
                                             ).count()
 
 
@@ -352,7 +389,7 @@ def dashboard(request):
         query1_answer_one = UserRegistration.objects.filter(
                                             ENROLLMENT_NUMBER__in=allQuestionAtmptd_school,
                                             )
-        query1_answer_two = UserRegistration.objects.filter(PROGRAM__in=program).exclude(
+        query1_answer_two = UserRegistration.objects.filter(PROGRAM__in=program, SEMESTER__in=semester,GENDER__in=gender,).exclude(
                                             ENROLLMENT_NUMBER__in=allQuestionAtmptd_school,
                                             )
         schoolLists_fetched = list(query1_answer_one.values_list("SCHOOL", flat=True).distinct())
@@ -366,7 +403,44 @@ def dashboard(request):
         # overall percentage as per program selection
         moduleList,  school_wise_per_series = percentage_range(program, semester, gender)
 
+
+
+        # Overall result of registered students and with option to select (100-90, 90-80, 80-70, 70-60, 60-50)
+        if len(percentageRange) < 1:
+
+            pass
+
+        else:
+
+            lowerLim = percentageRange.split(',')[0]
+            upperLim = percentageRange.split(",")[1]
+
+            enrollmentFound  = overall_percentage(catgry, program, semester, gender, lowerLim, upperLim)
+
+            fecthRecords = QuizData.objects.filter(
+                                                # CATEGORY__in=catgry,
+                                                PROGRAM__in=program,
+                                                ENROLLMENT_NUMBER__in = enrollmentFound,
+                                                SEMESTER__in=semester,
+                                                GENDER__in=gender,
+                                                )
+
+            finalResult = count_correct(fecthRecords)
+
+            if len(finalResult) > 0:
+                context.update({
+                "lowerLim":lowerLim,
+                "upperLim":upperLim,
+                "showMe":'Enabled',
+                "percentageRangetable":finalResult.order_by("-MARKS","ENROLLMENT_NUMBER"),
+                })
+        print(gender)
         context.update({
+            # "catgry":catgry,
+            "program":program,
+            "semester":semester,
+            "gender":[_.upper() for _ in gender],
+
             "DASH": "ENABLED",
             "students_with_all_fourth":students_with_all_fourthy,
             "TOTAL_ATTEMPT":TOTAL_ATTEMPT,
@@ -381,7 +455,7 @@ def dashboard(request):
 
             "moduleList":moduleList,
             "school_wise_per_series":school_wise_per_series,
-            
+
             })
 
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
@@ -536,7 +610,7 @@ def student_report(request, enroll):
 
             # question
             questionTable = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enroll)#.order_by("CATEGORY")
-            print("studntRep \n", studntRep)
+
             context.update({
             'studentData':studentData,
             'studntRep':studntRep,
@@ -603,7 +677,7 @@ def student_report(request, enroll):
             'data': timeTakenSeries,
             'colorByPoint':'true',
             }]
-            print(timeTakenSeries)
+
             # question
             questionTable = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enrollmentid)#.order_by("CATEGORY")
 

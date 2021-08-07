@@ -66,9 +66,10 @@ class QuizData(models.Model):
     CORRECT_ANSWER = models.CharField(max_length=50000)
     START_TIME = models.DateTimeField(auto_now=True)
     END_TIME = models.DateTimeField(auto_now_add=True)
-    # SEMESTER = models.IntegerField()
-    # SCHOOL= models.CharField(max_length=100)
-    # PROGRAM= models.CharField(max_length=100)
+    GENDER = models.CharField(max_length=10)
+    SEMESTER = models.IntegerField()
+    SCHOOL= models.CharField(max_length=100)
+    PROGRAM= models.CharField(max_length=100)
     # CONTACT = models.IntegerField()
     objects = DataFrameManager()
 
