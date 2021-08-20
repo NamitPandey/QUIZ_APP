@@ -166,7 +166,7 @@ def download_data(request):
 
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = f'attachement; filename= "{fileName}.xlsx"'
+    response['Content-Disposition'] = f'attachement; filename= "{fileName}.csv"'
     writer = csv.writer(response)
 
     writer.writerow(
@@ -216,7 +216,7 @@ def template_download(request, setNO):
 
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = f'attachement; filename= "{fileName}.xlsx"'
+    response['Content-Disposition'] = f'attachement; filename= "{fileName}.csv"'
     writer = csv.writer(response)
 
     if int(setNO) == 1:
