@@ -26,6 +26,18 @@ body{
   background-color: #de9714;
 }
 
+.btn.dropdown-toggle{
+  color:black;
+  height:40px;
+  /* width: 40vh; */
+  border:none;
+  border-radius: 8px;
+  transition: 0.5s ease;
+  transition: none;
+  background-color: white;
+}
+
+
 .btn:hover{
   transform: scale(1.1);
   background-color:#222;

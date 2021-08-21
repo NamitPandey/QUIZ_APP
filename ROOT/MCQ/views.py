@@ -6,7 +6,7 @@ from django.db.models import Count
 
 # django models import below
 from .models import (Question, UserRegistration,
-                    AllowedEnrollments, EnrollemntsForQuiz, QuizData)
+                    AllowedEnrollments, EnrollemntsForQuiz, QuizData, FeedbackForm)
 # python packages import below
 import pandas as pd
 import  numpy as np
@@ -255,6 +255,75 @@ def students_portal(request):
 
     return render(request, PAGE_MAPPER.pageDict[pageDictKey], context)
 
+def feedback(request):
+
+
+    if request.method == 'POST':
+
+        answer_one = request.POST.get('question_one')
+        answer_two = request.POST.get('question_two')
+        answer_three = request.POST.getlist('question_three')
+        comments = request.POST.get('comments')
+
+        if len(answer_three) == 4:
+
+            FeedbackForm.objects.create(
+            QSTN_ONE='Did you enjoy taking the Test ?',
+            QSTN_TWO='The Test you found ?',
+            QSTN_THREE='The experience of the Test reveals that ?',
+            QSTN_ONE_ANSWR = answer_one,
+            QSTN_TWO_ANSWR = answer_two,
+            QSTN_THREE_ANSWR_CHOICE_1 = answer_three[0],
+            QSTN_THREE_ANSWR_CHOICE_2 = answer_three[1],
+            QSTN_THREE_ANSWR_CHOICE_3 = answer_three[2],
+            QSTN_THREE_ANSWR_CHOICE_4 = answer_three[3],
+            COMMENTS = comments,
+            ).save()
+
+        elif len(answer_three) == 3:
+
+            FeedbackForm.objects.create(
+            QSTN_ONE='Did you enjoy taking the Test ?',
+            QSTN_TWO='The Test you found ?',
+            QSTN_THREE='The experience of the Test reveals that ?',
+            QSTN_ONE_ANSWR = answer_one,
+            QSTN_TWO_ANSWR = answer_two,
+            QSTN_THREE_ANSWR_CHOICE_1 = answer_three[0],
+            QSTN_THREE_ANSWR_CHOICE_2 = answer_three[1],
+            QSTN_THREE_ANSWR_CHOICE_3 = answer_three[2],
+            COMMENTS = comments,
+            ).save()
+
+        elif len(answer_three) == 2:
+
+            FeedbackForm.objects.create(
+            QSTN_ONE='Did you enjoy taking the Test ?',
+            QSTN_TWO='The Test you found ?',
+            QSTN_THREE='The experience of the Test reveals that ?',
+            QSTN_ONE_ANSWR = answer_one,
+            QSTN_TWO_ANSWR = answer_two,
+            QSTN_THREE_ANSWR_CHOICE_1 = answer_three[0],
+            QSTN_THREE_ANSWR_CHOICE_2 = answer_three[1],
+            COMMENTS = comments,
+            ).save()
+
+        elif len(answer_three) == 1:
+
+            FeedbackForm.objects.create(
+            QSTN_ONE='Did you enjoy taking the Test ?',
+            QSTN_TWO='The Test you found ?',
+            QSTN_THREE='The experience of the Test reveals that ?',
+            QSTN_ONE_ANSWR = answer_one,
+            QSTN_TWO_ANSWR = answer_two,
+            QSTN_THREE_ANSWR_CHOICE_1 = answer_three[0],
+            COMMENTS = comments,
+            ).save()
+
+
+    return render(request, "MAIN_PAGE/thank_you_msg.html")
+    # return render(request, 'MAIN_PAGE/testPage.html')
+
+
 @login_required
 def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter, resultedTime):
 
@@ -354,13 +423,13 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter, resultedTime):
         if counter == quizEnd:
 
             user = EnrollemntsForQuiz.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username)
-
+            # put feedback form function here
             user.delete()
             # nowTime=datetime.datetime.now()
             # maxTime = datetime.datetime.strptime(resultedTime, "%Y-%m-%d %H:%M:%S.%f")
             # resultedTime = datetime.datetime.strptime(str(maxTime - nowTime), "%H:%M:%S.%f")
 
-            context.update({'AUTHORIZED':'NO',
+            context.update({'AUTHORIZED':'NO', 'feedback':'YES',
              'COMN_MSG': "THANK YOU FOR TAKING THE TEST. RESULTS WILL BE ANNOUNCED SOON. ALL THE BEST",
              "counter":counter+1,"mainID":mainID, })
 

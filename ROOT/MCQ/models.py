@@ -76,20 +76,6 @@ class QuizData(models.Model):
     def __str__(self):
         return f"{self.QUESTION_ID}-{self.CATEGORY}-{self.ACTUAL_QUESTION}"
 
-# class FeedBack_Q3(models.Model):
-#
-#     CHOICES = (
-#         ('I was really surprised to see the questions which I wasn’t aware of','I was really surprised to see the questions which I wasn’t aware of'),
-#         ('I feel I need to read a lot on General Knowledge', 'I feel I need to read a lot on General Knowledge'),
-#         ('I feel this type of test would help me in my future knowledge bank', 'I feel this type of test would help me in my future knowledge bank'),
-#         ('I would like to take such task in future', 'I would like to take such task in future')
-#     )
-#
-#     QSTN_THREE_CHOICES = models.CharField(max_length=500,choices=CHOICES, unique=True)
-#
-#     def __str__(self):
-#         return f"{self.QSTN_THREE_CHOICES}"
-
 class FeedbackForm(models.Model):
 
     QSTN_ONE = models.CharField(max_length=200)
