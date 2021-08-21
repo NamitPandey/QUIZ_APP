@@ -14,6 +14,7 @@ import pandas as pd
 from . import ADMIN_PAGE_MAPPER, staticVariables
 from sqlalchemy import create_engine
 import datetime
+from ADMINPANEL.sendMail import send_mails
 # Create your views here.
 global dataBaseMapper
 
@@ -34,7 +35,8 @@ def get_result_status():
     return resultStat
 
 def update_result_status(request, status):
-
+    if status == 1:
+        send_mails()
     try:
         resultStat = Declare_Result.objects.get(id=1)
         resultStat.RESULT_STATUS= int(status)

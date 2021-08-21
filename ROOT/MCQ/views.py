@@ -189,7 +189,6 @@ def homepage(request):
 
     pageDictKey = 'homepage'
 
-
     context={
     "PAGE_MSG": "HOMEPAGE",
     "mainID":1,

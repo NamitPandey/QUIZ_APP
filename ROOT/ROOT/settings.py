@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import pandas as pd
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -140,3 +141,14 @@ LOGIN_REDIRECT_URL= '/login'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
+
+# EMAIL setup
+EMAIL_PATH = os.path.join(BASE_DIR,"ROOT/CREDENTIALS") # path to email credentials
+TASC_EMAIL_CRED = pd.read_json(EMAIL_PATH+'/TASC_EMAIL_CREDENTIALS.json') # opening json file
+
+EMAIL_BACKEND = TASC_EMAIL_CRED['EMAIL_BACKEND'][0]
+EMAIL_HOST = TASC_EMAIL_CRED['EMAIL_HOST'][0]
+EMAIL_USE_TLS = True#TASC_EMAIL_CRED['EMAIL_USE_TLS'][0]
+EMAIL_PORT = int(TASC_EMAIL_CRED['EMAIL_PORT'][0])
+EMAIL_HOST_USER = TASC_EMAIL_CRED['EMAIL_HOST_USER'][0] #sender's email-id
+EMAIL_HOST_PASSWORD = TASC_EMAIL_CRED['EMAIL_HOST_PASSWORD'][0] #password associated with above email-id
