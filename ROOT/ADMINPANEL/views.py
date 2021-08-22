@@ -4,7 +4,7 @@ from django.core.files.storage import FileSystemStorage
 from django.utils.timezone import now
 from django.http import JsonResponse,HttpResponse
 from MCQ.models import QuizData, UserRegistration, Question
-from .models import Declare_Result
+from .models import Declare_Result, Department_Information
 from django.db.models import F, Count, Sum
 
 # all static packages import below
@@ -15,6 +15,7 @@ from . import ADMIN_PAGE_MAPPER, staticVariables
 from sqlalchemy import create_engine
 import datetime
 from ADMINPANEL.sendMail import send_mails
+from ADMINPANEL.forms import Information
 # Create your views here.
 global dataBaseMapper
 
@@ -772,5 +773,34 @@ def toggle_result(request, status, pageDictKey):
         update_result_status(request, status)
 
         context.update({"resultStat":get_result_status(),})
+
+    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
+
+
+
+def get_dept_information(request):
+
+    pageDictKey = 'department'
+
+    department_info = Department_Information.objects.all().order_by('-id')
+
+    form = Information()
+
+    context = {
+    'department_table': department_info,
+    "pageDictKey":pageDictKey,
+    'form':form,
+    "resultStat":get_result_status(),
+    }
+
+    if request.method == 'POST':
+
+        form = Information(request.POST)
+
+        if form.is_valid():
+
+            save_it = form.save(commit=False)
+
+            save_it.save()
 
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)

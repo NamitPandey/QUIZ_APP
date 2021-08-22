@@ -11,4 +11,5 @@ pageDict={
 "dashboard":f"{MAIN_DIR_NME}/dashboard.html",
 "student":f"{MAIN_DIR_NME}/studentReport.html",
 "records":f"{MAIN_DIR_NME}/records.html",
+"department":f"{MAIN_DIR_NME}/department_information.html",
 }

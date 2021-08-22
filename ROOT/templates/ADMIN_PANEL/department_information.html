@@ -1,0 +1,135 @@
+{% extends 'BASE_FILES/BaseAdmin.html' %}
+{% load static %}
+{% load my_filter %}
+{% block adminContent %}
+
+<style media="screen">
+  td, th {
+    text-align:center;
+  }
+</style>
+
+<div class="content">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card card-tasks">
+
+        <div class="card-body ">
+          <form class="mt-3 row responsive" action="{% url 'ADMINPANEL:information'%}" method="POST" style="margin-left: 1%; width: 95%;">
+            {% csrf_token %}
+
+            <div class="col-md-2" style="max-height:100px; height:100px;">
+
+              <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
+                <h6>ENTER NAME</h6>
+                <div class="form-group" >
+                  {{form.NAME}}
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-2" style="max-height:100px; height:100px;">
+
+              <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
+                <h6>ENTER SCHOOL NAME</h6>
+                <div class="form-group" >
+                  {{form.SCHOOL_NAME}}
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-2" style="max-height:100px; height:100px;">
+
+              <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
+                <h6>ENTER PROGRAM NAME</h6>
+                <div class="form-group" >
+                  {{form.PROGRAM_NAME}}
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-2" style="max-height:100px; height:100px;">
+
+              <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
+                <h6>ENTER EMAIL ID</h6>
+                <div class="form-group" >
+                  {{form.EMAIL_ID}}
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-2" style="max-height:100px; height:100px;">
+              <div class="dropdown" style="margin-left:15px;">
+                <div class="form-group" >
+                  <button class="btn btn-warning" type="submit" name="button">SUBMIT</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+      <div class="col-md-12">
+        <div class="card card-chart">
+          <div class="card-header ">
+            <div class="row">
+              <div class="col-sm-12">
+                  <!-- <h4 class="text-center text-info col-sm-12">TOTAL STRENGTH OF STUDENTS UNDER <strong>{{schoolHeader|replace}}</strong> AND SEMESTER <strong>{{semesterHeader}}</strong>
+                    are <strong> <u>{{totalStrength}}</u></strong>
+                  </h4> -->
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class="text-primary">
+                      <th style="font-weight:700;">
+                        NAME
+                      </th>
+                      <th style="font-weight:700;">
+                        SCHOOL
+                      </th>
+                      <th style="font-weight:700;">
+                        PROGRAM
+                      </th>
+                      <th style="font-weight:700;">
+                        EMAIL
+                      </th>
+                    </thead>
+                    <tbody>
+                      {% for data in department_table %}
+                        <tr>
+                          <td style="font-weight:700;">
+                            {{data.NAME}}
+                          </td>
+                          <td>
+                            {{data.SCHOOL_NAME}}
+                          </td>
+
+                          <td>
+                            {{data.PROGRAM_NAME}}
+                          </td>
+                          <td>
+                            <a href="mailto:{{data.EMAIL_ID}}@gsfcuniversity.ac.in">{{data.EMAIL_ID}}</a>
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <br>
+          </div>
+        </div>
+      </div>
+
+</div>
+
+{% endblock %}

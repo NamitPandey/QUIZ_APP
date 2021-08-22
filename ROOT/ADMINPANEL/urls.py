@@ -16,4 +16,5 @@ urlpatterns = [
     path("records/", views.records, name='records'),
     path("announcement/<int:status>/<str:pageDictKey>", views.toggle_result, name='announcement'),
     path("template/<int:setNO>", views.template_download, name='template'),
+    path("information/", views.get_dept_information, name='information'),
 ]
