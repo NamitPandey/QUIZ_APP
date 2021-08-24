@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 from django.utils.timezone import now
@@ -23,6 +24,7 @@ dataBaseMapper={
  1:'MCQ_allowedenrollments',# total number of students
  2:'MCQ_enrollemntsforquiz', # students that will appear for test
  3:'MCQ_question',
+ 4:"ADMINPANEL_Department_Information",
  }
 
 def get_result_status():
@@ -105,7 +107,7 @@ def upload_data(request, dataBaseKey):
         FILE = FileSystemStorage()
         FILE.save(uploadedFile.name, uploadedFile)
 
-        mediaPath = os.path.abspath("./media")
+        mediaPath = settings.MEDIA_ROOT#os.path.abspath("./media")
 
         if ".xlsx" in uploadedFile.name or ".xls" in uploadedFile.name:
 
@@ -147,7 +149,7 @@ def upload_data(request, dataBaseKey):
         try:
 
             uploadedData.to_sql(tableName, conn, if_exists='append', index=False)
-            os.remove(mediaPath+"/"+str(uploadedFile))
+            # os.remove(mediaPath+"/"+str(uploadedFile))
 
         except Exception as e:
 
@@ -211,6 +213,7 @@ def template_download(request, setNO):
     1:"UPLOAD_STUDENTS_DATA_SET_A",
     2:"UPLOAD_ENROLLMENTS_FOR_TEST_SET_B",
     3:"UPLOAD_QUESTIONS_SET_C",
+    4:"UPLOAD_DEPARTMENT_DETAILS"
     }
 
 
@@ -271,6 +274,19 @@ def template_download(request, setNO):
         for user in users:
             writer.writerow(user)
 
+    elif int(setNO) == 4:
+
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachement; filename= "{fileName}.csv"'
+        writer = csv.writer(response)
+
+        writer.writerow(
+            [
+             "NAME",
+             "SCHOOL_NAME",
+             "PROGRAM_NAME",
+             "EMAIL_ID",
+            ])
 
     return response
 
