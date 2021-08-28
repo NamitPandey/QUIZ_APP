@@ -793,7 +793,7 @@ def toggle_result(request, status, pageDictKey):
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
 
 
-
+@login_required()
 def get_dept_information(request):
 
     pageDictKey = 'department'
@@ -807,6 +807,8 @@ def get_dept_information(request):
     "pageDictKey":pageDictKey,
     'form':form,
     "resultStat":get_result_status(),
+    "school_list": staticVariables.SCHOL_LIST,
+    "program_list": staticVariables.PROGRM_LIST,
     }
 
     if request.method == 'POST':
