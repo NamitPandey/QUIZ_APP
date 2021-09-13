@@ -17,4 +17,6 @@ urlpatterns = [
     path("announcement/<int:status>/<str:pageDictKey>", views.toggle_result, name='announcement'),
     path("template/<int:setNO>", views.template_download, name='template'),
     path("information/", views.get_dept_information, name='information'),
+    path("feedbaack/", views.feedback_page, name='feedbackpage'),
+    path("feedback/download", views.download_feedback, name='feedback'),
 ]

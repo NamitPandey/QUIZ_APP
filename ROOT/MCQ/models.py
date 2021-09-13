@@ -88,6 +88,7 @@ class FeedbackForm(models.Model):
     QSTN_THREE_ANSWR_CHOICE_3 = models.CharField(max_length=850, blank=True)
     QSTN_THREE_ANSWR_CHOICE_4 = models.CharField(max_length=850, blank=True)
     COMMENTS = models.TextField(max_length=5000, blank=True)
+    objects = DataFrameManager()
 
     def __str__(self):
         return f"{self.QSTN_ONE}-{self.QSTN_TWO}-{self.QSTN_THREE}"

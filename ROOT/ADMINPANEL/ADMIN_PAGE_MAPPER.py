@@ -12,4 +12,5 @@ pageDict={
 "student":f"{MAIN_DIR_NME}/studentReport.html",
 "records":f"{MAIN_DIR_NME}/records.html",
 "department":f"{MAIN_DIR_NME}/department_information.html",
+"comments":f"{MAIN_DIR_NME}/feedback_comments.html",
 }

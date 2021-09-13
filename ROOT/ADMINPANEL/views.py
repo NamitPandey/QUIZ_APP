@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 from django.utils.timezone import now
 from django.http import JsonResponse,HttpResponse
-from MCQ.models import QuizData, UserRegistration, Question
+from MCQ.models import QuizData, UserRegistration, Question, FeedbackForm
 from .models import Declare_Result, Department_Information
 from django.db.models import F, Count, Sum
 
@@ -126,7 +126,8 @@ def upload_data(request, dataBaseKey):
         conn = create_engine(f'sqlite:////{dbPath}')
 
         if dataBaseKey == 2:
-
+            lowercase = lambda x: x.strip().lower()
+            uploadedData['ENROLLMENT_NUMBER'] = uploadedData['ENROLLMENT_NUMBER'].apply(lowercase)
             uploadedData['YEAR'] = uploadedData['YEAR'].apply(convert_to_str)
             uploadedData['MONTH'] = uploadedData['MONTH'].apply(convert_to_str)
             uploadedData['DATE'] = uploadedData['DATE'].apply(convert_to_str)
@@ -203,6 +204,62 @@ def download_data(request):
 
     for user in users:
         writer.writerow(user)
+
+    return response
+
+
+@login_required
+def download_feedback(request):
+
+    # pageDictKey = "downloadPage"
+
+    fileName = f"FEEDBACK_DATA-{now()}"
+
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachement; filename= "{fileName}.csv"'
+    writer = csv.writer(response)
+
+    file = FeedbackForm.objects.all().to_dataframe()
+
+    one  = file[["QSTN_ONE",
+      "QSTN_ONE_ANSWR",
+      "QSTN_TWO"]].groupby(["QSTN_ONE",
+                             "QSTN_ONE_ANSWR"], as_index=False).count().rename(columns={"QSTN_TWO":"COUNT",
+                                                                       "QSTN_ONE":"QUESTION",
+                                                                       "QSTN_ONE_ANSWR":"ANSWER"})
+
+    two = file[["QSTN_TWO",
+      "QSTN_TWO_ANSWR",
+      "QSTN_THREE"]].groupby(["QSTN_TWO",
+                             "QSTN_TWO_ANSWR"], as_index=False).count().rename(columns={"QSTN_THREE":"COUNT",
+                                                                                       "QSTN_TWO":"QUESTION",
+                                                                                       "QSTN_TWO_ANSWR":"ANSWER"})
+
+    q_three_data = pd.DataFrame()
+    choiceQ = file.dropna()
+    for i in ["QSTN_THREE_ANSWR_CHOICE_1","QSTN_THREE_ANSWR_CHOICE_2","QSTN_THREE_ANSWR_CHOICE_3","QSTN_THREE_ANSWR_CHOICE_4",]:
+
+        tempFile = file.dropna()[["QSTN_THREE",
+                          f"{i}",
+                          "QSTN_TWO",]].groupby(["QSTN_THREE",
+                                                 f"{i}"], as_index=False).count().rename(columns={"QSTN_TWO":"COUNT",
+                                                                                  "QSTN_THREE":"QUESTION",
+                                                                                 f"{i}":"ANSWER"})
+
+        q_three_data = pd.concat([q_three_data, tempFile])
+
+
+    three = q_three_data.groupby(["QUESTION", "ANSWER"], as_index=False).sum()
+    # print(q_three_data)
+    # print(three)
+    final = pd.concat([one, two, three]).reset_index(drop=True)
+    final.replace("","NT", inplace=True)
+    final = final.query("ANSWER != 'NT'").reset_index(drop=True)
+    final.to_csv(path_or_buf=response,sep=';',float_format='%.2f',index=False,decimal=",")
+    # for user in one:
+    #     writer.writerow([(one["QUESTION"]),(one["ANSWER"])])
+
 
     return response
 
@@ -820,5 +877,16 @@ def get_dept_information(request):
             save_it = form.save(commit=False)
 
             save_it.save()
+
+    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
+
+def feedback_page(request):
+
+    pageDictKey = 'comments'
+
+    commentsData = FeedbackForm.objects.all()
+
+    context = {"comments":commentsData,"pageDictKey":pageDictKey,
+    "resultStat":get_result_status(),}
 
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
