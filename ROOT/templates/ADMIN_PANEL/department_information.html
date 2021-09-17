@@ -7,8 +7,17 @@
   td, th {
     text-align:center;
   }
-</style>
 
+  #id_PROGRAM_NAME{
+    width: 200px;
+    height: 28px;
+  }
+  #id_SCHOOL_NAME{
+    height: 28px;
+  }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="{% static 'js/school_jquery.js' %}"></script>
 <div class="content">
   <div class="row">
     <div class="col-lg-12">
@@ -22,28 +31,28 @@
               <div class="row" style="margin-left:4%; margin-bottom:4%;">
 
                 <div class="col" style="margin-top:-10px;">
-                  <label class="mt-3">ENTER NAME</label>
+                  <label class="mt-3" style="color:black; font-weight:700;">ENTER NAME</label>
                   <div class="">
                     {{form.NAME}}
                   </div>
                 </div>
 
                 <div class="col" style="margin-top:-10px;">
-                  <label class="mt-3">SELECT SCHOOL NAME</label>
+                  <label class="mt-3" style="color:black; font-weight:700;">SELECT SCHOOL NAME</label>
                   <div class="" >
                     {{form.SCHOOL_NAME}}
                   </div>
                 </div>
 
                 <div class="col" style=margin-top:-10px;">
-                  <label class="mt-3">SECLECT PROGRAM NAME</label>
+                  <label class="mt-3" style="color:black; font-weight:700;">SECLECT PROGRAM NAME</label>
                   <div class="" >
                     {{form.PROGRAM_NAME}}
                   </div>
                 </div>
 
                 <div class="col" style="margin-top:-10px;">
-                  <label class="mt-3">ENTER EMAIL ID</label>
+                  <label class="mt-3" style="color:black; font-weight:700;">ENTER EMAIL ID</label>
                   <div class="" >
                     {{form.EMAIL_ID}}
                   </div>
