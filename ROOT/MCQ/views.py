@@ -364,7 +364,7 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter, resultedTime):
 
         # getting time and adding 45 minutes for test time limit
         nowTime=datetime.datetime.now()
-        maxTime = nowTime+datetime.timedelta(minutes=44)
+        maxTime = nowTime+datetime.timedelta(minutes=44.5)
 
         resultedTime = datetime.datetime.strptime(str(maxTime - nowTime), "%H:%M:%S")
 

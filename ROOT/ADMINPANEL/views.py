@@ -17,6 +17,7 @@ from sqlalchemy import create_engine
 import datetime
 from ADMINPANEL.sendMail import send_mails
 from ADMINPANEL.forms import Information
+from itertools import chain
 # Create your views here.
 global dataBaseMapper
 
@@ -50,6 +51,17 @@ def update_result_status(request, status):
         resultStat.RESULT_STATUS= 0
         resultStat.save()
 
+def check_missing_cat(querySet):
+    print("HI")
+    print(querySet.to_dataframe())
+    querySet = querySet.to_dataframe()["CATEGORY"].tolist()
+    missingCat = []
+    for cat in ['APPTITUDE', 'GENERAL_KNOWLEDGE', 'LOGICAL', 'WRITTEN_COMMUNICATION']:
+
+        if cat not in querySet:
+            missingCat.append(cat)
+
+    return missingCat
 
 def convert_to_str(x):
 
@@ -539,6 +551,7 @@ def dashboard(request):
 def get_report(enrollmentNo):
 
     studntRep = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enrollmentNo,)
+    totalAttempt = studntRep.values('CATEGORY').annotate(TOTAL_ATTEMPT = Count('CORRECT_ANSWER')).order_by('CATEGORY')
     studntRep = studntRep.values('CATEGORY', 'ANSWER').filter(ANSWER__iexact = F('CORRECT_ANSWER')).order_by('CATEGORY', 'ANSWER')
     studntRep = studntRep.values('CATEGORY').annotate(COUNT = Count('CATEGORY')).order_by('CATEGORY')
     total = 10#100/sum(studntRep.to_dataframe()['COUNT'])
@@ -739,6 +752,8 @@ def student_report(request, enroll):
 
         try:
             studntRep = get_report(enrollmentid)
+            missingCat = check_missing_cat(studntRep)
+            missinglenght = len(missingCat)
             piechartSeries, columnSeries, categoryList = highchart(studntRep)
             TOTAL_CRT = sum(studntRep.to_dataframe()['COUNT'])
 
@@ -760,6 +775,8 @@ def student_report(request, enroll):
             context.update({
             'studentData':studentData,
             'studntRep':studntRep,
+            "missingCat":missingCat,
+            "missinglenght": missinglenght,
             'TOTAL_CRT':TOTAL_CRT,
             "enrollmntNO": enrollmentid,
 
@@ -775,7 +792,8 @@ def student_report(request, enroll):
             "qstnDtaSeries":qstnDtaSeries,
             "colorType":colorType,
             })
-        except:
+        except Exception as e:
+            print(e)
             context.update({
             'WARNING_MSG': 'ENABLE',
             "MSG":f"Looks like <u style='color:red;'>{enrollmentid}</u>" +" has not given the test till now <br><br> PLEASE CHECK BACK AGAIN!",
