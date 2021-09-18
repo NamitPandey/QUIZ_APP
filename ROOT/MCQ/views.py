@@ -211,6 +211,7 @@ def students_portal(request):
     chooseFrom = list(Question.objects.filter(CATEGORY__iexact='LOGICAL').values_list("QUESTION_ID", flat=True))
 
     mainID = np.random.choice(chooseFrom,1)[0]
+    loggedin_detail = UserRegistration.objects.filter(ENROLLMENT_NUMBER__iexact=request.user.username)
 
     context={
     "PAGE_MSG": "HOMEPAGE",
@@ -223,10 +224,11 @@ def students_portal(request):
     'disabled':'',
     "counter":1,
     "resultStat":get_result_status(),
+    "student_detail":loggedin_detail,
     }
 
     # list uploaded by admin to grant access to students to take the test
-    approvedEnrollment = list(EnrollemntsForQuiz.objects.values_list("ENROLLMENT_NUMBER", flat=True).distinct())+['admin']
+    approvedEnrollment = list(EnrollemntsForQuiz.objects.values_list("ENROLLMENT_NUMBER", flat=True).distinct())#+['admin']
 
     if request.user.is_superuser:
 
@@ -263,6 +265,10 @@ def feedback(request):
         answer_two = request.POST.get('question_two')
         answer_three = request.POST.getlist('question_three')
         comments = request.POST.get('comments')
+
+        if comments.strip() == "" or comments.strip() == " ":
+
+            comments = "999"
 
         if len(answer_three) == 4:
 
@@ -329,7 +335,7 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter, resultedTime):
     pageDictKey = 'quiz_page'
         # list uploaded by admin to grant access to students to take the test
         # REMOVE ADMIN FROM THE LIST DURING DEPLOYMENT
-    approvedEnrollment = list(EnrollemntsForQuiz.objects.values_list("ENROLLMENT_NUMBER", flat=True).distinct())+['admin']
+    approvedEnrollment = list(EnrollemntsForQuiz.objects.values_list("ENROLLMENT_NUMBER", flat=True).distinct())#+['admin']
 
     context={
     "PAGE_MSG": staticVariables.CATEGORY[1],
@@ -364,7 +370,7 @@ def quiz_page(request,randmNmbr,mainID,randmNmbr2, counter, resultedTime):
 
         # getting time and adding 45 minutes for test time limit
         nowTime=datetime.datetime.now()
-        maxTime = nowTime+datetime.timedelta(minutes=44.5)
+        maxTime = nowTime+datetime.timedelta(minutes=45)
 
         resultedTime = datetime.datetime.strptime(str(maxTime - nowTime), "%H:%M:%S")
 
@@ -461,7 +467,88 @@ def time_out(request, username):
     user.delete()
 
     context={'AUTHORIZED':'NO',
-     'COMN_MSG': "TIMES UP ! THANK YOU FOR TAKING THE TEST. RESULTS WILL BE ANNOUNCED SOON. ALL THE BEST",
+     'COMN_MSG': "TIMES UP! THANK YOU FOR TAKING THE TEST. RESULTS WILL BE ANNOUNCED SOON. ALL THE BEST",
      }
 
     return render(request, PAGE_MAPPER.pageDict[pageDictKey], context)
+
+
+
+def feedback_time_out(request, username):
+
+    if request.method == 'POST':
+
+        answer_one = request.POST.get('question_one')
+        answer_two = request.POST.get('question_two')
+        answer_three = request.POST.getlist('question_three')
+        comments = request.POST.get('comments')
+
+        if comments.strip() == "" or comments.strip() == " ":
+
+            comments = "999"
+
+        if len(answer_three) == 4:
+
+            FeedbackForm.objects.create(
+            QSTN_ONE='Did you enjoy taking the Test ?',
+            QSTN_TWO='The Test you found ?',
+            QSTN_THREE='The experience of the Test reveals that ?',
+            QSTN_ONE_ANSWR = answer_one,
+            QSTN_TWO_ANSWR = answer_two,
+            QSTN_THREE_ANSWR_CHOICE_1 = answer_three[0],
+            QSTN_THREE_ANSWR_CHOICE_2 = answer_three[1],
+            QSTN_THREE_ANSWR_CHOICE_3 = answer_three[2],
+            QSTN_THREE_ANSWR_CHOICE_4 = answer_three[3],
+            COMMENTS = comments,
+            ).save()
+
+        elif len(answer_three) == 3:
+
+            FeedbackForm.objects.create(
+            QSTN_ONE='Did you enjoy taking the Test ?',
+            QSTN_TWO='The Test you found ?',
+            QSTN_THREE='The experience of the Test reveals that ?',
+            QSTN_ONE_ANSWR = answer_one,
+            QSTN_TWO_ANSWR = answer_two,
+            QSTN_THREE_ANSWR_CHOICE_1 = answer_three[0],
+            QSTN_THREE_ANSWR_CHOICE_2 = answer_three[1],
+            QSTN_THREE_ANSWR_CHOICE_3 = answer_three[2],
+            COMMENTS = comments,
+            ).save()
+
+        elif len(answer_three) == 2:
+
+            FeedbackForm.objects.create(
+            QSTN_ONE='Did you enjoy taking the Test ?',
+            QSTN_TWO='The Test you found ?',
+            QSTN_THREE='The experience of the Test reveals that ?',
+            QSTN_ONE_ANSWR = answer_one,
+            QSTN_TWO_ANSWR = answer_two,
+            QSTN_THREE_ANSWR_CHOICE_1 = answer_three[0],
+            QSTN_THREE_ANSWR_CHOICE_2 = answer_three[1],
+            COMMENTS = comments,
+            ).save()
+
+        elif len(answer_three) == 1:
+
+            FeedbackForm.objects.create(
+            QSTN_ONE='Did you enjoy taking the Test ?',
+            QSTN_TWO='The Test you found ?',
+            QSTN_THREE='The experience of the Test reveals that ?',
+            QSTN_ONE_ANSWR = answer_one,
+            QSTN_TWO_ANSWR = answer_two,
+            QSTN_THREE_ANSWR_CHOICE_1 = answer_three[0],
+            COMMENTS = comments,
+            ).save()
+        print("black box: ",username)
+        user = EnrollemntsForQuiz.objects.filter(ENROLLMENT_NUMBER__iexact=username)
+
+        user.delete()
+
+        context={'AUTHORIZED':'NO',
+         'COMN_MSG': "TIMES UP! THANK YOU FOR TAKING THE TEST. RESULTS WILL BE ANNOUNCED SOON. ALL THE BEST",
+         }
+
+        return render(request, "MAIN_PAGE/thank_you_msg.html", context)
+
+    return render(request, "MAIN_PAGE/feedback_page.html")

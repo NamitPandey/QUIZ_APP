@@ -31,10 +31,11 @@
                     <tbody>
                       {% for data in comments %}
                         <tr>
-
-                          <td>
-                            {{data.COMMENTS}}
-                          </td>
+                          {% if data.COMMENTS != '999' %}
+                            <td>
+                              {{data.COMMENTS}}
+                            </td>
+                          {% endif %}
 
                         </tr>
                       {% endfor %}

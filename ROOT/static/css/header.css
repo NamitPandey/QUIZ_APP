@@ -4,7 +4,9 @@
 
 #logo{
     margin: 10px 10px;
-    float:right;
+    float:left;
+    /* background-color: white; */
+    border-radius: 4px;
 }
 
 body{

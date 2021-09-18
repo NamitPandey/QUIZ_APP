@@ -22,12 +22,10 @@
           <form class="mt-3 row responsive" action="{% url 'ADMINPANEL:records' %}" method="POST" style="margin-left: 1%; width: 95%;">
             {% csrf_token %}
 
-
-            <div class="col-md-2" style="max-height:100px; height:100px;">
-
-              <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
-                <label style="color:black;"><strong>SCHOOL</strong></label>
-                <div class="form-group" >
+            <div class="row" style="margin-left:4%; margin-bottom:4%;">
+              <div class="col" style="margin-top:-10px;">
+                <label class="mt-3" style="color:black;"><strong>SCHOOL</strong></label>
+                <div class="">
                   <select  id="travel" class="selectpicker" name="school_POST" multiple>
 
                     {% for schl in SCHOL %}
@@ -45,11 +43,10 @@
               </div>
             </div>
 
-            <div class="col-md-2" style="max-height:100px; height:100px;">
-
-              <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
-                <label style="color:black;"><strong>SEMESTER</strong></label>
-                <div class="form-group" >
+            <div class="row" style="margin-left:4%; margin-bottom:4%;">
+              <div class="col" style="margin-top:-10px;">
+                <label class="mt-3" style="color:black;"><strong>SEMESTER</strong></label>
+                <div class="">
                   <select  id="travel" class="selectpicker" name="semester_POST" multiple>
 
                     {% for prg in '1 2 3 4 5 6 7'|makelist %}
@@ -66,11 +63,10 @@
               </div>
             </div>
 
-            <div class="col-md-2" style="max-height:100px; height:100px;">
-
-              <div class="dropdown" style="margin-left:15px; margin-top:-10px;">
-                <label style="color:black;"><strong>GENDER</strong></label>
-                <div class="form-group" >
+            <div class="row" style="margin-left:4%; margin-bottom:4%;">
+              <div class="col" style="margin-top:-10px;">
+                <label class="mt-3" style="color:black;"><strong>GENDER</strong></label>
+                <div class="">
                   <select  id="travel" class="selectpicker" name="gender_POST" multiple>
 
                     {% for gndr in GNDR %}
@@ -88,13 +84,15 @@
               </div>
             </div>
 
-            <div class="col-md-2" style="max-height:100px; height:100px;">
-              <div class="dropdown" style="margin-left:15px; margin-top:14px;">
-                <div class="form-group" >
-                  <button class="btn btn-warning" type="submit" name="button">Go</button>
+            <div class="row" style="margin-left:4%; margin-bottom:4%;">
+              <div class="col" style="margin-top:0px;">
+                <label class="mt-3" style="color:black;"></label>
+                <div class="">
+                  <button class="btn btn-warning" type="submit" name="button" style="font-weight:800;">Search</button>
                 </div>
               </div>
             </div>
+
           </form>
         </div>
 

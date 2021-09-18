@@ -1,5 +1,6 @@
 {% extends 'BASE_FILES/baseFile.html' %}
 {% load static %}
+{% load my_filter %}
 {% block content %}
 <div class="container-fluid">
   <div class="row container">
@@ -15,7 +16,45 @@
 
     {% else %}
       <div class="btn-wrapper">
-          <button class="btn"><img src="{% static 'img/user.png' %}" class="icon"><br>Profile</button>
+          <button type="button" class="btn" data-toggle="modal" data-target="#exampleModalCenter"><img src="{% static 'img/user.png' %}" class="icon"><br>Profile</button>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title" id="exampleModalLongTitle">Profile</h3>
+              <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button> -->
+            </div>
+            <div class="modal-body">
+              {% for val in student_detail %}
+                <div class="author">
+
+                    {% if val.GENDER|lower == 'male' %}
+                      <img class="avatar border-gray" src="{% static 'img/male.png'%}" alt="{% static 'img/default-avatar.png'%}" style="width: 85px;">
+                    {% else %}
+                      <img class="avatar border-gray" src="{% static 'img/female.png'%}" alt="{% static 'img/default-avatar.png'%}" style="width: 85px;">
+                    {% endif %}
+                    <h5 class="title" ><strong>{{val.FIRST_NAME}} {{val.LAST_NAME}}</strong></h5>
+                  <p class="description" style="color:black; font-weight:600;">
+                    {{val.ENROLLMENT_NUMBER}}
+                  </p>
+                </div>
+                <p class="description text-center" style="color:black;">
+                  <strong>Email:</strong>{{val.ENROLLMENT_NUMBER}}@gsfcuniversity.ac.in<br>
+                  <strong>Gender:</strong> {{val.GENDER}} <br>
+                  <strong>School:</strong> {{val.SCHOOL|replace}}<br>
+                  <strong>Program:</strong> {{val.PROGRAM|replace}} &nbsp <strong>Semester:</strong> {{val.SEMESTER}}<br>
+                </p>
+              {% endfor %}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width:50%; height:40px; margin-right:25%;">Close</button>
+            </div>
+          </div>
+        </div>
       </div>
     {% endif  %}
     {% if disabled != 'disabled' %}
