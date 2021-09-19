@@ -488,7 +488,6 @@ def dashboard(request):
 
         quizData = QuizData.objects.values("ENROLLMENT_NUMBER").annotate(COUNT = Count("QUESTION_ID")).order_by("ENROLLMENT_NUMBER")
         TOTAL_ATTEMPT = UserRegistration.objects.all().count()
-
         students_with_all_fourthy = round((quizData.filter(COUNT__gte=40).count()/TOTAL_ATTEMPT)*100) # percentage of students with all 40 questions
 
         all_fourty_list = list(quizData.filter(COUNT__gte=40).values_list("ENROLLMENT_NUMBER", flat=True))
@@ -566,7 +565,7 @@ def dashboard(request):
                 "showMe":'Enabled',
                 "percentageRangetable":finalResult.order_by("-MARKS","ENROLLMENT_NUMBER"),
                 })
-        print(gender)
+
         context.update({
             # "catgry":catgry,
             "program":program,
@@ -744,6 +743,17 @@ def student_report(request, enroll):
             # question
             questionTable = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enroll)#.order_by("CATEGORY")
 
+            # get actual attempts
+            try:
+                qsData = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enroll,)
+                acualAttempts = qsData.values('CATEGORY').annotate(TOTAL_ATTEMPT = Count('CORRECT_ANSWER')).order_by('CATEGORY').to_dataframe()
+                totalActAttempts = sum(acualAttempts['TOTAL_ATTEMPT'])
+
+                context.update({            "acualAttempts":acualAttempts,
+                            "totalActAttempts":totalActAttempts,})
+            except:
+                pass
+
             context.update({
             'studentData':studentData,
             'studntRep':studntRep,
@@ -793,6 +803,18 @@ def student_report(request, enroll):
             })
 
             return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
+
+        # get actual attempts
+        try:
+            qsData = QuizData.objects.filter(ENROLLMENT_NUMBER__iexact=enrollmentid,)
+            acualAttempts = qsData.values('CATEGORY').annotate(TOTAL_ATTEMPT = Count('CORRECT_ANSWER')).order_by('CATEGORY').to_dataframe()
+            totalActAttempts = sum(acualAttempts['TOTAL_ATTEMPT'])
+            # print(acualAttempts)
+
+            context.update({            "acualAttempts":acualAttempts,
+                        "totalActAttempts":totalActAttempts,})
+        except:
+            pass
 
         try:
             studntRep = get_report(enrollmentid)

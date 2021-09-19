@@ -93,3 +93,15 @@ def remain_perc(val):
 
 
     return 100-int(val)
+
+""" actual attempts """
+@register.filter(name='attempts')
+@stringfilter
+def get_attempts(loopData, actData):
+
+    try:
+        filterData = actData.query(f"CATEGORY == '{loopData}'").reset_index(drop=True)['TOTAL_ATTEMPT'][0]
+
+        return filterData
+    except:
+        return 10
