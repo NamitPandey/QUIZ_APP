@@ -38,6 +38,7 @@ def get_result_status():
 
     return resultStat
 
+
 def update_result_status(request, status):
     if status == 1:
         send_mails()
@@ -52,7 +53,6 @@ def update_result_status(request, status):
         resultStat.save()
 
 def check_missing_cat(querySet):
-    print("HI")
     print(querySet.to_dataframe())
     querySet = querySet.to_dataframe()["CATEGORY"].tolist()
     missingCat = []
@@ -174,6 +174,50 @@ def upload_data(request, dataBaseKey):
 
 
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context=context)
+
+@login_required
+def download_university_template(request):
+
+    fileName = f"STUDENT DATA"
+
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachement; filename= "{fileName}.xlsx"'
+    writer = csv.writer(response)
+
+    writer.writerow(
+        [
+         "SR.NO.",
+         "NAME AS PER HSC MARKSHEET",
+         "BRANCH",
+         "Semester",
+         "ROLL NUMBER",
+         "GENDER",
+         "GSFCU EMAIL ID ADDRESS",
+        ])
+
+    return response
+
+
+@login_required
+def update_university_data(request):
+
+    pageDictKey = 'uploadPage'
+
+    context={"MSG":"NOT_UPLOADED", "resultStat":get_result_status(), "pageDictKey":pageDictKey,}
+
+    if request.method == "POST":
+
+        mediaPath = "./media"
+        for fname in os.listdir(mediaPath):
+            os.remove(mediaPath+"/"+fname)
+        uploadedFile = request.FILES['document']
+
+        FILE = FileSystemStorage(mediaPath)
+        FILE.save(uploadedFile.name, uploadedFile)
+
+    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context=context)
+
 
 @login_required
 def download_data(request):

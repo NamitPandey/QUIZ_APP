@@ -19,4 +19,6 @@ urlpatterns = [
     path("information/", views.get_dept_information, name='information'),
     path("feedbaack/", views.feedback_page, name='feedbackpage'),
     path("feedback/download", views.download_feedback, name='feedback'),
+    path("downloadtemplate/universitydata", views.download_university_template, name='universitydataTemplate'),
+    path("uploadfiles/universitydata", views.update_university_data, name='universitydata'),
 ]

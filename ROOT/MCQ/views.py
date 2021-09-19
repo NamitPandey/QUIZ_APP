@@ -15,6 +15,7 @@ import datetime
 # all static packages import below
 from . import (PAGE_MAPPER, staticVariables)
 from ADMINPANEL.views import get_result_status
+from ADMINPANEL.university_data import UniversityData
 # Create your views here.
 global CATEGORY, RNDM_NMBR
 
@@ -100,13 +101,13 @@ def user_registration(request):
     if request.method == "POST":
 
         enrollment = request.POST.get("enrollment").lower() # getting enrollment number
-        firstname = request.POST.get("firstname") # getting username
-        lastname = request.POST.get("lastname") # getting username
-
-
-
-        gender = request.POST.get("gender") # getting user's gender
-        semester = request.POST.get("semester") # getting user's semesters
+        # firstname = request.POST.get("firstname") # getting username
+        # lastname = request.POST.get("lastname") # getting username
+        #
+        #
+        #
+        # gender = request.POST.get("gender") # getting user's gender
+        # semester = request.POST.get("semester") # getting user's semesters
 
         school = request.POST.get("school") # getting user's program
         program = request.POST.get("program") # getting user's program
@@ -115,18 +116,23 @@ def user_registration(request):
         password_main = request.POST.get("password_main") # getting password
         password_confirm = request.POST.get("password_confirm") # getting password confirm
 
+        university = UniversityData() # opening up university data file
+        # University_data = UniversityData.get_university_data()
+        searchRes = university.search_enrollment(enrollment)
         # phone = request.POST.get("phone") # getting contact number
         # company = request.POST.get("companyname") # getting company name
 
         allowedEnrollments = [_.lower() for _ in list(AllowedEnrollments.objects.values_list("ENROLLMENT_NUMBER", flat=True).distinct())]# enrollment numbers of students allowed to take the test
 
-        if enrollment not in allowedEnrollments:
 
-            context.update({'MSG':"ERROR", 'INFO': "ENTER A REGISTERED ENROLLMENT NUMBER"})
 
-        elif User.objects.filter(username=enrollment).exists(): # check to see if user name exists
+        if User.objects.filter(username=enrollment).exists(): # check to see if user name exists
 
             context.update({'MSG':"ERROR", 'INFO': "ENROLLMENT ALREADY EXISTS"})
+
+        elif (enrollment not in allowedEnrollments) or (searchRes == 'NO'):
+
+            context.update({'MSG':"ERROR", 'INFO': "ENTER A REGISTERED ENROLLMENT NUMBER"})
 
         # elif email.split("@")[-1].lower() not in ["gmail.com"]:
         #
@@ -154,6 +160,7 @@ def user_registration(request):
 
         else:
             # creating new user in database
+            firstname, lastname, semester, gender = university.get_enrollment_detail(enrollment)
 
             userProfile = UserRegistration.objects.create(
             FIRST_NAME=firstname.title(),

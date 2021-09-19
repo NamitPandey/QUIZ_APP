@@ -16,7 +16,7 @@
     <link href="{% static 'registration/vendor/mdi-font/css/material-design-iconic-font.min.css' %}" rel="stylesheet" media="all">
     <link href="{% static 'registration/vendor/font-awesome-4.7/css/font-awesome.min.css' %}" rel="stylesheet" media="all">
     <!-- Font special for pages-->
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"> -->
 
     <!-- Vendor CSS-->
     <link href="{% static 'registration/vendor/select2/select2.min.css' %}" rel="stylesheet" media="all">
@@ -28,10 +28,15 @@
 </head>
 
 <body style="background-image: url('../static/img/background3.jpg');   height: 100%; background-position: center; background-repeat: no-repeat; background-size: cover;">
-  <nav id="nbar" class="navbar">
+  <nav id="nbar" class="navbar" class="navbar" style="background-image: linear-gradient(to right, #ff4000 , #ff9100); opacity: 0.9; height: 75px;">
       <div class="header">
           <div class="navbar-header">
-              <img id="logo" src="{% static 'img/logo.webp' %}" height="100px" style="margin: 10px 10px; float:right;">
+              <img id="logo" src="{% static 'img/logo.webp' %}" height="55px" style="margin: 10px 10px; float:left;">
+              <div class="row col-12" style="margin-left:14%;">
+                <h3 style="color:white; font-weight:800; margin-top:1.4%; font-size:24px;">
+                  Test for Assessing Student’s Calibre - President’s Initiative for Nurturing Unlimited Potentials of Students
+                </h3>
+              </div>
           </div>
       </div>
   </nav>
@@ -65,7 +70,7 @@
                             </div>
                           </div>
 
-                            <div class="col-2">
+                            <!-- <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">First name</label>
                                     <input class="input--style-4" type="text" placeholder="First Name" name="firstname" required>
@@ -76,11 +81,11 @@
                                     <label class="label">last name</label>
                                     <input class="input--style-4" type="text" placeholder="Last Name" name="lastname" required>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
 
-                        <div class="row row-space">
+                        <!-- <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">Gender</label>
@@ -114,7 +119,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="row row-space">
                             <div class="col-2">
