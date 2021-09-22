@@ -28,7 +28,7 @@ urlpatterns = [
     path(f"testover/<str:username>", views.feedback_time_out, name='time_out'),
     # path(f"testover/<str:username>", views.time_out, name='time_out'), # time out
     path(f"result/<str:enroll>", adminviews.student_report, name='studentreport'), # result
-
+    path(f"forgotPassword/", views.forgot_password, name='forgot_password'), # result
     # temp path
     path(f"feedback/", views.feedback, name='feedback'), # result
 

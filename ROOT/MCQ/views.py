@@ -14,8 +14,10 @@ import datetime
 
 # all static packages import below
 from . import (PAGE_MAPPER, staticVariables)
+from .password_gen import generate_random_password
 from ADMINPANEL.views import get_result_status
 from ADMINPANEL.university_data import UniversityData
+from ADMINPANEL.sendMail import forgot_password_mail
 # Create your views here.
 global CATEGORY, RNDM_NMBR
 
@@ -559,3 +561,35 @@ def feedback_time_out(request, username):
         return render(request, "MAIN_PAGE/thank_you_msg.html", context)
 
     return render(request, "MAIN_PAGE/feedback_page.html")
+
+def forgot_password(request):
+
+    pageDictKey = 'forgot_password'
+
+    context = {"reset":"ENABLED"}
+
+    if request.method == "POST":
+
+        username = request.POST.get("username").lower()
+        user = User.objects.get(username__iexact=username)
+        try:
+            candidate_name = list(UserRegistration.objects.filter(ENROLLMENT_NUMBER__iexact=username).values_list("FIRST_NAME", flat=True))[0]
+        except:
+            candidate_name = username
+            
+        newPassword = generate_random_password()
+        forgot_password_mail(candidate_name, newPassword)
+
+
+        user.set_password(newPassword)
+        user.save()
+
+        context.update({
+        "reset":"DISABLED",
+        "userEmail":username,
+
+        })
+
+
+
+    return render(request, PAGE_MAPPER.pageDict[pageDictKey], context)
