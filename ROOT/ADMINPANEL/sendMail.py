@@ -63,8 +63,9 @@ def forgot_password_mail(enrollment, newpassword):
     message =  f"""\
 Hi {enrollment},
 
-Your new password to access TASC-PINUPS portal.
+Your new password to access TASC-PINUPS portal is below.
 
+Username: {enrollment.lower()}
 New Password: {newpassword}
 
 Thanks,
