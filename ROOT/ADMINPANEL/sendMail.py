@@ -3,15 +3,17 @@ from django.core.mail import send_mail, send_mass_mail
 from ADMINPANEL.models import Department_Information
 from MCQ.models import QuizData, UserRegistration
 
+helpdeskID =  "abcd@gmail.com"
+
 def send_mails():
     """ Function will send mail when result declaration is turned on"""
-    helpdeskID =  "abcd@gmail.com"
+
     student_enroll = list(QuizData.objects.values_list('ENROLLMENT_NUMBER', flat=True).distinct())
 
     TO_MAIL_DICT = {
-    'FACULTY_ID': list(Department_Information.objects.values_list('EMAIL_ID', flat=True).distinct()),
+    # 'FACULTY_ID': list(Department_Information.objects.values_list('EMAIL_ID', flat=True).distinct()),
     # 'STUDENT_ID': list(UserRegistration.objects.filter(ENROLLMENT_NUMBER__in=student_enroll).values_list('EMAIL', flat=True).distinct()),
-    # 'TEMP_ID':['nix.pandey@gmail.com']
+    'TEMP_ID':['nix.pandey@gmail.com']
     }
 
     VISIT_URL = "https://gsfcuniversity.pythonanywhere.com"
@@ -48,20 +50,26 @@ ________________________________________________________________________________
          ),
          fail_silently=False)
 
-def forgot_password_mail(enrollment, newpassword):
+def forgot_password_mail(candidate_name, enrollment, newpassword, sendTo='0'):
     """ Function will send mail to student's mail ID with password"""
-    helpdeskID =  "abcd@gmail.com"
+
     student_enroll = list(QuizData.objects.values_list('ENROLLMENT_NUMBER', flat=True).distinct())
 
     TO_MAIL_DICT = {
     # 'FACULTY_ID': list(Department_Information.objects.values_list('EMAIL_ID', flat=True).distinct()),
     # 'STUDENT_ID': list(UserRegistration.objects.filter(ENROLLMENT_NUMBER__in=student_enroll).values_list('EMAIL', flat=True).distinct()),
-    'TEMP_ID':["zalak.kansagra@gsfcuniversity.ac.in"]#['nix.pandey@gmail.com']
+    'TEMP_ID':['nix.pandey@gmail.com'] #["zalak.kansagra@gsfcuniversity.ac.in"]#
     }
+
+    if sendTo != '0':
+
+        TO_MAIL_DICT = {
+        'TO': [sendTo.lower()]
+        }
 
     subject = 'TASC-PINUPS RESET PASSWORD'
     message =  f"""\
-Hi {enrollment},
+Hi {candidate_name},
 
 Your new password to access TASC-PINUPS portal is below.
 

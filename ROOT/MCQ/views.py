@@ -180,7 +180,7 @@ def user_registration(request):
             user = User.objects.create_user(
                                             username=enrollment,
                                             password=password_main,
-                                            # email=email,
+                                            email=str(enrollment)+"@gsfcuniversity.ac.in",
                                             first_name=firstname.title(),
                                             last_name=lastname.title(),
                                             )
@@ -571,25 +571,34 @@ def forgot_password(request):
     if request.method == "POST":
 
         username = request.POST.get("username").lower()
-        user = User.objects.get(username__iexact=username)
+
+        candidate_list = list(UserRegistration.objects.all().values_list("FIRST_NAME", flat=True))
         try:
             candidate_name = list(UserRegistration.objects.filter(ENROLLMENT_NUMBER__iexact=username).values_list("FIRST_NAME", flat=True))[0]
+
         except:
             candidate_name = username
-            
-        newPassword = generate_random_password()
-        forgot_password_mail(candidate_name, newPassword)
 
+        if candidate_name in candidate_list:
 
-        user.set_password(newPassword)
-        user.save()
+            user = User.objects.get(username__iexact=username)
+            newPassword = generate_random_password()
+            forgot_password_mail(candidate_name, username, newPassword)
 
-        context.update({
-        "reset":"DISABLED",
-        "userEmail":username,
+            user.set_password(newPassword)
+            user.save()
 
-        })
+            context.update({
+            "reset":"DISABLED",
+            "HEADER":"Password Reset",
+            "MSG": f"Your new password has been mailed to your <span style='color:black;'>{username}@gsfc.ac.in</span> Email-ID"
 
-
+            })
+        else:
+            context.update({
+            "reset":"DISABLED",
+            "HEADER":"Sorry!",
+            "MSG": f"Enrollment ID <b style='color:black;'>{username}</b> is not found in our records."
+            })
 
     return render(request, PAGE_MAPPER.pageDict[pageDictKey], context)

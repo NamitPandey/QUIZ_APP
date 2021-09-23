@@ -1,0 +1,105 @@
+{% extends 'BASE_FILES/BaseAdmin.html' %}
+{% load static %}
+{% load my_filter %}
+{% block adminContent %}
+<style media="screen">
+  td, th {
+    text-align:center;
+  }
+</style>
+<div class="content">
+  <div class="container-fluid">
+    <div class="content">
+      {% if WARNING_MSG == 'ENABLE' %}
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card card-user">
+            <h2 class="text-center mt-5 title">{{MSG|safe}}</h2>
+          </div>
+        </div>
+      </div>
+
+      {% else%}
+
+        <div class="row">
+
+          <div class="col-md-8">
+            <div class="card card-user">
+              <div class="image">
+                <img src="{% static 'img/userRep_bg.jpg'%}" alt="...">
+              </div>
+              <div class="card-body">
+                {% for val in facultyData %}
+                  <div class="author">
+                    <a href="#" style="text-decoration:none;">
+                        <img class="avatar border-gray" src="{% static 'img/default-avatar.png'%}">
+                      <h5 class="title" >{{val.NAME|title}}</h5>
+                    </a>
+                  </div>
+                  <p class="description text-center" style="color:black;">
+                    <strong>Email:</strong><a href="mailto:{{val.ENROLLMENT_NUMBER}}@gsfcuniversity.ac.in"> {{val.EMAIL_ID}}</a><br>
+                    <strong>School:</strong> {{val.SCHOOL_NAME|replace}}<br>
+                    <strong>Program:</strong> {{val.PROGRAM_NAME|replace}}
+                  </p>
+
+                {% endfor %}
+              </div>
+              <hr>
+              <div class="button-container">
+                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
+                  <i class="fab fa-facebook-f"></i>
+                </button>
+                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
+                  <i class="fab fa-twitter"></i>
+                </button>
+                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
+                  <i class="fab fa-google-plus-g"></i>
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card card-user">
+              <div class="image">
+                <img src="{% static 'img/userRep_bg.jpg'%}" alt="...">
+              </div>
+
+              <div class="card-body" style="margin-left:15%;">
+                <form action="{% url 'ADMINPANEL:whoami' %}" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <label for="currentPass" style="font-size:18px; color:black;">Current Password</label>
+                  <input id="currentPass" name='currentPass' type="password" value="" class="form-control" placeholder="Search Enrollment..." style="height:35px; width:75%; border-color:{{Color}}" required>
+                  <br>
+                  <label for="newPass" style="font-size:18px; color:black;">New Password</label>
+                  <input id="newPass" name='newPass' type="password" value="" class="form-control" placeholder="Search Enrollment..." style="height:35px; width:75%; border-color:{{matchColor}}" required>
+                  <br>
+                  <label for="confirmPass" style="font-size:18px; color:black;">New Password</label>
+                  <input id="confirmPass" name='confirmPass' type="password" value="" class="form-control" placeholder="Search Enrollment..." style="height:35px; width:75%; border-color:{{matchColor}}" required>
+                  {% if ERROR == 'enabled' %}
+                    <p style="color:{{para}}; margin-left:2%; margin-top:4%;">{{MSG|safe}}</p>
+                  {% endif %}
+                  <div class="container" style="margin-left:5%; margin-top:4%;">
+
+                    <button class="btn btn-warning" type="submit" name="button" style="font-weight:800;">Change Password</button>
+                  </div>
+
+                </form>
+
+              </div>
+
+            </div>
+          </div>
+
+
+
+        </div>
+
+    {% endif %}
+
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>Faculty Password Reset</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+
+  <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}"/>
+
+	<link rel="stylesheet" type="text/css" href="{% static 'adminForgot/css/util.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'adminForgot/css/main.css' %}">
+<!--===============================================================================================-->
+</head>
+<body>
+
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100 p-b-160 p-t-50">
+        <img src="{% static 'img/logo.webp' %}" alt="" height="75px;" style="margin-left:30%; margin-bottom:5%;">
+        {% if reset == 'DISABLED' %}
+          <div class="wrap-input100 rs1 validate-input" style="height:150px;">
+            <span class="label-input100" style="text-align:center; font-size:24px;">{{HEADER}}</span>
+            <span class="label-input100" style="text-align:center; font-size:18px; margin-top:10%;">{{MSG|safe}}</span>
+          </div>
+
+          <div class="container-login100-form-btn">
+            <a href="{% url 'MCQ:login' %}" style="width:100%; text-decoration:none; ">
+              <button class="login100-form-btn">
+                Go back
+              </button>
+            </a>
+
+          </div>
+
+        {% else %}
+          <form action="{% url 'ADMINPANEL:reset_faculty_pass' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <span class="login100-form-title p-b-43">
+              <strong>Forgot Password</strong>
+            </span>
+
+            <div class="wrap-input100 rs1 validate-input">
+              <input class="input100" type="text" name="facultyID" required>
+              <span class="label-input100">Enter Your GSFC Email ID</span>
+            </div>
+
+            <div class="container-login100-form-btn">
+              <button class="login100-form-btn">
+                Reset Password
+              </button>
+            </div>
+
+          </form>
+        {% endif %}
+
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

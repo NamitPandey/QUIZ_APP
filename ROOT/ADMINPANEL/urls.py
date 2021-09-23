@@ -21,4 +21,6 @@ urlpatterns = [
     path("feedback/download", views.download_feedback, name='feedback'),
     path("downloadtemplate/universitydata", views.download_university_template, name='universitydataTemplate'),
     path("uploadfiles/universitydata", views.update_university_data, name='universitydata'),
+    path("whoami", views.my_detail, name='whoami'),
+    path("department/iforgot", views.reset_faculty_pass, name='reset_faculty_pass'),
 ]

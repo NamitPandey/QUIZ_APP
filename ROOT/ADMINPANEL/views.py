@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.conf import settings
+from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 from django.utils.timezone import now
@@ -7,6 +8,7 @@ from django.http import JsonResponse,HttpResponse
 from MCQ.models import QuizData, UserRegistration, Question, FeedbackForm
 from .models import Declare_Result, Department_Information
 from django.db.models import F, Count, Sum
+from django.contrib.auth.models import User
 
 # all static packages import below
 import csv
@@ -15,8 +17,9 @@ import pandas as pd
 from . import ADMIN_PAGE_MAPPER, staticVariables
 from sqlalchemy import create_engine
 import datetime
-from ADMINPANEL.sendMail import send_mails
+from ADMINPANEL.sendMail import send_mails, forgot_password_mail
 from ADMINPANEL.forms import Information
+from MCQ.password_gen import generate_random_password
 from itertools import chain
 # Create your views here.
 global dataBaseMapper
@@ -32,11 +35,12 @@ def get_result_status():
 
     try:
         resultStat = int(list(Declare_Result.objects.values_list("RESULT_STATUS", flat=True))[0])
+        return resultStat
     except:
 
         return 0
 
-    return resultStat
+
 
 
 def update_result_status(request, status):
@@ -954,14 +958,34 @@ def get_dept_information(request):
 
     if request.method == 'POST':
 
+        try:
+            facultyFirstName = request.POST.get("NAME").split(" ")[:-1][0].title()
+        except:
+            facultyFirstName = request.POST.get("NAME").title()
+        facultyLastName = request.POST.get("NAME").split(" ")[-1].title()
+        facultySchool = request.POST.get("SCHOOL_NAME")
+        facultyProgram = request.POST.get("PROGRAM_NAME")
+        facultyEmail = request.POST.get("EMAIL_ID").lower()
+
         form = Information(request.POST)
 
         if form.is_valid():
 
+            # saving form
             save_it = form.save(commit=False)
-
             save_it.save()
 
+            # registering user
+            user = User.objects.create_user(
+                                            username=facultyEmail,
+                                            password='tascPortal@21022021',
+                                            email=facultyEmail,
+                                            first_name=facultyFirstName,
+                                            last_name=facultyLastName,
+                                            )
+            user.is_superuser = True
+            user.is_staff = True
+            user.save() #saving the user to database
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
 
 def feedback_page(request):
@@ -972,5 +996,99 @@ def feedback_page(request):
 
     context = {"comments":commentsData,"pageDictKey":pageDictKey,
     "resultStat":get_result_status(),}
+
+    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
+
+def reset_faculty_pass(request):
+
+    pageDictKey = 'reset_faculty_pass'
+
+    context = {"reset":"ENABLED"}
+
+    if request.method == "POST":
+
+        facultyID = request.POST.get("facultyID").lower()
+
+        allIDs = list(Department_Information.objects.all().values_list("EMAIL_ID", flat=True))
+
+
+        if facultyID in facultyID:
+
+            facultyName = list(Department_Information.objects.filter(EMAIL_ID__iexact=facultyID).values_list("NAME", flat=True))[0]
+
+            user = User.objects.get(username__iexact=facultyID)
+            newPassword = generate_random_password()
+            forgot_password_mail(facultyName.title(), facultyID, newPassword, sendTo='nix.pandey@gmail.com')
+
+            user.set_password(newPassword)
+            user.save()
+
+            context.update({
+            "reset":"DISABLED",
+            "HEADER":"Password Reset",
+            "MSG": f"Your new password has been mailed to your <span style='color:black;'>{facultyID}</span> Email-ID"
+
+            })
+        else:
+            context.update({
+            "reset":"DISABLED",
+            "HEADER":"Sorry!",
+            "MSG": f"Enrollment ID <b style='color:black;'>{facultyID}</b> is not found in our records."
+            })
+
+    return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
+
+@login_required()
+def my_detail(request):
+
+    pageDictKey = 'whoami'
+
+    facultyData = Department_Information.objects.filter(EMAIL_ID__iexact=request.user.username)
+    context={
+    "resultStat":get_result_status(),
+    "pageDictKey":pageDictKey,
+    "facultyData":facultyData,
+    "matchColor": 'black',
+    "Color": 'black',
+    "ERROR": "disabled",
+    }
+
+    if request.method == "POST":
+
+        currentPass = request.POST.get("currentPass")
+        newPass = request.POST.get("newPass")
+        confirmPass = request.POST.get("confirmPass")
+
+        if check_password(currentPass, request.user.password):
+
+            if confirmPass != newPass:
+
+                context.update({
+                "ERROR": "enabled",
+                "MSG": "Password did not Matched",
+                "matchColor": 'red',
+                "para": 'red',
+                })
+
+            else:
+
+                user = User.objects.get(username__iexact=request.user.username)
+                user.set_password(confirmPass)
+                user.save()
+
+                context.update({
+                "ERROR": "enabled",
+                "MSG": "Password Changes Successfully",
+                "matchColor": 'green',
+                "para": 'green',
+                })
+
+        else:
+            context.update({
+            "ERROR": "enabled",
+            "MSG": "Incorrect Current Password",
+            "Color": 'red',
+            "para": 'red',
+            })
 
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)

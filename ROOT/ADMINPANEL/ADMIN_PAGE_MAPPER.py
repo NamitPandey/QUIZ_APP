@@ -13,4 +13,6 @@ pageDict={
 "records":f"{MAIN_DIR_NME}/records.html",
 "department":f"{MAIN_DIR_NME}/department_information.html",
 "comments":f"{MAIN_DIR_NME}/feedback_comments.html",
+"reset_faculty_pass":f"{MAIN_DIR_NME}/reset_faculty_pass.html",
+"whoami":f"{MAIN_DIR_NME}/whoami.html",
 }
