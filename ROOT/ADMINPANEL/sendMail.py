@@ -11,9 +11,9 @@ def send_mails():
     student_enroll = list(QuizData.objects.values_list('ENROLLMENT_NUMBER', flat=True).distinct())
 
     TO_MAIL_DICT = {
-    # 'FACULTY_ID': list(Department_Information.objects.values_list('EMAIL_ID', flat=True).distinct()),
+    'FACULTY_ID': list(Department_Information.objects.values_list('EMAIL_ID', flat=True).distinct()),
     # 'STUDENT_ID': list(UserRegistration.objects.filter(ENROLLMENT_NUMBER__in=student_enroll).values_list('EMAIL', flat=True).distinct()),
-    'TEMP_ID':['nix.pandey@gmail.com']
+    # 'TEMP_ID':['nix.pandey@gmail.com']
     }
 
     VISIT_URL = "https://gsfcuniversity.pythonanywhere.com"
@@ -58,7 +58,7 @@ def forgot_password_mail(candidate_name, enrollment, newpassword, sendTo='0'):
     TO_MAIL_DICT = {
     # 'FACULTY_ID': list(Department_Information.objects.values_list('EMAIL_ID', flat=True).distinct()),
     # 'STUDENT_ID': list(UserRegistration.objects.filter(ENROLLMENT_NUMBER__in=student_enroll).values_list('EMAIL', flat=True).distinct()),
-    'TEMP_ID':['nix.pandey@gmail.com'] #["zalak.kansagra@gsfcuniversity.ac.in"]#
+    'TEMP_ID':["zalak.kansagra@gsfcuniversity.ac.in"]#
     }
 
     if sendTo != '0':
