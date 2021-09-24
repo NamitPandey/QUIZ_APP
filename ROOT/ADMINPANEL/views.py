@@ -17,7 +17,7 @@ import pandas as pd
 from . import ADMIN_PAGE_MAPPER, staticVariables
 from sqlalchemy import create_engine
 import datetime
-from ADMINPANEL.sendMail import send_mails, forgot_password_mail
+from ADMINPANEL.sendMail import send_mails, forgot_password_mail, registration_successfull_mail
 from ADMINPANEL.forms import Information
 from MCQ.password_gen import generate_random_password
 from itertools import chain
@@ -171,20 +171,21 @@ def upload_data(request, dataBaseKey):
                 dataBasId = list(Department_Information.objects.all().values_list("EMAIL_ID", flat=True))
                 uploadedData["EMAIL_ID"] = uploadedData["EMAIL_ID"].apply(convertLower)
                 emailList = uploadedData["EMAIL_ID"].unique().tolist()
-
+                uploadList = []
                 for id in emailList:
 
                     if id not in dataBasId:
                     # registering user
+                        uploadList.append(id)
                         qsData = uploadedData.query(f"EMAIL_ID == '{id}'")
                         qsData.reset_index(drop=True, inplace=True)
                         facultyEmail = qsData['EMAIL_ID'][0]
                         try:
-                            facultyFirstName = qsData['EMAIL_ID'][0].split(" ")[-1]
+                            facultyFirstName = qsData['NAME'][0].split(" ")[-1]
                         except:
                             facultyFirstName = " "
                         try:
-                            facultyLastName = qsData['EMAIL_ID'][0].split(" ")[-1]
+                            facultyLastName = qsData['NAME'][0].split(" ")[-1]
                         except:
                             facultyLastName = " "
 
@@ -197,6 +198,13 @@ def upload_data(request, dataBaseKey):
                                                         )
                         user.is_staff = True
                         user.save()
+                        try:
+                            registration_successfull_mail(qsData['NAME'][0], qsData['EMAIL_ID'][0])
+                        except Exception as e:
+                            print(e)
+
+
+                uploadedData = uploadedData.query(f"EMAIL_ID == {uploadList}")
                 uploadedData.to_sql(tableName, conn, if_exists='append', index=False)
             else:
 
@@ -992,34 +1000,47 @@ def get_dept_information(request):
     }
 
     if request.method == 'POST':
-
+        departmentEmailList = list(Department_Information.objects.all().values_list('EMAIL_ID', flat=True))
         try:
             facultyFirstName = request.POST.get("NAME").split(" ")[:-1][0].title()
         except:
             facultyFirstName = request.POST.get("NAME").title()
-        facultyLastName = request.POST.get("NAME").split(" ")[-1].title()
+        try:
+            facultyLastName = request.POST.get("NAME").split(" ")[-1].title()
+        except:
+            facultyLastName = " "
         facultySchool = request.POST.get("SCHOOL_NAME")
         facultyProgram = request.POST.get("PROGRAM_NAME")
         facultyEmail = request.POST.get("EMAIL_ID").lower()
 
         form = Information(request.POST)
 
-        if form.is_valid():
+        if facultyEmail not in departmentEmailList:
+            if form.is_valid():
 
-            # saving form
-            save_it = form.save(commit=False)
-            save_it.save()
+                # saving form
+                save_it = form.save(commit=False)
+                save_it.save()
 
-            # registering user
-            user = User.objects.create_user(
-                                            username=facultyEmail,
-                                            password='tascPortal@21022021',
-                                            email=facultyEmail,
-                                            first_name=facultyFirstName,
-                                            last_name=facultyLastName,
-                                            )
-            user.is_staff = True
-            user.save() #saving the user to database
+                # registering user
+                user = User.objects.create_user(
+                                                username=facultyEmail,
+                                                password='tascPortal@21022021',
+                                                email=facultyEmail,
+                                                first_name=facultyFirstName,
+                                                last_name=facultyLastName,
+                                                )
+                user.is_staff = True
+                user.save() #saving the user to database
+                try:
+                    registration_successfull_mail(request.POST.get("NAME"), facultyEmail)
+                except Exception as e:
+                    print(e)
+        else:
+            context.update({
+            'error': 'YES',
+            "msg":f"{request.POST.get('NAME')} with email-ID <u style='color:black;'>{facultyEmail}</u> is already registered into our portal"
+            })
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
 
 def feedback_page(request):

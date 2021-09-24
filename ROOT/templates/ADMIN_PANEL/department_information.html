@@ -63,10 +63,20 @@
                       <button class="btn btn-warning" type="submit" name="button" style="height:35px; width:100%; font-weight:900;">SUBMIT</button>
                     </div>
                   </div>
-
+                  {% if error == "YES" %}
+                    <div class="col" style="">
+                      <div class="mt-3">
+                        <p style="color:red; margin-left:15%; font-weight:700;">{{msg|safe}}</p>
+                      </div>
+                    </div>
+                  {% endif %}
                 </div>
 
+
+
               </form>
+
+
 
             </div>
           {% endif %}

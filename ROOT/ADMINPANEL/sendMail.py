@@ -4,6 +4,7 @@ from ADMINPANEL.models import Department_Information
 from MCQ.models import QuizData, UserRegistration
 
 helpdeskID =  "abcd@gmail.com"
+VISIT_URL = "https://gsfcuniversity.pythonanywhere.com"
 
 def send_mails():
     """ Function will send mail when result declaration is turned on"""
@@ -15,8 +16,6 @@ def send_mails():
     # 'STUDENT_ID': list(UserRegistration.objects.filter(ENROLLMENT_NUMBER__in=student_enroll).values_list('EMAIL', flat=True).distinct()),
     # 'TEMP_ID':['nix.pandey@gmail.com']
     }
-
-    VISIT_URL = "https://gsfcuniversity.pythonanywhere.com"
 
     subject = 'TASC PINUPS RESULTS'
     message =  f"""\
@@ -71,7 +70,7 @@ def forgot_password_mail(candidate_name, enrollment, newpassword, sendTo='0'):
     message =  f"""\
 Hi {candidate_name},
 
-Your new password to access TASC-PINUPS portal is below.
+Your new password to access TASC-PINUPS portal is below. You can access the portal via {VISIT_URL}
 
 Username: {enrollment.lower()}
 New Password: {newpassword}
@@ -79,7 +78,48 @@ New Password: {newpassword}
 Thanks,
 TASC PINUPS
 ________________________________________________________________________________________________________________________________________________________
-** This is an automatically generated email – please do not reply to it. If you have any queries regarding your result please email {helpdeskID} **
+** This is an automatically generated email – please do not reply to it. If you have any queries reach us at {helpdeskID} **
+________________________________________________________________________________________________________________________________________________________
+
+            """
+    email_from = 'tasc.pinups@gmail.com'#settings.EMAIL_HOST_USER
+
+    for key, val in TO_MAIL_DICT.items():
+
+
+        recipient_list = TO_MAIL_DICT[key]
+
+
+        send_mass_mail((
+        (subject, message, 'tasc.pinups@gmail.com', recipient_list),
+        # new mail for bulk messages
+         ),
+         fail_silently=False)
+
+
+def registration_successfull_mail(facultyName, facultyEmail):
+    """ Function will send mail to faculty's mail ID with temp password"""
+
+    TO_MAIL_DICT = {
+    # 'FACULTY_ID': [facultyEmail],
+    'TEMP_ID': ["nix.pandey@gmail.com"]#["zalak.kansagra@gsfcuniversity.ac.in"]#
+    }
+
+    subject = 'TASC-PINUPS RESET PASSWORD'
+    message =  f"""\
+Hi {facultyName},
+
+Welcome to TASC-PINUPS portal. Your credentials to access portal are listed below. You can access the portal via {VISIT_URL}
+
+Username: {facultyEmail.lower()}
+Password: tascPortal@21022021
+
+**WE ADVISE YOU TO CHANGE YOUR PASSWORD AFTER YOU LOGIN TO THE PORTAL**
+
+Thanks,
+TASC PINUPS
+________________________________________________________________________________________________________________________________________________________
+** This is an automatically generated email – please do not reply to it. If you have any queries reach us at {helpdeskID} **
 ________________________________________________________________________________________________________________________________________________________
 
             """
