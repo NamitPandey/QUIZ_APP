@@ -22,91 +22,93 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="card card-tasks">
+        {% if user.is_superuser %}
+          <div class="card-body">
 
-        <div class="card-body">
-
-            <form class="mt-3 row responsive container" action="{% url 'ADMINPANEL:information'%}" method="POST" style="width: 100%; ">
-              {% csrf_token %}
-
-              <div class="row" style="margin-left:4%; margin-bottom:4%;">
-
-                <div class="col" style="margin-top:-10px;">
-                  <label class="mt-3" style="color:black; font-weight:700;">ENTER NAME</label>
-                  <div class="">
-                    {{form.NAME}}
-                  </div>
-                </div>
-
-                <div class="col" style="margin-top:-10px;">
-                  <label class="mt-3" style="color:black; font-weight:700;">SELECT SCHOOL NAME</label>
-                  <div class="" >
-                    {{form.SCHOOL_NAME}}
-                  </div>
-                </div>
-
-                <div class="col" style=margin-top:-10px;">
-                  <label class="mt-3" style="color:black; font-weight:700;">SECLECT PROGRAM NAME</label>
-                  <div class="" >
-                    {{form.PROGRAM_NAME}}
-                  </div>
-                </div>
-
-                <div class="col" style="margin-top:-10px;">
-                  <label class="mt-3" style="color:black; font-weight:700;">ENTER EMAIL ID</label>
-                  <div class="" >
-                    {{form.EMAIL_ID}}
-                  </div>
-                </div>
-
-                <div class="col" style="">
-                  <div class="mt-3">
-                    <button class="btn btn-warning" type="submit" name="button" style="height:35px; width:100%; font-weight:900;">SUBMIT</button>
-                  </div>
-                </div>
-
-              </div>
-
-            </form>
-
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-lg-12">
-        <h2 style="font-weight:900; text-align:center">OR</h2>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card card-body">
-
-          <div class="row">
-            <div class="col" style="margin-top:2%; margin-bottom:2%;">
-              <a href="{% url 'ADMINPANEL:template' 4 %}">
-                <button class="btn btn-info" name="button" style="height:35px; width:100%; font-weight:900;">Download Template</button>
-              </a>
-            </div>
-            <div class="col-1" style="margin-top:2%; margin-bottom:2%;">
-              <h1 style="font-weight:900; text-align:center;">&</h1>
-            </div>
-            <div class="col">
-              <form class="col" action="{% url 'ADMINPANEL:upload_data' 4 %}" method="POST" style="width: 100%;" enctype="multipart/form-data">
+              <form class="mt-3 row responsive container" action="{% url 'ADMINPANEL:information'%}" method="POST" style="width: 100%; ">
                 {% csrf_token %}
-                <input class="mb-3" type="file" name="document" value="" style="margin-left:25%;" required >
-                <button class="btn btn-primary" type="submit" name="button" style="height:35px; width:100%; font-weight:900;">Upload File</button>
+
+                <div class="row" style="margin-left:4%; margin-bottom:4%;">
+
+                  <div class="col" style="margin-top:-10px;">
+                    <label class="mt-3" style="color:black; font-weight:700;">ENTER NAME</label>
+                    <div class="">
+                      {{form.NAME}}
+                    </div>
+                  </div>
+
+                  <div class="col" style="margin-top:-10px;">
+                    <label class="mt-3" style="color:black; font-weight:700;">SELECT SCHOOL NAME</label>
+                    <div class="" >
+                      {{form.SCHOOL_NAME}}
+                    </div>
+                  </div>
+
+                  <div class="col" style=margin-top:-10px;">
+                    <label class="mt-3" style="color:black; font-weight:700;">SECLECT PROGRAM NAME</label>
+                    <div class="" >
+                      {{form.PROGRAM_NAME}}
+                    </div>
+                  </div>
+
+                  <div class="col" style="margin-top:-10px;">
+                    <label class="mt-3" style="color:black; font-weight:700;">ENTER EMAIL ID</label>
+                    <div class="" >
+                      {{form.EMAIL_ID}}
+                    </div>
+                  </div>
+
+                  <div class="col" style="">
+                    <div class="mt-3">
+                      <button class="btn btn-warning" type="submit" name="button" style="height:35px; width:100%; font-weight:900;">SUBMIT</button>
+                    </div>
+                  </div>
+
+                </div>
 
               </form>
+
             </div>
-
-          </div>
-
+          {% endif %}
         </div>
       </div>
     </div>
+    {% if user.is_superuser %}
+      <div class="row">
+        <div class="col-lg-12">
+          <h2 style="font-weight:900; text-align:center">OR</h2>
+        </div>
+      </div>
+    {% endif %}
+    {% if user.is_superuser %}
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card card-body">
+
+            <div class="row">
+              <div class="col" style="margin-top:2%; margin-bottom:2%;">
+                <a href="{% url 'ADMINPANEL:template' 4 %}">
+                  <button class="btn btn-info" name="button" style="height:35px; width:100%; font-weight:900;">Download Template</button>
+                </a>
+              </div>
+              <div class="col-1" style="margin-top:2%; margin-bottom:2%;">
+                <h1 style="font-weight:900; text-align:center;">&</h1>
+              </div>
+              <div class="col">
+                <form class="col" action="{% url 'ADMINPANEL:upload_data' 4 %}" method="POST" style="width: 100%;" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <input class="mb-3" type="file" name="document" value="" style="margin-left:25%;" required >
+                  <button class="btn btn-primary" type="submit" name="button" style="height:35px; width:100%; font-weight:900;">Upload File</button>
+
+                </form>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    {% endif %}
     <div class="content">
       <div class="col-md-12">
         <div class="card card-chart">

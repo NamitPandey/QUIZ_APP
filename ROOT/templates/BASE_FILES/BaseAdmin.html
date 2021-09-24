@@ -32,32 +32,39 @@
 </style>
 <body class="">
   <div class="wrapper ">
-    <div class="sidebar" data-color="orange">
+    <div class="sidebar" data-color="yellow">
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
     -->
       <div class="logo">
 
         <a href="{% url 'ADMINPANEL:admin_home' %}" class="simple-text logo-mini">
-          <i> <img src="{% static 'img/favicon.png' %}" alt=""> </i>
+          <i> <img src="{% static 'img/favicon.png' %}" alt="" style="border:2px solid black; border-radius:20px;"> </i>
         </a>
         <a href="{% url 'ADMINPANEL:admin_home' %}" class="simple-text logo-normal">
           <strong>TASC PINUPS</strong>
         </a>
       </div>
       <div class="sidebar-wrapper" id="sidebar-wrapper">
-        {% if user.is_superuser %}
+        {% if user.is_superuser or user.is_staff %}
           <ul class="nav">
+
             <li>
+              <a href="{% url 'ADMINPANEL:whoami' %}">
+                <i class="now-ui-icons users_single-02"></i>
+                <p>My Info</p>
+              </a>
+            </li>
+            <!-- <li>
               <a href="{% url 'ADMINPANEL:admin_home' %}">
                 <i class="now-ui-icons business_bank"></i>
                 <p>HOME</p>
               </a>
-            </li>
+            </li> -->
             <li>
               <a href="{% url 'ADMINPANEL:dashboard' %}">
                 <i class="now-ui-icons business_chart-pie-36"></i>
-                <p>DASHBOARD</p>
+                <p>RESULT ANALYSIS</p>
               </a>
             </li>
             <li>
@@ -66,12 +73,7 @@
                 <p>RECORDS</p>
               </a>
             </li>
-            <li>
-              <a href="{% url 'ADMINPANEL:uploadfiles' %}">
-                <i class="now-ui-icons arrows-1_cloud-upload-94"></i>
-                <p>UPLOAD FILES</p>
-              </a>
-            </li>
+
             <li>
               <a href="{% url 'ADMINPANEL:download_data' %}">
                 <i class="now-ui-icons arrows-1_cloud-download-93"></i>
@@ -79,12 +81,21 @@
               </a>
             </li>
 
-            <!-- <li>
-              <a href="/MikeCharlieQuebec/site/admin">
-                <i class="now-ui-icons business_badge"></i>
-                <p>Django Admin</p>
-              </a>
-            </li> -->
+            {% if user.is_superuser %}
+              <li>
+                <a href="{% url 'ADMINPANEL:uploadfiles' %}">
+                  <i class="now-ui-icons arrows-1_cloud-upload-94"></i>
+                  <p>UPLOAD FILES</p>
+                </a>
+              </li>
+
+              <li>
+                <a href="/MikeCharlieQuebec/site/admin">
+                  <i class="now-ui-icons business_badge"></i>
+                  <p>Django Admin</p>
+                </a>
+              </li>
+            {% endif %}
 
             <li>
               <a href="{% url 'ADMINPANEL:information' %}">
@@ -100,12 +111,7 @@
               </a>
             </li>
 
-            <li>
-              <a href="{% url 'ADMINPANEL:whoami' %}">
-                <i class="now-ui-icons users_single-02"></i>
-                <p>Who Am I</p>
-              </a>
-            </li>
+
 
           </ul>
         {% else %}

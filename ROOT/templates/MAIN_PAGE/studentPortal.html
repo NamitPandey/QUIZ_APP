@@ -4,9 +4,9 @@
 {% block content %}
 <div class="container-fluid">
   <div class="row container">
-    {% if user.is_superuser %}
+    {% if user.is_superuser or user.is_staff %}
       <div class="btn-wrapper">
-        <a href="{% url 'ADMINPANEL:admin_home' %}">
+        <a href="{% url 'ADMINPANEL:whoami' %}">
           <button class="btn">
             <img src="{% static 'img/user.png' %}" class="icon">
             <br>Go To <br> Dashboard

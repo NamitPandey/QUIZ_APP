@@ -31,6 +31,7 @@ urlpatterns = [
     path(f"forgotPassword/", views.forgot_password, name='forgot_password'), # result
     # temp path
     path(f"feedback/", views.feedback, name='feedback'), # result
+    path("department/iforgot", adminviews.reset_faculty_pass, name='reset_faculty_pass'),
 
 
 

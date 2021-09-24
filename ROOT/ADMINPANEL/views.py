@@ -111,7 +111,7 @@ def upload_data(request, dataBaseKey):
 
     pageDictKey = 'uploadPage'
 
-
+    convertLower = lambda x: x.lower()
 
     context={"MSG":"NOT_UPLOADED", "resultStat":get_result_status(), "pageDictKey":pageDictKey,}
 
@@ -141,6 +141,7 @@ def upload_data(request, dataBaseKey):
 
         conn = create_engine(f'sqlite:////{dbPath}')
 
+
         if dataBaseKey == 2:
             lowercase = lambda x: x.strip().lower()
             uploadedData['ENROLLMENT_NUMBER'] = uploadedData['ENROLLMENT_NUMBER'].apply(lowercase)
@@ -163,9 +164,43 @@ def upload_data(request, dataBaseKey):
 
                 pass
 
+
         try:
 
-            uploadedData.to_sql(tableName, conn, if_exists='append', index=False)
+            if dataBaseKey == 4:
+                dataBasId = list(Department_Information.objects.all().values_list("EMAIL_ID", flat=True))
+                uploadedData["EMAIL_ID"] = uploadedData["EMAIL_ID"].apply(convertLower)
+                emailList = uploadedData["EMAIL_ID"].unique().tolist()
+
+                for id in emailList:
+
+                    if id not in dataBasId:
+                    # registering user
+                        qsData = uploadedData.query(f"EMAIL_ID == '{id}'")
+                        qsData.reset_index(drop=True, inplace=True)
+                        facultyEmail = qsData['EMAIL_ID'][0]
+                        try:
+                            facultyFirstName = qsData['EMAIL_ID'][0].split(" ")[-1]
+                        except:
+                            facultyFirstName = " "
+                        try:
+                            facultyLastName = qsData['EMAIL_ID'][0].split(" ")[-1]
+                        except:
+                            facultyLastName = " "
+
+                        user = User.objects.create_user(
+                                                        username=facultyEmail,
+                                                        password='tascPortal@21022021',
+                                                        email=facultyEmail,
+                                                        first_name=facultyFirstName,
+                                                        last_name=facultyLastName,
+                                                        )
+                        user.is_staff = True
+                        user.save()
+                uploadedData.to_sql(tableName, conn, if_exists='append', index=False)
+            else:
+
+                uploadedData.to_sql(tableName, conn, if_exists='append', index=False)
             # os.remove(mediaPath+"/"+str(uploadedFile))
 
         except Exception as e:
@@ -983,7 +1018,6 @@ def get_dept_information(request):
                                             first_name=facultyFirstName,
                                             last_name=facultyLastName,
                                             )
-            user.is_superuser = True
             user.is_staff = True
             user.save() #saving the user to database
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
