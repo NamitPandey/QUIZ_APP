@@ -91,9 +91,10 @@ def underline(val, clr):
 @stringfilter
 def remain_perc(val):
 
-
-    return 100-int(val)
-
+    try:
+        return 100-int(val)
+    except:
+        return val
 """ actual attempts """
 @register.filter(name='attempts')
 @stringfilter

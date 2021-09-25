@@ -5,6 +5,7 @@ from MCQ.models import QuizData, UserRegistration
 
 helpdeskID =  "abcd@gmail.com"
 VISIT_URL = "https://gsfcuniversity.pythonanywhere.com"
+FORGOT_URL = VISIT_URL+"/department/iforgot"
 
 def send_mails():
     """ Function will send mail when result declaration is turned on"""
@@ -32,6 +33,18 @@ ________________________________________________________________________________
 ________________________________________________________________________________________________________________________________________________________
 
             """
+    facultymessage =  f"""\
+    Hi,
+
+    Admin has enabled TASC-PINUPS results. Students now have access to their result section.
+
+    Thanks,
+    TASC PINUPS
+    ________________________________________________________________________________________________________________________________________________________
+    ** This is an automatically generated email – please do not reply to it. If you have any queries regarding your result please email {helpdeskID} **
+    ________________________________________________________________________________________________________________________________________________________
+
+            """
     email_from = 'tasc.pinups@gmail.com'#settings.EMAIL_HOST_USER
     # recipient_list = ['nix.pandey@gmail.com',
     #                     # 'zalak.kansagra@gsfcuniversity.ac.in',
@@ -42,12 +55,19 @@ ________________________________________________________________________________
 
         recipient_list = TO_MAIL_DICT[key]
 
+        if key == "FACULTY_ID":
 
-        send_mass_mail((
-        (subject, message, 'tasc.pinups@gmail.com', recipient_list),
-        # new mail for bulk messages
-         ),
-         fail_silently=False)
+            send_mass_mail((
+            (subject, facultymessage, 'tasc.pinups@gmail.com', recipient_list),
+            # new mail for bulk messages
+             ),
+             fail_silently=False)
+        else:
+            send_mass_mail((
+            (subject, message, 'tasc.pinups@gmail.com', recipient_list),
+            # new mail for bulk messages
+             ),
+             fail_silently=False)
 
 def forgot_password_mail(candidate_name, enrollment, newpassword, sendTo='0'):
     """ Function will send mail to student's mail ID with password"""
@@ -58,6 +78,7 @@ def forgot_password_mail(candidate_name, enrollment, newpassword, sendTo='0'):
     # 'FACULTY_ID': list(Department_Information.objects.values_list('EMAIL_ID', flat=True).distinct()),
     # 'STUDENT_ID': list(UserRegistration.objects.filter(ENROLLMENT_NUMBER__in=student_enroll).values_list('EMAIL', flat=True).distinct()),
     'TEMP_ID':["zalak.kansagra@gsfcuniversity.ac.in"]#
+    # 'TO': [enrollment+"@gsfcuniversity.ac.in"]
     }
 
     if sendTo != '0':
@@ -78,7 +99,7 @@ New Password: {newpassword}
 Thanks,
 TASC PINUPS
 ________________________________________________________________________________________________________________________________________________________
-** This is an automatically generated email – please do not reply to it. If you have any queries reach us at {helpdeskID} **
+** This is an automatically generated email – please do not reply to it. For any queries reach us at {helpdeskID} **
 ________________________________________________________________________________________________________________________________________________________
 
             """
@@ -101,25 +122,27 @@ def registration_successfull_mail(facultyName, facultyEmail):
     """ Function will send mail to faculty's mail ID with temp password"""
 
     TO_MAIL_DICT = {
-    # 'FACULTY_ID': [facultyEmail],
-    'TEMP_ID': ["nix.pandey@gmail.com"]#["zalak.kansagra@gsfcuniversity.ac.in"]#
+    'FACULTY_ID': [facultyEmail],
+    # 'TEMP_ID': ["nix.pandey@gmail.com"]
     }
 
     subject = 'TASC-PINUPS RESET PASSWORD'
     message =  f"""\
 Hi {facultyName},
 
-Welcome to TASC-PINUPS portal. Your credentials to access portal are listed below. You can access the portal via {VISIT_URL}
+Welcome to TASC-PINUPS. Your credentials to access dashboard are listed below. You can access the portal via {VISIT_URL}
 
 Username: {facultyEmail.lower()}
 Password: tascPortal@21022021
 
-**WE ADVISE YOU TO CHANGE YOUR PASSWORD AFTER YOU LOGIN TO THE PORTAL**
+**WE ADVISE YOU TO CHANGE YOUR PASSWORD AFTER YOU LOGIN TO THE PORTAL FOR THE FIRST TIME**
+
+In case you ever forget your password you can access {FORGOT_URL} to reset it.
 
 Thanks,
 TASC PINUPS
 ________________________________________________________________________________________________________________________________________________________
-** This is an automatically generated email – please do not reply to it. If you have any queries reach us at {helpdeskID} **
+** This is an automatically generated email – please do not reply to it. For any queries reach us at {helpdeskID} **
 ________________________________________________________________________________________________________________________________________________________
 
             """

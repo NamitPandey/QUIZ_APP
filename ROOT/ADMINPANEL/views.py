@@ -966,17 +966,23 @@ def records(request):
 
 def toggle_result(request, status, pageDictKey):
 
+    pageDictKey = "result_message"
+    message = "Students do not have access to their result section."
     context={
     "pageDictKey":pageDictKey,
     "status":status,
     "resultStat":get_result_status(),
+    "message":message,
     }
 
     if int(status) != get_result_status():
 
         update_result_status(request, status)
-
-        context.update({"resultStat":get_result_status(),})
+        if int(status) == 1:
+            message = "Result Announced! Students have been notified via mail on their GSFC Email-ID."
+        else:
+            message = "Students do not have access to their result section."
+        context.update({"resultStat":get_result_status(),"message":message,})
 
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
 
@@ -1034,6 +1040,10 @@ def get_dept_information(request):
                 user.save() #saving the user to database
                 try:
                     registration_successfull_mail(request.POST.get("NAME"), facultyEmail)
+                    context.update({
+                    'error': 'YES',
+                    "msg":f"{request.POST.get('NAME')} with email-ID <u style='color:black;'>{facultyEmail}</u> added to our records and mail has been sent with his/her dashboard credentials. "
+                    })
                 except Exception as e:
                     print(e)
         else:
@@ -1068,12 +1078,22 @@ def reset_faculty_pass(request):
 
 
         if facultyID in facultyID:
+            try:
+                facultyName = list(Department_Information.objects.filter(EMAIL_ID__iexact=facultyID).values_list("NAME", flat=True))[0]
+                user = User.objects.get(username__iexact=facultyID)
+            except:
 
-            facultyName = list(Department_Information.objects.filter(EMAIL_ID__iexact=facultyID).values_list("NAME", flat=True))[0]
+                context.update({
+                "reset":"DISABLED",
+                "HEADER":"Sorry!",
+                "MSG": f"<b style='color:black;'>{facultyID}</b> is not found in our records."
+                })
 
-            user = User.objects.get(username__iexact=facultyID)
+                return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)
+
+
             newPassword = generate_random_password()
-            forgot_password_mail(facultyName.title(), facultyID, newPassword, sendTo='nix.pandey@gmail.com')
+            forgot_password_mail(facultyName.title(), facultyID, newPassword, sendTo=facultyID)
 
             user.set_password(newPassword)
             user.save()
@@ -1088,7 +1108,7 @@ def reset_faculty_pass(request):
             context.update({
             "reset":"DISABLED",
             "HEADER":"Sorry!",
-            "MSG": f"Enrollment ID <b style='color:black;'>{facultyID}</b> is not found in our records."
+            "MSG": f"Email ID <b style='color:black;'>{facultyID}</b> is not found in our records."
             })
 
     return render(request, ADMIN_PAGE_MAPPER.pageDict[pageDictKey], context)

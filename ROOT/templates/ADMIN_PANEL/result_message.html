@@ -1,0 +1,47 @@
+{% extends 'BASE_FILES/BaseAdmin.html' %}
+{% load static %}
+{% load my_filter %}
+{% block adminContent %}
+
+<style media="screen">
+  td, th {
+    text-align:center;
+  }
+
+  #id_PROGRAM_NAME{
+    width: 200px;
+    height: 28px;
+  }
+  #id_SCHOOL_NAME{
+    height: 28px;
+  }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="{% static 'js/school_jquery.js' %}"></script>
+<div class="content">
+  <div class="content">
+    <div class="col-md-12">
+      <div class="card card-chart">
+        <div class="card-header ">
+          <div class="row">
+            <div class="col-sm-12">
+                <h3 class="text-center text-info col-sm-12" style="margin-top:2%;">
+                  <strong style="color:#ff7803;">{{message}}</strong>
+                </h3>
+            </div>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  </div>
+
+
+
+
+<!-- </div> -->
+
+{% endblock %}
