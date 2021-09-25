@@ -14,7 +14,7 @@ def send_mails():
 
     TO_MAIL_DICT = {
     'FACULTY_ID': list(Department_Information.objects.values_list('EMAIL_ID', flat=True).distinct()),
-    # 'STUDENT_ID': list(UserRegistration.objects.filter(ENROLLMENT_NUMBER__in=student_enroll).values_list('EMAIL', flat=True).distinct()),
+    'STUDENT_ID': list(Department_Information.objects.values_list('EMAIL_ID', flat=True).distinct()),#list(UserRegistration.objects.filter(ENROLLMENT_NUMBER__in=student_enroll).values_list('EMAIL', flat=True).distinct()),
     # 'TEMP_ID':['nix.pandey@gmail.com']
     }
 
