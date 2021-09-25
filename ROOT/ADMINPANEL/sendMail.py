@@ -126,11 +126,11 @@ def registration_successfull_mail(facultyName, facultyEmail):
     # 'TEMP_ID': ["nix.pandey@gmail.com"]
     }
 
-    subject = 'TASC-PINUPS RESET PASSWORD'
+    subject = 'WELCOME TO TASC-PINUPS'
     message =  f"""\
 Hi {facultyName},
 
-Welcome to TASC-PINUPS. Your credentials to access dashboard are listed below. You can access the portal via {VISIT_URL}
+Welcome to TASC-PINUPS. Your credentials to access dashboard are listed below. You can access the dashboard via {VISIT_URL}
 
 Username: {facultyEmail.lower()}
 Password: tascPortal@21022021

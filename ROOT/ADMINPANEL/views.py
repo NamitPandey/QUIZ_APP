@@ -1140,7 +1140,7 @@ def my_detail(request):
 
                 context.update({
                 "ERROR": "enabled",
-                "MSG": "Password did not Matched",
+                "MSG": "Password did not Match",
                 "matchColor": 'red',
                 "para": 'red',
                 })
@@ -1153,7 +1153,7 @@ def my_detail(request):
 
                 context.update({
                 "ERROR": "enabled",
-                "MSG": "Password Changes Successfully",
+                "MSG": "Password Changed Successfully",
                 "matchColor": 'green',
                 "para": 'green',
                 })
